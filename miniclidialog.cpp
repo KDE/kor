@@ -51,9 +51,10 @@ void MinicliDialog::activate()
 // KDialog::restoreDialogSize()
 
 void MinicliDialog::reset()
-    {
-    // TODO
-//    ui.label->setPixmap( );
+    { // TODO compute icon size from lineedit's sizehint->height ?
+    const int ICON_SIZE = 32;
+    ui.label->setFixedSize( ICON_SIZE, ICON_SIZE );
+    ui.label->setPixmap( KIconLoader::global()->loadIcon( "kde", KIconLoader::NoGroup, ICON_SIZE ));
     ui.lineedit->clear();
     enableButtonOk( false );
     }

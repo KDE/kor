@@ -12,7 +12,7 @@
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
-    <widget class="QLabel" name="label">
+    <widget class="QLabel" name="infolabel">
      <property name="text">
       <string>Enter the name of the application you want to run or the URL you want to view</string>
      </property>
@@ -21,8 +21,7 @@
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout">
      <item>
-      <widget class="QLabel" name="label_2">
-      </widget>
+      <widget class="QLabel" name="label"/>
      </item>
      <item>
       <widget class="KLineEdit" name="lineedit"/>
