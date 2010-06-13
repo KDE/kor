@@ -24,6 +24,7 @@ namespace Kor
 {
 
 class MinicliDialog;
+class MinicliHandler;
 
 class Minicli
     : public QObject
@@ -31,12 +32,14 @@ class Minicli
     Q_OBJECT
     public:
         Minicli( QObject* parent = NULL );
+        virtual ~Minicli();
         void commandChanged( const QString& command );
         bool runCommand( const QString& command, QString* result );
     private slots:
         void showDialog();
     private:
         MinicliDialog* dialog;
+        QList< MinicliHandler* > handlers;
     };
 
 } // namespace

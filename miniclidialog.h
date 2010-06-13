@@ -26,6 +26,9 @@ namespace Kor
 {
 
 class Minicli;
+
+// Implementation of the actual UI of minicli, without the logic.
+// This allows a different UI if needed for whatever reason.
 class MinicliDialog
     : public KDialog
     {

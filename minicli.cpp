@@ -24,6 +24,7 @@
 #include <kdebug.h>
 
 #include "miniclidialog.h"
+#include "miniclihandler.h"
 
 namespace Kor
 {
@@ -38,6 +39,15 @@ Minicli::Minicli( QObject* parent )
     // TODO change to F2
     action->setGlobalShortcut( KShortcut( Qt::ALT + Qt::Key_F5 ));
     connect( action, SIGNAL( triggered( bool )), this, SLOT( showDialog()));
+
+    // Command handlers, highest priority first. This could be made even
+    // more flexible by introducing plugins, if needed.    
+    handlers.append( new MinicliHandlerCommandUrl );
+    }
+
+Minicli::~Minicli()
+    {
+    qDeleteAll( handlers );
     }
 
 void Minicli::showDialog()
@@ -45,19 +55,25 @@ void Minicli::showDialog()
     dialog->activate();
     }
 
-bool Minicli::runCommand( const QString& command, QString* result )
+bool Minicli::runCommand( const QString& cmd, QString* result )
     {
-    kDebug() << "Command:" << command;
-    if( true ) // TODO
-        {
-        *result = command.trimmed();
-        return true;
-        }
-    if( false )
-        {
-        *result = i18n( "Could not run the specified command" );
+    QString command = cmd.trimmed();
+    result->clear();
+    if( command.isEmpty())
         return false;
+    foreach( MinicliHandler* handler, handlers )
+        {
+        bool handled = true;
+        bool ok = handler->run( command, dialog, result, &handled );
+        if( handled )
+            {
+            if( ok && result->isEmpty())
+                *result = command; // for history
+            return ok;
+            }
         }
+    *result = i18n( "Could not run the specified command" );
+    return false;
     }
 
 void Minicli::commandChanged( const QString& command )

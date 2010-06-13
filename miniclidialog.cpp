@@ -29,6 +29,8 @@
 namespace Kor
 {
 
+// The actual minicli dialog (the GUI). This separation allows a different UI implementation
+// if needed for whatever reason.
 MinicliDialog::MinicliDialog( Minicli* minicli )
     : minicli( minicli )
     {
@@ -87,11 +89,13 @@ void MinicliDialog::accept()
     QString result;
     if( !minicli->runCommand( ui.command->currentText(), &result ))
         { // TODO not modal
-        KMessageBox::sorry( this, result );
+        if( !result.isEmpty())
+            KMessageBox::sorry( this, result );
         return;
         }
     KDialog::accept();
     ui.command->addToHistory( result );
+    writeConfig();
     }
 
 void MinicliDialog::readConfig()
