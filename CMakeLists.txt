@@ -18,10 +18,11 @@ set( kor_SRCS
      )
 
 kde4_add_ui_files( kor_SRCS miniclidialog.ui )
-
-kde4_add_kdeinit_executable( kor ${kor_SRCS} )
+kde4_add_kcfg_files( kor_SRCS miniclidialogconfig.kcfgc )
 
 target_link_libraries( kdeinit_kor ${KDE4_KDEUI_LIBS} )
+kde4_add_kdeinit_executable( kor ${kor_SRCS} )
 
 install( TARGETS kor ${INSTALL_TARGETS_DEFAULT_ARGS})
 install( TARGETS kdeinit_kor ${INSTALL_TARGETS_DEFAULT_ARGS})
+install( FILES miniclidialogconfig.kcfg DESTINATION ${KCFG_INSTALL_DIR} RENAME korminiclidialog.kcfg )

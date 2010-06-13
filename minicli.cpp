@@ -30,7 +30,7 @@ namespace Kor
 
 Minicli::Minicli( QObject* parent )
     : QObject( parent )
-    , dialog( new MinicliDialog )
+    , dialog( new MinicliDialog( this ))
     {
     KActionCollection* actions = new KActionCollection( this );
     KAction* action = actions->addAction( "showruncommand" );
@@ -38,7 +38,6 @@ Minicli::Minicli( QObject* parent )
     // TODO change to F2
     action->setGlobalShortcut( KShortcut( Qt::ALT + Qt::Key_F5 ));
     connect( action, SIGNAL( triggered( bool )), this, SLOT( showDialog()));
-    connect( dialog, SIGNAL( runCommand( const QString& )), this, SLOT( runCommand( const QString& )));
     }
 
 void Minicli::showDialog()
@@ -46,9 +45,23 @@ void Minicli::showDialog()
     dialog->activate();
     }
 
-void Minicli::runCommand( const QString& command )
+bool Minicli::runCommand( const QString& command, QString* result )
     {
     kDebug() << "Command:" << command;
+    if( true ) // TODO
+        {
+        *result = command.trimmed();
+        return true;
+        }
+    if( false )
+        {
+        *result = i18n( "Could not run the specified command" );
+        return false;
+        }
+    }
+
+void Minicli::commandChanged( const QString& command )
+    {
     }
 
 } // namespace

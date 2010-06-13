@@ -17,57 +17,102 @@
 
 #include "miniclidialog.h"
 
+#include <kcompletionbox.h>
+#include <kglobalsettings.h>
 #include <klocale.h>
+#include <kmessagebox.h>
 #include <kwindowsystem.h>
+
+#include "minicli.h"
+#include "miniclidialogconfig.h"
 
 namespace Kor
 {
 
-MinicliDialog::MinicliDialog()
+MinicliDialog::MinicliDialog( Minicli* minicli )
+    : minicli( minicli )
     {
     setCaption( i18n( "Run Command" ));
     setButtons( KDialog::Ok | KDialog::Cancel );
     widget = new QWidget( this );
     setMainWidget( widget );
     ui.setupUi( widget );
+    ui.command->setDuplicatesEnabled( false );
+    if( KCompletionBox* box = ui.command->completionBox())
+        box->setActivateOnSelect( false );
     showButtonSeparator( true );
-    connect( this, SIGNAL( okClicked()), SLOT( handleOk()));
-    connect( this, SIGNAL( cancelClicked()), SLOT( hide()));
-    connect( ui.lineedit, SIGNAL( textChanged( const QString& )), this, SLOT( textChanged( const QString& )));
+    connect( ui.command, SIGNAL( editTextChanged( const QString& )), this, SLOT( textChanged( const QString& )));
+    adjustSize();
+    readConfig();
+    }
+
+MinicliDialog::~MinicliDialog()
+    {
+    writeConfig();
     }
 
 void MinicliDialog::activate()
     {
     reset();
-    ui.lineedit->setFocus();
+    ui.command->setFocus();
     if( isVisible())
         { // TODO do this properly
         KWindowSystem::activateWindow( winId());
         return;
         }
+    // TODO positioning for other WMs? KWin can place it properly itself
+    // TODO NET::KeepAbove?
     show();
     }
 
 // KDialog::restoreDialogSize()
 
 void MinicliDialog::reset()
-    { // TODO compute icon size from lineedit's sizehint->height ?
+    { // TODO compute icon size from command's sizehint->height ?
     const int ICON_SIZE = 32;
     ui.label->setFixedSize( ICON_SIZE, ICON_SIZE );
     ui.label->setPixmap( KIconLoader::global()->loadIcon( "kde", KIconLoader::NoGroup, ICON_SIZE ));
-    ui.lineedit->clear();
+    ui.command->clearEditText();
     enableButtonOk( false );
     }
 
-void MinicliDialog::textChanged( const QString& command )
+void MinicliDialog::textChanged( const QString& text )
     {
-    enableButtonOk( !command.isEmpty());
-    emit commandChanged( command );
+    enableButtonOk( !text.isEmpty());
+    minicli->commandChanged( text );
     }
 
-void MinicliDialog::handleOk()
+void MinicliDialog::accept()
     {
-    emit runCommand( ui.lineedit->text());
+    QString result;
+    if( !minicli->runCommand( ui.command->currentText(), &result ))
+        { // TODO not modal
+        KMessageBox::sorry( this, result );
+        return;
+        }
+    KDialog::accept();
+    ui.command->addToHistory( result );
+    }
+
+void MinicliDialog::readConfig()
+    {
+    MinicliDialogConfig config;
+    ui.command->setMaxCount( config.historyLength());
+    ui.command->setHistoryItems( config.history());
+    // KHistoryComboBox docs suggests to do this, for whatever reason
+    ui.command->completionObject()->setItems(
+        config.completionItems().isEmpty() ? config.history() : config.completionItems());
+    ui.command->completionObject()->setCompletionMode(
+        static_cast< KGlobalSettings::Completion >( config.completionMode()));
+    }
+
+void MinicliDialog::writeConfig()
+    {
+    MinicliDialogConfig config;
+    config.setHistory( ui.command->historyItems());
+    // KHistoryComboBox docs suggests to do this, for whatever reason
+    config.setCompletionItems( ui.command->completionObject()->items());
+    config.setCompletionMode( ui.command->completionObject()->completionMode());
     }
 
 } // namespace

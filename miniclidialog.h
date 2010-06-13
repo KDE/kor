@@ -25,25 +25,26 @@
 namespace Kor
 {
 
+class Minicli;
 class MinicliDialog
     : public KDialog
     {
     Q_OBJECT
     public:
-        MinicliDialog();
+        MinicliDialog( Minicli* minicli );
+        virtual ~MinicliDialog();
         void activate();
-    signals:
-        // emitted when confirmed (i.e. Enter pressed)
-        void runCommand( const QString& command );
-        // on-the-fly when lineedit changes
-        void commandChanged( const QString& command );
+    protected:
+        virtual void accept();
     private slots:
-        void textChanged( const QString& command );
-        void handleOk();
+        void textChanged( const QString& text );
     private:
         void reset();
+        void readConfig();
+        void writeConfig();
         QWidget* widget;
         Ui::MinicliDialog ui;
+        Minicli* minicli;
     };
 
 } // namespace

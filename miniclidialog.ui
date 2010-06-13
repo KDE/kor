@@ -24,7 +24,7 @@
       <widget class="QLabel" name="label"/>
      </item>
      <item>
-      <widget class="KLineEdit" name="lineedit"/>
+      <widget class="KHistoryComboBox" name="command"/>
      </item>
     </layout>
    </item>
@@ -45,9 +45,9 @@
  </widget>
  <customwidgets>
   <customwidget>
-   <class>KLineEdit</class>
+   <class>KHistoryComboBox</class>
    <extends>QLineEdit</extends>
-   <header location="global">klineedit.h</header>
+   <header location="global">khistorycombobox.h</header>
   </customwidget>
  </customwidgets>
  <resources/>

@@ -1,0 +1,4 @@
+File=miniclidialogconfig.kcfg
+ClassName=MinicliDialogConfig
+Mutators=true
+Namespace=Kor

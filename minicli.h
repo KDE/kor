@@ -31,9 +31,10 @@ class Minicli
     Q_OBJECT
     public:
         Minicli( QObject* parent = NULL );
+        void commandChanged( const QString& command );
+        bool runCommand( const QString& command, QString* result );
     private slots:
         void showDialog();
-        void runCommand( const QString& command );
     private:
         MinicliDialog* dialog;
     };
