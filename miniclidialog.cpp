@@ -113,6 +113,7 @@ void MinicliDialog::writeConfig()
     // KHistoryComboBox docs suggests to do this, for whatever reason
     config.setCompletionItems( ui.command->completionObject()->items());
     config.setCompletionMode( ui.command->completionObject()->completionMode());
+    config.writeConfig();
     }
 
 } // namespace
