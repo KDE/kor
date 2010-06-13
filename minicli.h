@@ -30,7 +30,7 @@ class Minicli
     {
     Q_OBJECT
     public:
-        Minicli();
+        Minicli( QObject* parent = NULL );
     private slots:
         void showDialog();
         void runCommand( const QString& command );

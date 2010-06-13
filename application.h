@@ -32,8 +32,6 @@ class Application
     Q_OBJECT
     public:
         Application();
-    private:
-        QScopedPointer< Minicli > minicli;
     };
 
 } // namespace

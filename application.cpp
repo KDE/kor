@@ -17,14 +17,17 @@
 
 #include "application.h"
 
+#include <kauthorized.h>
+
 #include "minicli.h"
 
 namespace Kor
 {
 
 Application::Application()
-    : minicli( new Minicli )
     {
+    if( KAuthorized::authorizeKAction( "run_command" ))
+        ( void ) new Minicli( this );
     setQuitOnLastWindowClosed( false );
     }
 

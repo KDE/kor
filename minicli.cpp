@@ -28,8 +28,9 @@
 namespace Kor
 {
 
-Minicli::Minicli()
-    : dialog( new MinicliDialog )
+Minicli::Minicli( QObject* parent )
+    : QObject( parent )
+    , dialog( new MinicliDialog )
     {
     KActionCollection* actions = new KActionCollection( this );
     KAction* action = actions->addAction( "showruncommand" );
