@@ -1,0 +1,15 @@
+#! /bin/bash
+
+version=`cat main.h | grep '^#define KOR_VERSION' \
+    | sed 's/#define KOR_VERSION "\(.*\)"/\1/'`
+tar=`pwd`/kor-$version.tar.gz
+tmp=$(mktemp -d)
+mkdir -p "$tmp"/kor-$version
+cp -apr . "$tmp"/kor-$version
+(
+    cd "$tmp"/kor-$version
+    git clean -d -x -f
+    rm -rf .git
+)
+( cd "$tmp" && tar czO kor-$version ) >"$tar"
+rm -rf "$tmp"
