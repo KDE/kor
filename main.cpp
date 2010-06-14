@@ -24,7 +24,7 @@
 #include <klocale.h>
 #include <stdio.h>
 
-extern "C"
+extern "C" KDE_EXPORT
 int kdemain( int argc, char* argv[] )
     {
     KAboutData about( "kor", NULL, ki18n( "Kor Testudo Shell" ), KOR_VERSION );
