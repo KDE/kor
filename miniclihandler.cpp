@@ -20,6 +20,7 @@
 #include <kauthorized.h>
 #include <krun.h>
 #include <kservice.h>
+#include <kworkspace/kworkspace.h>
 #include <qtextdocument.h>
 
 namespace Kor
@@ -104,6 +105,21 @@ MinicliHandler::HandledState MinicliHandlerCommandUrl::run( const QString& comma
     *error = i18n( "<center><b>%1</b></center>\nThe specified command does not exist.",
         Qt::convertFromPlainText( cmd ));
     return HandledFailed;
+    }
+
+MinicliHandler::HandledState MinicliHandlerSpecials::run( const QString& command, QWidget*, QString* error )
+    {
+    if( command == "logout" )
+        {
+        KWorkSpace::propagateSessionManager();
+        if( !KWorkSpace::requestShutDown())
+            {
+            *error = i18n( "Failed to contact the session manager" );
+            return HandledFailed;
+            }
+        return HandledOk;
+        }
+    return NotHandled;
     }
 
 } // namespace

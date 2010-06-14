@@ -46,6 +46,13 @@ class MinicliHandlerCommandUrl
         KUriFilterData data;
     };
 
+class MinicliHandlerSpecials
+    : public MinicliHandler
+    {
+    public:
+        virtual HandledState run( const QString& command, QWidget* widget, QString* error );
+    };
+
 } // namespace
 
 #endif
