@@ -30,8 +30,9 @@ class MinicliHandler
         enum HandledState { HandledOk, HandledFailed, NotHandled };
         /** Run the command, if possible. If the command cannot be handled at all
             (for example, the handler is a calculator but the command doesn't start with '='),
-            return NotHandled. Otherwise try to run it, return whether the running was succesful
-            or not, set result to error message if there is a problem.
+            return NotHandled. Otherwise try to run it and return whether the running was succesful
+            or not. If there was a problem, set result to error message. If result is set when
+            the command was handled successfully, this result will be presented to the user.
             @arg widget window for associating commands with
         **/
         virtual HandledState run( const QString& command, QWidget* widget, QString* error ) = 0;

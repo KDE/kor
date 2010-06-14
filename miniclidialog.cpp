@@ -22,6 +22,7 @@
 #include <klocale.h>
 #include <kmessagebox.h>
 #include <kwindowsystem.h>
+#include <qlineedit.h>
 
 #include "minicli.h"
 #include "miniclidialogconfig.h"
@@ -92,8 +93,13 @@ void MinicliDialog::accept()
             KMessageBox::sorry( this, result );
         return;
         }
+    if( !result.isEmpty())
+        { // set to new text, don't close dialog, don't add to history
+        ui.command->lineEdit()->setText( result );
+        return;
+        }
+    ui.command->addToHistory( ui.command->currentText());
     KDialog::accept();
-    ui.command->addToHistory( result );
     writeConfig();
     }
 
