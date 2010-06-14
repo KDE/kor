@@ -27,7 +27,7 @@
 extern "C"
 int kdemain( int argc, char* argv[] )
     {
-    KAboutData about( "kor", NULL, ki18n( "Kor Testudo" ), KOR_VERSION );
+    KAboutData about( "kor", NULL, ki18n( "Kor Testudo Shell" ), KOR_VERSION );
     about.setLicense( KAboutData::License_GPL );
     about.addAuthor( ki18n( "Luboš Luňák" ), KLocalizedString(), "l.lunak@kde.org" );
     KCmdLineArgs::init( argc, argv, &about );
