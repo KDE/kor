@@ -35,7 +35,8 @@ namespace Kor
 MinicliDialog::MinicliDialog( Minicli* minicli )
     : minicli( minicli )
     {
-    setCaption( i18n( "Run Command" ));
+    setPlainCaption( i18n( "Run Command" ));
+    setWindowIcon( KIcon( "kde" ));
     setButtons( KDialog::Ok | KDialog::Cancel );
     widget = new QWidget( this );
     setMainWidget( widget );
