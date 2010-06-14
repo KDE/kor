@@ -57,6 +57,13 @@ class MinicliHandlerSpecials
         virtual HandledState run( const QString& command, QWidget* widget, QString* error );
     };
 
+class MinicliHandlerCalculator
+    : public MinicliHandler
+    {
+    public:
+        virtual HandledState run( const QString& command, QWidget* widget, QString* error );
+    };
+
 } // namespace
 
 #endif

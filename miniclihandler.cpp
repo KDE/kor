@@ -18,10 +18,16 @@
 #include "miniclihandler.h"
 
 #include <kauthorized.h>
+#include <kprocess.h>
 #include <krun.h>
 #include <kservice.h>
+#include <kshell.h>
+#include <kstandarddirs.h>
 #include <kworkspace/kworkspace.h>
+#include <qfile.h>
 #include <qtextdocument.h>
+#include <qtextstream.h>
+#include <stdio.h>
 
 namespace Kor
 {
@@ -131,5 +137,26 @@ MinicliHandler::HandledState MinicliHandlerSpecials::run( const QString& command
         }
     return NotHandled;
     }
+
+MinicliHandler::HandledState MinicliHandlerCalculator::run( const QString& command, QWidget*, QString* error )
+    {
+    if( !command.startsWith( '=' ))
+        return NotHandled;
+    QString exp = command.mid( 1 );
+    QString cmd;
+    const QString bc = KStandardDirs::findExe( "bc" );
+    if( !bc.isEmpty())
+        cmd = QString( "echo %1 | %2" ).arg( KShell::quoteArg( QString("scale=8; ") + exp ), KShell::quoteArg( bc ));
+    else
+        cmd = QString( "echo $((%1)) ").arg( exp );
+    if( FILE* fs = popen( QFile::encodeName( cmd ), "r" ))
+        {
+        QString result = QTextStream( fs ).readAll().trimmed();
+        pclose(fs);
+        *error = '=' + result;
+        return HandledOk;
+        }
+    return HandledFailed;
+}
 
 } // namespace

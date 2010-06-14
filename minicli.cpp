@@ -42,6 +42,7 @@ Minicli::Minicli( QObject* parent )
     // Command handlers, highest priority first. This could be made even
     // more flexible by introducing plugins, if needed.    
     handlers.append( new MinicliHandlerSpecials );
+    handlers.append( new MinicliHandlerCalculator );
     handlers.append( new MinicliHandlerCommandUrl );
     }
 
