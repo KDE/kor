@@ -1,0 +1,8 @@
+[Desktop Entry]
+Exec=kor
+X-DBUS-StartupType=none
+Name=Kor Testudo Shell
+Type=Service
+X-KDE-StartupNotify=false
+OnlyShowIn=KDE;
+X-KDE-autostart-phase=1

@@ -26,4 +26,5 @@ target_link_libraries( kdeinit_kor ${KDE4_KIO_LIBS} )
 
 install( TARGETS kor ${INSTALL_TARGETS_DEFAULT_ARGS})
 install( TARGETS kdeinit_kor ${INSTALL_TARGETS_DEFAULT_ARGS})
+install( FILES kor.desktop  DESTINATION  ${AUTOSTART_INSTALL_DIR})
 install( FILES miniclidialogconfig.kcfg DESTINATION ${KCFG_INSTALL_DIR} RENAME korminiclidialog.kcfg )
