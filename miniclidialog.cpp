@@ -40,10 +40,9 @@ MinicliDialog::MinicliDialog( Minicli* minicli )
     setMainWidget( widget );
     ui.setupUi( widget );
     ui.command->setDuplicatesEnabled( false );
-    if( KCompletionBox* box = ui.command->completionBox())
-        box->setActivateOnSelect( false );
     showButtonSeparator( true );
     connect( ui.command, SIGNAL( editTextChanged( const QString& )), this, SLOT( textChanged( const QString& )));
+    connect( ui.command, SIGNAL( returnPressed()), this, SLOT( accept()));
     adjustSize();
     readConfig();
     }
