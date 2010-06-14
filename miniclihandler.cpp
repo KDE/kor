@@ -25,7 +25,7 @@
 namespace Kor
 {
 
-bool MinicliHandlerCommandUrl::run( const QString& command, QWidget* widget, QString* error, bool* )
+MinicliHandler::HandledState MinicliHandlerCommandUrl::run( const QString& command, QWidget* widget, QString* error )
     {
     data.setData( command );
     KUriFilter::self()->filterUri( data );
@@ -45,7 +45,7 @@ bool MinicliHandlerCommandUrl::run( const QString& command, QWidget* widget, QSt
             {
             // No need for kfmclient, KRun does it all (David)
             ( void ) new KRun( data.uri(), widget );
-            return true;
+            return HandledOk;
             }
         case KUriFilterData::Executable:
             {
@@ -56,7 +56,7 @@ bool MinicliHandlerCommandUrl::run( const QString& command, QWidget* widget, QSt
                 if( service && service->isValid() && service->isApplication())
                     {
                     KRun::run( *service, KUrl::List(), widget );
-                    return true;
+                    return HandledOk;
                     }
                 }
             }
@@ -74,7 +74,7 @@ bool MinicliHandlerCommandUrl::run( const QString& command, QWidget* widget, QSt
                 {
                 *error = i18n( "<center><b>%1</b></center>\nYou do not have permission to execute this command.",
                     Qt::convertFromPlainText( cmd ));
-                return false;
+                return HandledFailed;
                 }
             }
         case KUriFilterData::Unknown:
@@ -86,24 +86,24 @@ bool MinicliHandlerCommandUrl::run( const QString& command, QWidget* widget, QSt
             if( service && service->isValid() && service->isApplication())
                 {
                 KRun::run( *service, KUrl::List(), widget );
-                return true;
+                return HandledOk;
                 }
             service = KService::serviceByName( cmd );
             if( service && service->isValid() && service->isApplication())
                 {
                 KRun::run( *service, KUrl::List(), widget );
-                return true;
+                return HandledOk;
                 }
             *error = i18n( "<center><b>%1</b></center>\nCould not run the specified command.",
                 Qt::convertFromPlainText( cmd ));
-            return false;
+            return HandledFailed;
             }
         }
     if( KRun::runCommand( cmd, exec, data.iconName(), widget ))
-        return true;
+        return HandledOk;
     *error = i18n( "<center><b>%1</b></center>\nThe specified command does not exist.",
         Qt::convertFromPlainText( cmd ));
-    return false;
+    return HandledFailed;
     }
 
 } // namespace

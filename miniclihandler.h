@@ -27,20 +27,21 @@ class MinicliHandler
     {
     public:
         virtual ~MinicliHandler() {};
+        enum HandledState { HandledOk, HandledFailed, NotHandled };
         /** Run the command, if possible. If the command cannot be handled at all
             (for example, the handler is a calculator but the command doesn't start with '='),
-            return false and set handled to false too. Otherwise try to run it, return whether
-            the running was succesful or not, set result to error message if there is a problem.
+            return NotHandled. Otherwise try to run it, return whether the running was succesful
+            or not, set result to error message if there is a problem.
             @arg widget window for associating commands with
         **/
-        virtual bool run( const QString& command, QWidget* widget, QString* error, bool* handled ) = 0;
+        virtual HandledState run( const QString& command, QWidget* widget, QString* error ) = 0;
     };
 
 class MinicliHandlerCommandUrl
     : public MinicliHandler
     {
     public:
-        virtual bool run( const QString& command, QWidget* widget, QString* error, bool* handled );
+        virtual HandledState run( const QString& command, QWidget* widget, QString* error );
     private:
         KUriFilterData data;
     };

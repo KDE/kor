@@ -62,13 +62,12 @@ bool Minicli::runCommand( const QString& cmd, QString* result )
         return false;
     foreach( MinicliHandler* handler, handlers )
         {
-        bool handled = true;
-        bool ok = handler->run( command, dialog, result, &handled );
-        if( handled )
+        MinicliHandler::HandledState handled = handler->run( command, dialog, result );
+        if( handled != MinicliHandler::NotHandled )
             {
-            if( ok && result->isEmpty())
+            if( handled == MinicliHandler::HandledOk && result->isEmpty())
                 *result = command; // for history
-            return ok;
+            return handled == MinicliHandler::HandledOk;
             }
         }
     *result = i18n( "Could not run the specified command" );
