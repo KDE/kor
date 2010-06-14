@@ -26,10 +26,20 @@
 namespace Kor
 {
 
+MinicliHandlerCommandUrl::MinicliHandlerCommandUrl()
+    {
+    finalFilters = KUriFilter::self()->pluginNames();
+    // remove everything not wanted at all (TODO configurable?)
+    finalFilters.removeAll( "kuriikwsfilter" );
+    partialFilters = finalFilters;
+    // remove everything not wanted when parsing while typing
+    partialFilters.removeAll( "localdomainurifilter" ); // can be slow (dns lookups)
+    }
+
 MinicliHandler::HandledState MinicliHandlerCommandUrl::run( const QString& command, QWidget* widget, QString* error )
     {
     data.setData( command );
-    KUriFilter::self()->filterUri( data );
+    KUriFilter::self()->filterUri( data, finalFilters );
     QString cmd;
     KUrl uri = data.uri();
     if( uri.isLocalFile() && !uri.hasRef() && uri.query().isEmpty())

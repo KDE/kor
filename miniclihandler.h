@@ -41,9 +41,12 @@ class MinicliHandlerCommandUrl
     : public MinicliHandler
     {
     public:
+        MinicliHandlerCommandUrl();
         virtual HandledState run( const QString& command, QWidget* widget, QString* error );
     private:
         KUriFilterData data;
+        QStringList partialFilters;
+        QStringList finalFilters;
     };
 
 class MinicliHandlerSpecials
