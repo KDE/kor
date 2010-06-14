@@ -36,7 +36,6 @@ Minicli::Minicli( QObject* parent )
     KActionCollection* actions = new KActionCollection( this );
     KAction* action = actions->addAction( "showruncommand" );
     action->setText( i18n( "Show run command dialog" ));
-    // TODO change to F2
     action->setGlobalShortcut( KShortcut( Qt::ALT + Qt::Key_F5 ));
     connect( action, SIGNAL( triggered( bool )), this, SLOT( showDialog()));
 
