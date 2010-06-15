@@ -31,6 +31,7 @@ class PanelWindow
     Q_OBJECT
     public:
         PanelWindow( Panel* panel );
+        void loadApplets();
     private:
         Panel* panel;
     };

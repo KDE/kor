@@ -1,6 +1,10 @@
 Short-term:
 ===========
 
+- clean up plasma applets loading
+- API for native applets
+- handling of applets (layout, adding, etc.)
+
 Mid-term:
 ===========
 
@@ -16,3 +20,4 @@ Long-term:
 - NET:KeepAbove and other WM handling (placement, activation)
 - www history support
     - should be probably enabled first using a shortcut or something, so that it otherwise doesn't interfere
+- check cost of plasma dependencies, possibly make optional

@@ -31,6 +31,7 @@ Panel::Panel( QObject* parent )
     KWindowSystem::setType( window->winId(), NET::Dock );
     KWindowSystem::setOnAllDesktops( window->winId(), true );
     window->setGeometry( 400, 0, 200, 100 );
+    window->loadApplets();
     window->show();
     }
 

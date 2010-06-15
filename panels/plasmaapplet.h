@@ -15,26 +15,35 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 *********************************************************************/
 
-#include "panelwindow.h"
+#ifndef KOR_PLASMAAPPLET_H
+#define KOR_PLASMAAPPLET_H
 
-#include "plasmaapplet.h"
+#include <plasma/applet.h>
+#include <plasma/containment.h>
+#include <plasma/corona.h>
+#include <qgraphicsview.h>
 
 namespace Kor
 {
 
-PanelWindow::PanelWindow( Panel* panel )
-    : panel( panel )
+// based on plasma's plasmoidviewer
+class PlasmaApplet
+    : public QGraphicsView
     {
-    }
-
-void PanelWindow::loadApplets()
-    {
-    PlasmaApplet* applet = new PlasmaApplet( this );
-    applet->setGeometry( 0, 0, width(), height());
-    applet->init();
-    applet->show();
-    }
+    Q_OBJECT
+    public:
+        PlasmaApplet( QWidget* parent );
+        void init();
+    protected:
+        virtual void resizeEvent( QResizeEvent* event );
+    private slots:
+        void appletRemoved();
+    private:
+        Plasma::Corona corona;
+        Plasma::Containment* containment;
+        Plasma::Applet* applet;
+    };
 
 } // namespace
 
-#include "panelwindow.moc"
+#endif
