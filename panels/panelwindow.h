@@ -15,24 +15,26 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 *********************************************************************/
 
-#include "application.h"
+#ifndef KOR_PANELWINDOW_H
+#define KOR_PANELWINDOW_H
 
-#include <kauthorized.h>
-
-#include "minicli.h"
-#include "panel.h"
+#include <qwidget.h>
 
 namespace Kor
 {
 
-Application::Application()
+class Panel;
+
+class PanelWindow
+    : public QWidget
     {
-    if( KAuthorized::authorizeKAction( "run_command" ))
-        ( void ) new Minicli( this );
-    ( void ) new Panel( this );
-    setQuitOnLastWindowClosed( false );
-    }
+    Q_OBJECT
+    public:
+        PanelWindow( Panel* panel );
+    private:
+        Panel* panel;
+    };
 
 } // namespace
 
-#include "application.moc"
+#endif

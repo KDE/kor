@@ -20,6 +20,7 @@ include_directories( ${KDE4_INCLUDES} ${KDE4WORKSPACE_INCLUDE_DIR} )
 include_directories(
     ${CMAKE_SOURCE_DIR}
     ${CMAKE_SOURCE_DIR}/minicli
+    ${CMAKE_SOURCE_DIR}/panels
     ${CMAKE_SOURCE_DIR}/utils
     ${CMAKE_BINARY_DIR}
     )
@@ -32,6 +33,8 @@ set( kor_SRCS
      minicli/minicli.cpp
      minicli/miniclidialog.cpp
      minicli/miniclihandler.cpp
+     panels/panel.cpp
+     panels/panelwindow.cpp
      )
 
 kde4_add_ui_files( kor_SRCS minicli/miniclidialog.ui )

@@ -15,24 +15,25 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 *********************************************************************/
 
-#include "application.h"
-
-#include <kauthorized.h>
-
-#include "minicli.h"
 #include "panel.h"
+
+#include <kwindowsystem.h>
+
+#include "panelwindow.h"
 
 namespace Kor
 {
 
-Application::Application()
+Panel::Panel( QObject* parent )
+    : QObject( parent )
+    , window( new PanelWindow( this ))
     {
-    if( KAuthorized::authorizeKAction( "run_command" ))
-        ( void ) new Minicli( this );
-    ( void ) new Panel( this );
-    setQuitOnLastWindowClosed( false );
+    KWindowSystem::setType( window->winId(), NET::Dock );
+    KWindowSystem::setOnAllDesktops( window->winId(), true );
+    window->setGeometry( 400, 0, 200, 100 );
+    window->show();
     }
 
 } // namespace
 
-#include "application.moc"
+#include "panel.moc"

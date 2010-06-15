@@ -15,24 +15,16 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 *********************************************************************/
 
-#include "application.h"
-
-#include <kauthorized.h>
-
-#include "minicli.h"
-#include "panel.h"
+#include "panelwindow.h"
 
 namespace Kor
 {
 
-Application::Application()
+PanelWindow::PanelWindow( Panel* panel )
+    : panel( panel )
     {
-    if( KAuthorized::authorizeKAction( "run_command" ))
-        ( void ) new Minicli( this );
-    ( void ) new Panel( this );
-    setQuitOnLastWindowClosed( false );
     }
 
 } // namespace
 
-#include "application.moc"
+#include "panelwindow.moc"
