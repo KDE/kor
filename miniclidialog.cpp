@@ -36,7 +36,7 @@ MinicliDialog::MinicliDialog( Minicli* minicli )
     : minicli( minicli )
     {
     setPlainCaption( i18n( "Run Command" ));
-    setWindowIcon( KIcon( "kde" ));
+    setWindowIcon( KIcon( "system-run" ));
     setButtons( KDialog::Ok | KDialog::Cancel );
     widget = new QWidget( this );
     setMainWidget( widget );
