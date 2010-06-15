@@ -64,7 +64,7 @@ void MinicliDialog::activate()
         return;
         }
     // TODO positioning for other WMs? KWin can place it properly itself
-    // TODO NET::KeepAbove?
+    KWindowSystem::setState( winId(), NET::KeepAbove ); // TODO
     show();
     }
 
