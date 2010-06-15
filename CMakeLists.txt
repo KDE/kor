@@ -15,20 +15,27 @@ endif( NOT KDE4WORKSPACE_FOUND )
 include( MacroLibrary )
 include( KDE4Defaults )
 add_definitions( ${QT_DEFINITIONS} ${KDE4_DEFINITIONS} -DHAVE_CONFIG_H=1 )
-include_directories( ${CMAKE_SOURCE_DIR} ${CMAKE_BINARY_DIR} ${KDE4_INCLUDES} ${KDE4WORKSPACE_INCLUDE_DIR} )
+include_directories( ${KDE4_INCLUDES} ${KDE4WORKSPACE_INCLUDE_DIR} )
+
+include_directories(
+    ${CMAKE_SOURCE_DIR}
+    ${CMAKE_SOURCE_DIR}/minicli
+    ${CMAKE_SOURCE_DIR}/utils
+    ${CMAKE_BINARY_DIR}
+    )
 
 ########### next target ###############
 
 set( kor_SRCS
      main.cpp
      application.cpp
-     minicli.cpp
-     miniclidialog.cpp
-     miniclihandler.cpp
+     minicli/minicli.cpp
+     minicli/miniclidialog.cpp
+     minicli/miniclihandler.cpp
      )
 
-kde4_add_ui_files( kor_SRCS miniclidialog.ui )
-kde4_add_kcfg_files( kor_SRCS miniclidialogconfig.kcfgc )
+kde4_add_ui_files( kor_SRCS minicli/miniclidialog.ui )
+kde4_add_kcfg_files( kor_SRCS minicli/miniclidialogconfig.kcfgc )
 
 kde4_add_kdeinit_executable( kor ${kor_SRCS} )
 target_link_libraries( kdeinit_kor ${KDE4_KIO_LIBS} ${KDE4WORKSPACE_KWORKSPACE_LIBS} )
@@ -36,4 +43,4 @@ target_link_libraries( kdeinit_kor ${KDE4_KIO_LIBS} ${KDE4WORKSPACE_KWORKSPACE_L
 install( TARGETS kor ${INSTALL_TARGETS_DEFAULT_ARGS})
 install( TARGETS kdeinit_kor ${INSTALL_TARGETS_DEFAULT_ARGS})
 install( FILES kor.desktop  DESTINATION  ${AUTOSTART_INSTALL_DIR})
-install( FILES miniclidialogconfig.kcfg DESTINATION ${KCFG_INSTALL_DIR} RENAME korminiclidialog.kcfg )
+install( FILES minicli/miniclidialogconfig.kcfg DESTINATION ${KCFG_INSTALL_DIR} RENAME korminiclidialog.kcfg )
