@@ -8,7 +8,6 @@ Mid-term:
 - change minicli to F2 (+handle reassigning from krunner)
 - moving kscreenlocker etc. out of krunner
 - NET:KeepAbove and other WM handling (placement, activation)
-- terminal support (check if it works, enable automatically for selected apps)
 - www history support
     - should be probably enabled first using a shortcut or something, so that it otherwise doesn't interfere
 
