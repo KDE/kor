@@ -19,6 +19,7 @@ include_directories( ${KDE4_INCLUDES} ${KDE4WORKSPACE_INCLUDE_DIR} )
 
 include_directories(
     ${CMAKE_SOURCE_DIR}
+    ${CMAKE_SOURCE_DIR}/desktop
     ${CMAKE_SOURCE_DIR}/minicli
     ${CMAKE_SOURCE_DIR}/panels
     ${CMAKE_SOURCE_DIR}/utils
@@ -30,6 +31,7 @@ include_directories(
 set( kor_SRCS
      main.cpp
      application.cpp
+     desktop/desktop.cpp
      minicli/minicli.cpp
      minicli/miniclidialog.cpp
      minicli/miniclihandler.cpp

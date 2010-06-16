@@ -1,5 +1,6 @@
 [Layout]
 Panels=Panel0
+Desktops=Desktop0
 
 [Panel0]
 Position=0x01
@@ -11,3 +12,5 @@ Applets=Applet0
 [Applet0]
 Type=Plasma
 Name=digital-clock
+
+[Desktop0]

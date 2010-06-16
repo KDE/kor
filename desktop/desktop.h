@@ -15,29 +15,30 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 *********************************************************************/
 
-#include "application.h"
+#ifndef KOR_DESKTOP_H
+#define KOR_DESKTOP_H
 
-#include <kauthorized.h>
-
-#include "desktop.h"
-#include "minicli.h"
-#include "panel.h"
+#include <qobject.h>
+#include <qscopedpointer.h>
 
 namespace Kor
 {
 
-Application::Application()
+class Desktop
+    : public QObject
     {
-    KConfigGroup cfg( KGlobal::config(), "Layout" );
-    if( cfg.readEntry( "Minicli", true ) && KAuthorized::authorizeKAction( "run_command" ))
-        ( void ) new Minicli( this );
-    foreach( const QString& panelid, cfg.readEntry( "Panels", QStringList()))
-        ( void ) new Panel( panelid, this ); // TODO
-    foreach( const QString& desktopid, cfg.readEntry( "Desktops", QStringList()))
-        ( void ) new Desktop( desktopid, this ); // TODO
-    setQuitOnLastWindowClosed( false );
-    }
+    Q_OBJECT
+    public:
+        Desktop( const QString& id, QObject* parent = NULL );
+    private:
+        void loadConfig();
+        void updatePosition();
+    private:
+        QString id;
+        QScopedPointer< QWidget > window;
+        int configuredScreen;
+    };
 
 } // namespace
 
-#include "application.moc"
+#endif
