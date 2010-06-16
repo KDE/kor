@@ -27,9 +27,9 @@ namespace Kor
 
 Application::Application()
     {
-    if( KAuthorized::authorizeKAction( "run_command" ))
-        ( void ) new Minicli( this );
     KConfigGroup cfg( KGlobal::config(), "Layout" );
+    if( cfg.readEntry( "Minicli", true ) && KAuthorized::authorizeKAction( "run_command" ))
+        ( void ) new Minicli( this );
     foreach( const QString& panelid, cfg.readEntry( "Panels", QStringList()))
         ( void ) new Panel( panelid, this ); // TODO
     setQuitOnLastWindowClosed( false );
