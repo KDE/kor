@@ -23,17 +23,22 @@
 #include <plasma/corona.h>
 #include <qgraphicsview.h>
 
+#include "applet.h"
+
 namespace Kor
 {
 
+class Panel;
+
 // based on plasma's plasmoidviewer
 class PlasmaApplet
-    : public QGraphicsView
+    : public QGraphicsView, public Kor::Applet
     {
     Q_OBJECT
     public:
-        PlasmaApplet( QWidget* parent );
-        void init();
+        PlasmaApplet( Kor::Panel* panel, QWidget* parent );
+        virtual void load( const QString& id );
+        virtual void setGeometry( int x, int y, int width, int height );
     protected:
         virtual void resizeEvent( QResizeEvent* event );
     private slots:

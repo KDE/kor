@@ -24,6 +24,7 @@
 namespace Kor
 {
 
+class Applet;
 class PanelWindow;
 
 class Panel
@@ -31,9 +32,32 @@ class Panel
     {
     Q_OBJECT
     public:
-        Panel( QObject* parent = NULL );
+        Panel( const QString& id, QObject* parent = NULL );
     private:
+        void loadConfig();
+        void loadApplets();
+        void updatePosition();
+    private:
+        QString id;
         QScopedPointer< PanelWindow > window;
+        enum Position
+            {
+            PositionTop    = 0x01,
+            PositionBottom = 0x02,
+            PositionLeft   = 0x10,
+            PositionRight  = 0x20,
+            PositionTopLeft = PositionTop | PositionLeft,
+            PositionTopRight = PositionTop | PositionRight,
+            PositionBottomLeft = PositionBottom | PositionLeft,
+            PositionBottomRight = PositionBottom | PositionRight,
+            };
+        Position position;
+        bool horizontal;
+        int configuredWidth;
+        enum { FullLength = 1000000 };
+        int configuredLength;
+        int configuredScreen;
+        QList< Applet* > applets;
     };
 
 } // namespace

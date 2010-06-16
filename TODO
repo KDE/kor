@@ -4,6 +4,7 @@ Short-term:
 - clean up plasma applets loading
 - API for native applets
 - handling of applets (layout, adding, etc.)
+- plasma applet id support - should be persistent
 
 Mid-term:
 ===========
@@ -11,6 +12,8 @@ Mid-term:
 - on-the-fly parsing (for icon)
 - change minicli to F2 (+handle reassigning from krunner)
 - moving kscreenlocker etc. out of krunner
+- is Kephal ABI stable?
+- the distinction between Panel and PanelWindow - is it good, is it useful?
 
 Long-term:
 ===========

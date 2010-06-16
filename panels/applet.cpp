@@ -15,18 +15,19 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 *********************************************************************/
 
-#include "panelwindow.h"
+#include "applet.h"
 
 #include "plasmaapplet.h"
+#include "panelwindow.h"
 
 namespace Kor
 {
 
-PanelWindow::PanelWindow( Panel* panel )
-    : panel( panel )
+Applet* Applet::create( const QString& type, Panel* panel, PanelWindow* window )
     {
+    if( type == "Plasma" )
+        return new PlasmaApplet( panel, window );
+    return NULL;
     }
 
 } // namespace
-
-#include "panelwindow.moc"

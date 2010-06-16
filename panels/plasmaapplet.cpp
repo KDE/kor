@@ -20,7 +20,7 @@
 namespace Kor
 {
 
-PlasmaApplet::PlasmaApplet( QWidget* parent )
+PlasmaApplet::PlasmaApplet( Kor::Panel*, QWidget* parent )
     : QGraphicsView( parent )
     {
     setScene( &corona );
@@ -29,18 +29,27 @@ PlasmaApplet::PlasmaApplet( QWidget* parent )
     setAlignment( Qt::AlignCenter );
     }
 
-void PlasmaApplet::init()
+void PlasmaApplet::load( const QString& id ) // TODO
     {
+    KConfigGroup cfg( KGlobal::config(), id );
     containment = corona.addContainment( "null" );
     containment->setFormFactor( Plasma::Horizontal ); // TODO
     containment->setLocation( Plasma::TopEdge ); // TODO
     containment->resize( size());
     setScene( containment->scene());
     setSceneRect( containment->geometry());
-    applet = containment->addApplet( "digital-clock" );
-    applet->setFlag( QGraphicsItem::ItemIsMovable, false );
+    applet = containment->addApplet( cfg.readEntry( "Name" ));
+    if( applet != NULL )
+        {
+        applet->setFlag( QGraphicsItem::ItemIsMovable, false );
+        applet->resize( size());
+        }
     connect( containment, SIGNAL( appletRemoved( Plasma::Applet* )), this, SLOT( appletRemoved()));
-    applet->resize( size());
+    }
+
+void PlasmaApplet::setGeometry( int x, int y, int width, int height )
+    {
+    QGraphicsView::setGeometry( x, y, width, height );
     }
 
 void PlasmaApplet::appletRemoved()
@@ -55,7 +64,8 @@ void PlasmaApplet::resizeEvent( QResizeEvent *event )
     containment->setMinimumSize( size());
     containment->setMaximumSize( size());
     containment->resize( size());
-    applet->resize( size());
+    if( applet != NULL )
+        applet->resize( size());
     }
 
 } // namespace

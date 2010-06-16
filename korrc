@@ -1,0 +1,13 @@
+[Layout]
+Panels=Panel0
+
+[Panel0]
+Position=0x01
+Horizontal=true
+Width=24
+Length=1000000
+Applets=Applet0
+
+[Applet0]
+Type=Plasma
+Name=digital-clock

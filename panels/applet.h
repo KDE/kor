@@ -15,18 +15,31 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 *********************************************************************/
 
-#include "panelwindow.h"
+#ifndef KOR_APPLET_H
+#define KOR_APPLET_H
 
-#include "plasmaapplet.h"
+#include <qstring.h>
 
 namespace Kor
 {
 
-PanelWindow::PanelWindow( Panel* panel )
-    : panel( panel )
+class Panel;
+class PanelWindow;
+
+class Applet
+    {
+    public:
+        static Applet* create( const QString& type, Panel* panel, PanelWindow* window );
+        virtual void load( const QString& id ) = 0;
+        virtual void setGeometry( int x, int y, int width, int height ) = 0;
+        virtual ~Applet();
+    };
+
+inline
+Applet::~Applet()
     {
     }
 
 } // namespace
 
-#include "panelwindow.moc"
+#endif

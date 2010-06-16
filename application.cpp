@@ -29,7 +29,9 @@ Application::Application()
     {
     if( KAuthorized::authorizeKAction( "run_command" ))
         ( void ) new Minicli( this );
-    ( void ) new Panel( this );
+    KConfigGroup cfg( KGlobal::config(), "Layout" );
+    foreach( const QString& panelid, cfg.readEntry( "Panels", QStringList()))
+        ( void ) new Panel( panelid, this ); // TODO
     setQuitOnLastWindowClosed( false );
     }
 

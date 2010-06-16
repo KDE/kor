@@ -33,6 +33,7 @@ set( kor_SRCS
      minicli/minicli.cpp
      minicli/miniclidialog.cpp
      minicli/miniclihandler.cpp
+     panels/applet.cpp
      panels/panel.cpp
      panels/panelwindow.cpp
      panels/plasmaapplet.cpp
@@ -42,9 +43,10 @@ kde4_add_ui_files( kor_SRCS minicli/miniclidialog.ui )
 kde4_add_kcfg_files( kor_SRCS minicli/miniclidialogconfig.kcfgc )
 
 kde4_add_kdeinit_executable( kor ${kor_SRCS} )
-target_link_libraries( kdeinit_kor ${KDE4_KIO_LIBS} ${KDE4WORKSPACE_KWORKSPACE_LIBS} ${KDE4_PLASMA_LIBS} )
+target_link_libraries( kdeinit_kor ${KDE4_KIO_LIBS} ${KDE4WORKSPACE_KWORKSPACE_LIBS} ${KDE4_PLASMA_LIBS} kephal)
 
 install( TARGETS kor ${INSTALL_TARGETS_DEFAULT_ARGS})
 install( TARGETS kdeinit_kor ${INSTALL_TARGETS_DEFAULT_ARGS})
 install( FILES kor.desktop  DESTINATION  ${AUTOSTART_INSTALL_DIR})
 install( FILES minicli/miniclidialogconfig.kcfg DESTINATION ${KCFG_INSTALL_DIR} RENAME korminiclidialog.kcfg )
+install( FILES korrc DESTINATION ${CONFIG_INSTALL_DIR} )
