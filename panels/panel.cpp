@@ -23,6 +23,7 @@
 #include <kglobal.h>
 #include <ksharedconfig.h>
 #include <kwindowsystem.h>
+#include <qboxlayout.h>
 
 #include "applet.h"
 #include "panelwindow.h"
@@ -63,8 +64,8 @@ void Panel::loadApplets()
         Applet* applet = Applet::create( type, this, window.data());
         if( applet == NULL )
             continue;
-        applet->setGeometry( 0, 0, window->width(), window->height());
         applet->load( appletid );
+        window->layout()->addWidget( dynamic_cast< QWidget* >( applet )); // TODO check?
         applets.append( applet );
         }
     }
@@ -113,7 +114,8 @@ void Panel::updatePosition()
             pos = QPoint( screenGeom.right() - width, screenGeom.bottom() - height );
             break;
         }
-    window->setGeometry( pos.x(), pos.y(), width, height );
+    window->move( pos );
+    window->setFixedSize( width, height );
     if( horizontal && ( position & PositionTop ))
         KWindowSystem::setExtendedStrut( window->winId(), 0, 0, 0, 0, 0, 0,
             height, pos.x(), pos.x() + width, 0, 0, 0 );
@@ -128,6 +130,14 @@ void Panel::updatePosition()
             0, 0, 0, 0, 0, 0 );
     else
         abort();
+    if( window->layout() != NULL
+        && !( horizontal == ( static_cast< QBoxLayout* >( window->layout())->direction() == QBoxLayout::LeftToRight )))
+        {
+        delete window->layout();
+        }
+    QBoxLayout* l = new QBoxLayout( horizontal ? QBoxLayout::LeftToRight : QBoxLayout::TopToBottom, window.data());
+    l->setContentsMargins( 0, 0, 0, 0 ); // TODO
+    // TODO add already existing widgets?
     }
 
 } // namespace

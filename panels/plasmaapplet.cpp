@@ -47,11 +47,6 @@ void PlasmaApplet::load( const QString& id ) // TODO
     connect( containment, SIGNAL( appletRemoved( Plasma::Applet* )), this, SLOT( appletRemoved()));
     }
 
-void PlasmaApplet::setGeometry( int x, int y, int width, int height )
-    {
-    QGraphicsView::setGeometry( x, y, width, height );
-    }
-
 void PlasmaApplet::appletRemoved()
     { // TODO ?
     applet = NULL;

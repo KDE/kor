@@ -38,7 +38,6 @@ class PlasmaApplet
     public:
         PlasmaApplet( Kor::Panel* panel, QWidget* parent );
         virtual void load( const QString& id );
-        virtual void setGeometry( int x, int y, int width, int height );
     protected:
         virtual void resizeEvent( QResizeEvent* event );
     private slots:

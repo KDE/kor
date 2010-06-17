@@ -31,7 +31,6 @@ class Applet
     public:
         static Applet* create( const QString& type, Panel* panel, PanelWindow* window );
         virtual void load( const QString& id ) = 0;
-        virtual void setGeometry( int x, int y, int width, int height ) = 0;
         virtual ~Applet();
     };
 
