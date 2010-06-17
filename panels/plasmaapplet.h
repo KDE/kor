@@ -38,10 +38,12 @@ class PlasmaApplet
     public:
         PlasmaApplet( Kor::Panel* panel, QWidget* parent );
         virtual void load( const QString& id );
+        virtual QSize sizeHint() const;
     protected:
         virtual void resizeEvent( QResizeEvent* event );
     private slots:
         void appletRemoved();
+        void sceneRectChanged( const QRectF &rect );
     private:
         Plasma::Corona corona;
         Plasma::Containment* containment;

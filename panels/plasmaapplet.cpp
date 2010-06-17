@@ -23,7 +23,9 @@ namespace Kor
 PlasmaApplet::PlasmaApplet( Kor::Panel*, QWidget* parent )
     : QGraphicsView( parent )
     {
+    setFrameStyle( NoFrame );
     setScene( &corona );
+    connect( &corona, SIGNAL( sceneRectChanged( QRectF )), this, SLOT( sceneRectChanged( QRectF )));
     setVerticalScrollBarPolicy( Qt::ScrollBarAlwaysOff );
     setHorizontalScrollBarPolicy( Qt::ScrollBarAlwaysOff );
     setAlignment( Qt::AlignCenter );
@@ -42,7 +44,7 @@ void PlasmaApplet::load( const QString& id ) // TODO
     if( applet != NULL )
         {
         applet->setFlag( QGraphicsItem::ItemIsMovable, false );
-        applet->resize( size());
+        resize( applet->size().toSize());
         }
     connect( containment, SIGNAL( appletRemoved( Plasma::Applet* )), this, SLOT( appletRemoved()));
     }
@@ -54,13 +56,26 @@ void PlasmaApplet::appletRemoved()
 
 void PlasmaApplet::resizeEvent( QResizeEvent *event )
     {
-    QGraphicsView::resizeEvent(event);
+    QGraphicsView::resizeEvent( event );
     containment->setMaximumSize( QWIDGETSIZE_MAX, QWIDGETSIZE_MAX );
     containment->setMinimumSize( size());
     containment->setMaximumSize( size());
     containment->resize( size());
     if( applet != NULL )
         applet->resize( size());
+    }
+
+void PlasmaApplet::sceneRectChanged( const QRectF& )
+    {
+    if( applet != NULL )
+        setSceneRect( applet->geometry());
+    }
+
+QSize PlasmaApplet::sizeHint() const
+    {
+    if( applet != NULL )
+        return applet->preferredSize().toSize();
+    return QSize();
     }
 
 } // namespace
