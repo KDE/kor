@@ -33,6 +33,7 @@ class Panel
     Q_OBJECT
     public:
         Panel( const QString& id, QObject* parent = NULL );
+        bool horizontal() const;
     private:
         void loadConfig();
         void loadApplets();
@@ -52,13 +53,19 @@ class Panel
             PositionBottomRight = PositionBottom | PositionRight,
             };
         Position position;
-        bool horizontal;
+        bool horiz;
         int configuredWidth;
         enum { FullLength = 1000000 };
         int configuredLength;
         int configuredScreen;
         QList< Applet* > applets;
     };
+
+inline
+bool Panel::horizontal() const
+    {
+    return horiz;
+    }
 
 } // namespace
 

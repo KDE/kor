@@ -47,7 +47,7 @@ void Panel::loadConfig()
     {
     KConfigGroup cfg( KGlobal::config(), id );
     position = Position( cfg.readEntry( "Position", int( PositionTop ))); // TODO check
-    horizontal = cfg.readEntry( "Horizontal", bool( position & ( PositionTop | PositionBottom )));
+    horiz = cfg.readEntry( "Horizontal", bool( position & ( PositionTop | PositionBottom )));
     configuredWidth = cfg.readEntry( "Width", 24 ); // TODO
     configuredLength = cfg.readEntry( "Length", int( FullLength ));
     configuredScreen = cfg.readEntry( "Screen", Kephal::ScreenUtils::primaryScreenId());
@@ -76,7 +76,7 @@ void Panel::updatePosition()
     QRect screenGeom = Kephal::ScreenUtils::screenGeometry( screen );
     int width; // configuredWidth is thickness, but this is widthxheight
     int height;
-    if( horizontal )
+    if( horizontal())
         {
         width = qMin( configuredLength, screenGeom.width());
         height = configuredWidth;
@@ -116,26 +116,26 @@ void Panel::updatePosition()
         }
     window->move( pos );
     window->setFixedSize( width, height );
-    if( horizontal && ( position & PositionTop ))
+    if( horizontal() && ( position & PositionTop ))
         KWindowSystem::setExtendedStrut( window->winId(), 0, 0, 0, 0, 0, 0,
             height, pos.x(), pos.x() + width, 0, 0, 0 );
-    else if( horizontal && ( position & PositionBottom ))
+    else if( horizontal() && ( position & PositionBottom ))
         KWindowSystem::setExtendedStrut( window->winId(), 0, 0, 0, 0, 0, 0,
             0, 0, 0, height, pos.x(), pos.x() + width );
-    else if( !horizontal && ( position & PositionLeft ))
+    else if( !horizontal() && ( position & PositionLeft ))
         KWindowSystem::setExtendedStrut( window->winId(), width, pos.y(), pos.y() + height, 0, 0, 0,
             0, 0, 0, 0, 0, 0 );
-    else if( !horizontal && ( position & PositionRight ))
+    else if( !horizontal() && ( position & PositionRight ))
         KWindowSystem::setExtendedStrut( window->winId(), 0, 0, 0, width, pos.y(), pos.y() + height,
             0, 0, 0, 0, 0, 0 );
     else
         abort();
     if( window->layout() != NULL
-        && !( horizontal == ( static_cast< QBoxLayout* >( window->layout())->direction() == QBoxLayout::LeftToRight )))
+        && !( horizontal() == ( static_cast< QBoxLayout* >( window->layout())->direction() == QBoxLayout::LeftToRight )))
         {
         delete window->layout();
         }
-    QBoxLayout* l = new QBoxLayout( horizontal ? QBoxLayout::LeftToRight : QBoxLayout::TopToBottom, window.data());
+    QBoxLayout* l = new QBoxLayout( horizontal() ? QBoxLayout::LeftToRight : QBoxLayout::TopToBottom, window.data());
     l->setContentsMargins( 0, 0, 0, 0 ); // TODO
     // TODO add already existing widgets?
     }

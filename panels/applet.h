@@ -32,7 +32,17 @@ class Applet
         static Applet* create( const QString& type, Panel* panel, PanelWindow* window );
         virtual void load( const QString& id ) = 0;
         virtual ~Applet();
+    protected:
+        Applet( Panel* panel );
+    protected:
+        Panel* const panel;
     };
+
+inline
+Applet::Applet( Panel* panel )
+    : panel( panel )
+    {
+    }
 
 inline
 Applet::~Applet()
