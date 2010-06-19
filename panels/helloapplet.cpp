@@ -28,7 +28,6 @@ HelloApplet::HelloApplet( Kor::Panel* panel, QWidget* parent )
     : QLabel( parent )
     , Applet( panel )
     {
-    setBackgroundRole( QPalette::BrightText );
     setAutoFillBackground( true );
     }
 
@@ -36,6 +35,10 @@ void HelloApplet::load( const QString& id )
     {
     KConfigGroup cfg( KGlobal::config(), id );
     setText( cfg.readEntry( "Text", "Hello" ));
+    QPalette p = palette();
+    p.setColor( QPalette::Background, cfg.readEntry( "Background", QColor( Qt::cyan )));
+    p.setColor( QPalette::WindowText, cfg.readEntry( "Color", QColor( Qt::black )));
+    setPalette( p );
     }
 
 } // namespace
