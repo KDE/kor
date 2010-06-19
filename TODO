@@ -1,6 +1,9 @@
 Short-term:
 ===========
 
+- clean up config loading etc.
+    - rename load() to loadConfig() and use for pure config load?
+    - make applets etc. remember their id?
 
 Mid-term:
 ===========
@@ -12,6 +15,7 @@ Mid-term:
 - the distinction between Panel and PanelWindow - is it good, is it useful?
 - initial panel layouting is visible, avoid/hide somehow
 - API for native applets ?
+- plasma wallpaper support
 
 Long-term:
 ===========
