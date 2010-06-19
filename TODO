@@ -1,18 +1,17 @@
 Short-term:
 ===========
 
-- API for native applets
-- handling of applets (layout, adding, etc.)
 
 Mid-term:
 ===========
 
-- on-the-fly parsing (for icon)
+- minicli on-the-fly parsing (for icon)
 - change minicli to F2 (+handle reassigning from krunner)
 - moving kscreenlocker etc. out of krunner
 - is Kephal ABI stable?
 - the distinction between Panel and PanelWindow - is it good, is it useful?
 - initial panel layouting is visible, avoid/hide somehow
+- API for native applets ?
 
 Long-term:
 ===========
@@ -24,3 +23,4 @@ Long-term:
     - should be probably enabled first using a shortcut or something, so that it otherwise doesn't interfere
 - check cost of plasma dependencies, possibly make optional
 - somehow avoid all the annoying plasma applet animations
+- UI for handling of applets (adding, etc.)
