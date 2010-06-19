@@ -42,10 +42,15 @@ void PlasmaApplet::load( const QString& id ) // TODO
     containment->resize( size());
     setScene( containment->scene());
     setSceneRect( containment->geometry());
-    applet = containment->addApplet( cfg.readEntry( "Name" ));
+    applet = Plasma::Applet::load( cfg.readEntry( "Name" ));
     if( applet != NULL )
         {
         applet->setFlag( QGraphicsItem::ItemIsMovable, false );
+        // Here addApplet is intentionally called with the default dontInit = true, as that prevents
+        // the annoying zoom-in animation. The two following calls are required to do the init.
+        containment->addApplet( applet );
+        applet->init();
+        applet->flushPendingConstraintsEvents();
         resize( applet->size().toSize());
         connect( applet, SIGNAL( sizeHintChanged( Qt::SizeHint )), this, SLOT( sizeHintChanged( Qt::SizeHint )));
         setSizePolicy( applet->sizePolicy());
