@@ -20,8 +20,10 @@
 namespace Kor
 {
 
-PlasmaApplet::PlasmaApplet( Kor::Panel*, QWidget* parent )
+PlasmaApplet::PlasmaApplet( Kor::Panel* panel, QWidget* parent )
     : QGraphicsView( parent )
+    , Applet( panel )
+    , applet( NULL )
     {
     setFrameStyle( NoFrame );
     setScene( &corona );
