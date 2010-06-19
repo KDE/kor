@@ -47,6 +47,8 @@ void PlasmaApplet::load( const QString& id ) // TODO
         {
         applet->setFlag( QGraphicsItem::ItemIsMovable, false );
         resize( applet->size().toSize());
+        connect( applet, SIGNAL( sizeHintChanged( Qt::SizeHint )), this, SLOT( sizeHintChanged( Qt::SizeHint )));
+        setSizePolicy( applet->sizePolicy());
         }
     connect( containment, SIGNAL( appletRemoved( Plasma::Applet* )), this, SLOT( appletRemoved()));
     }
@@ -76,8 +78,20 @@ void PlasmaApplet::sceneRectChanged( const QRectF& )
 QSize PlasmaApplet::sizeHint() const
     {
     if( applet != NULL )
-        return applet->preferredSize().toSize();
+        return applet->effectiveSizeHint( Qt::PreferredSize ).toSize();
     return QSize();
+    }
+
+QSize PlasmaApplet::minimumSizeHint() const
+    {
+    if( applet != NULL )
+        return applet->effectiveSizeHint( Qt::MinimumSize ).toSize();
+    return QSize();
+    }
+
+void PlasmaApplet::sizeHintChanged( Qt::SizeHint )
+    {
+    updateGeometry();
     }
 
 } // namespace
