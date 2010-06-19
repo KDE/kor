@@ -42,7 +42,7 @@ void PlasmaApplet::load( const QString& id ) // TODO
     containment->resize( size());
     setScene( containment->scene());
     setSceneRect( containment->geometry());
-    applet = Plasma::Applet::load( cfg.readEntry( "Name" ));
+    applet = Plasma::Applet::load( cfg.readEntry( "PlasmaName" ), cfg.readEntry( "PlasmaAppletId", 0 ));
     if( applet != NULL )
         {
         applet->setFlag( QGraphicsItem::ItemIsMovable, false );

@@ -14,10 +14,10 @@ Type=Hello
 
 [Applet1]
 Type=Plasma
-Name=tasks
+PlasmaName=tasks
 
 [Applet2]
 Type=Plasma
-Name=digital-clock
+PlasmaName=digital-clock
 
 [Desktop0]

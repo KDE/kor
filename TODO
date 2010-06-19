@@ -3,7 +3,6 @@ Short-term:
 
 - API for native applets
 - handling of applets (layout, adding, etc.)
-- plasma applet id support - should be persistent
 
 Mid-term:
 ===========
