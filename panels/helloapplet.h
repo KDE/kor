@@ -15,22 +15,25 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 *********************************************************************/
 
-#include "applet.h"
+#ifndef KOR_HELLOAPPLET_H
+#define KOR_HELLOAPPLET_H
 
-#include "plasmaapplet.h"
-#include "helloapplet.h"
-#include "panelwindow.h"
+#include <qlabel.h>
+
+#include "applet.h"
 
 namespace Kor
 {
 
-Applet* Applet::create( const QString& type, Panel* panel, PanelWindow* window )
+class HelloApplet
+    : public QLabel, public Applet
     {
-    if( type == "Plasma" )
-        return new PlasmaApplet( panel, window );
-    if( type == "Hello" )
-        return new HelloApplet( panel, window );
-    return NULL;
-    }
+    Q_OBJECT
+    public:
+        HelloApplet( Kor::Panel* panel, QWidget* parent );
+        virtual void load( const QString& id );
+    };
 
 } // namespace
+
+#endif
