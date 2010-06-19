@@ -17,6 +17,8 @@
 
 #include "plasmaapplet.h"
 
+#include <qaction.h>
+
 namespace Kor
 {
 
@@ -56,6 +58,7 @@ void PlasmaApplet::load( const QString& id ) // TODO
         setSizePolicy( applet->sizePolicy());
         }
     connect( containment, SIGNAL( appletRemoved( Plasma::Applet* )), this, SLOT( appletRemoved()));
+    delete applet->action( "remove" ); // remove default popup menu actions that do not fit
     }
 
 void PlasmaApplet::appletRemoved()
