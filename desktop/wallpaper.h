@@ -15,35 +15,46 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 *********************************************************************/
 
-#ifndef KOR_DESKTOP_H
-#define KOR_DESKTOP_H
+#ifndef KOR_WALLPAPER_H
+#define KOR_WALLPAPER_H
 
+#include <qcolor.h>
 #include <qobject.h>
 #include <qimage.h>
-#include <qscopedpointer.h>
 
 namespace Kor
 {
 
-class Wallpaper;
-
-class Desktop
+class Wallpaper
     : public QObject
     {
     Q_OBJECT
     public:
-        Desktop( const QString& id, QObject* parent = NULL );
-    private slots:
-        void wallpaperLoaded( QImage image );
+        static Wallpaper* create( const QString& type );
+        virtual void load( const QString& id ) = 0;
+        virtual void setSize( const QSize& size );
+    signals:
+        void loaded( QImage image );
+    protected:
+        QSize size;
+    };
+
+class WallpaperColor
+    : public Wallpaper
+    {
+    Q_OBJECT
+    public:
+        virtual void load( const QString& id );
     private:
-        void loadConfig();
-        void loadWallpaperConfig( const QString& id );
-        void updatePosition();
-    private:
-        QString id;
-        QScopedPointer< QWidget > window;
-        int configuredScreen;
-        QScopedPointer< Wallpaper > wallpaper;
+        QColor color;
+    };
+
+class WallpaperImage
+    : public Wallpaper
+    {
+    Q_OBJECT
+    public:
+        virtual void load( const QString& id );
     };
 
 } // namespace
