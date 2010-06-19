@@ -7,9 +7,16 @@ Position=0x01
 Horizontal=true
 Width=24
 Length=1000000
-Applets=Applet0
+Applets=Applet0,Applet1,Applet2
 
 [Applet0]
+Type=Hello
+
+[Applet1]
+Type=Plasma
+Name=tasks
+
+[Applet2]
 Type=Plasma
 Name=digital-clock
 
