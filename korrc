@@ -7,17 +7,38 @@ Position=0x01
 Horizontal=true
 Width=24
 Length=1000000
-Applets=Applet0,Applet1,Applet2
+Applets=Applet1,Applet2,Applet3,Applet4,Applet5
 
 [Applet0]
 Type=Hello
 
 [Applet1]
 Type=Plasma
-PlasmaName=tasks
+PlasmaName=launcher
 
 [Applet2]
+Type=Plasma
+PlasmaName=tasks
+
+[Applet3]
+Type=Plasma
+PlasmaName=pager
+
+[Applet4]
+Type=Plasma
+PlasmaName=systemtray
+
+[Applet5]
 Type=Plasma
 PlasmaName=digital-clock
 
 [Desktop0]
+Wallpaper=Wallpaper1
+
+[Wallpaper0]
+WallpaperType=Color
+Color=darkblue
+
+[Wallpaper1]
+WallpaperType=Image
+File=/usr/share/wallpapers/default_blue.jpg
