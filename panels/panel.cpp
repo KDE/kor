@@ -145,6 +145,7 @@ void Panel::updatePosition()
         }
     QBoxLayout* l = new QBoxLayout( horizontal() ? QBoxLayout::LeftToRight : QBoxLayout::TopToBottom, window.data());
     l->setContentsMargins( 0, 0, 0, 0 ); // TODO
+    l->setSpacing( 0 );
     // TODO add already existing widgets?
     }
 
