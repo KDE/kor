@@ -63,9 +63,17 @@ void Panel::loadApplets()
         QString type = appletcfg.readEntry( "Type" );
         Applet* applet = Applet::create( type, this, window.data());
         if( applet == NULL )
+            {
+            kWarning() << "Cannot load applet type " << type;
             continue;
+            }
         applet->load( appletid );
-        window->layout()->addWidget( dynamic_cast< QWidget* >( applet )); // TODO check?
+        if( QWidget* w = dynamic_cast< QWidget* >( applet ))
+            window->layout()->addWidget( w );
+        else if( QLayoutItem* li = dynamic_cast< QLayoutItem* >( applet ))
+            window->layout()->addItem( li );
+        else
+            kWarning() << "Unknown layout item for applet";
         applets.append( applet );
         }
     }

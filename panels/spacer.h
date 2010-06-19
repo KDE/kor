@@ -15,25 +15,26 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 *********************************************************************/
 
-#include "applet.h"
+#ifndef KOR_SPACER_H
+#define KOR_SPACER_H
 
-#include "helloapplet.h"
-#include "panelwindow.h"
-#include "plasmaapplet.h"
-#include "spacer.h"
+#include <qlayout.h>
+
+#include "applet.h"
 
 namespace Kor
 {
 
-Applet* Applet::create( const QString& type, Panel* panel, PanelWindow* window )
+class Spacer
+    : public QSpacerItem, public Applet
     {
-    if( type == "Plasma" )
-        return new PlasmaApplet( panel, window );
-    if( type == "Spacer" )
-        return new Spacer( panel, window );
-    if( type == "Hello" )
-        return new HelloApplet( panel, window );
-    return NULL;
-    }
+    public:
+        Spacer( Panel* panel, QWidget* parent );
+        virtual void load( const QString& id );
+    private:
+        int spacerSize; // -1 for expanding
+    };
 
 } // namespace
+
+#endif

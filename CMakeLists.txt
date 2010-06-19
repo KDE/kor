@@ -40,6 +40,7 @@ set( kor_SRCS
      panels/panel.cpp
      panels/panelwindow.cpp
      panels/plasmaapplet.cpp
+     panels/spacer.cpp
      )
 
 kde4_add_ui_files( kor_SRCS minicli/miniclidialog.ui )
