@@ -70,8 +70,6 @@ void Panel::loadApplets()
         applet->load( appletid );
         if( QWidget* w = dynamic_cast< QWidget* >( applet ))
             window->layout()->addWidget( w );
-        else if( QLayoutItem* li = dynamic_cast< QLayoutItem* >( applet ))
-            window->layout()->addItem( li );
         else
             kWarning() << "Unknown layout item for applet";
         applets.append( applet );

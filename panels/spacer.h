@@ -18,7 +18,7 @@
 #ifndef KOR_SPACER_H
 #define KOR_SPACER_H
 
-#include <qlayout.h>
+#include <qwidget.h>
 
 #include "applet.h"
 
@@ -26,7 +26,7 @@ namespace Kor
 {
 
 class Spacer
-    : public QSpacerItem, public Applet
+    : public QWidget, public Applet
     {
     public:
         Spacer( Panel* panel, QWidget* parent );

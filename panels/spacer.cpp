@@ -26,8 +26,8 @@
 namespace Kor
 {
 
-Spacer::Spacer( Panel* panel, QWidget* ) // TODO widget parent?
-    : QSpacerItem( 1, 1 )
+Spacer::Spacer( Panel* panel, QWidget* parent )
+    : QWidget( parent )
     , Applet( panel )
     {
     }
@@ -36,10 +36,16 @@ void Spacer::load( const QString& id )
     {
     KConfigGroup cfg( KGlobal::config(), id );
     spacerSize = cfg.readEntry( "Size", 0 );
-    if( panel->horizontal())
-        changeSize( spacerSize, 0, spacerSize > 0 ? QSizePolicy::Fixed : QSizePolicy::Expanding, QSizePolicy::Expanding );
+    setSizePolicy( QSizePolicy::Expanding, QSizePolicy::Expanding );
+    if( spacerSize == 0 )
+        setFixedSize( QWIDGETSIZE_MAX, QWIDGETSIZE_MAX ); // this is reset, according to docs
     else
-        changeSize( 0, spacerSize, QSizePolicy::Expanding, spacerSize > 0 ? QSizePolicy::Fixed : QSizePolicy::Expanding );
+        {
+        if( panel->horizontal())
+            setFixedWidth( spacerSize );
+        else
+            setFixedHeight( spacerSize );
+        }
     }
 
 } // namespace
