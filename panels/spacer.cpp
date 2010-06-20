@@ -17,9 +17,11 @@
 
 #include "spacer.h"
 
-#include "plasmaapplet.h"
+#include <kconfiggroup.h>
+#include <kglobal.h>
+#include <ksharedconfig.h>
+
 #include "panel.h"
-#include "panelwindow.h"
 
 namespace Kor
 {
