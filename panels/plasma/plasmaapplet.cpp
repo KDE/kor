@@ -19,6 +19,8 @@
 
 #include <qaction.h>
 
+#include "panel.h"
+
 //#define DEBUG_LAYOUT
 
 namespace Kor
@@ -41,7 +43,7 @@ void PlasmaApplet::load( const QString& id ) // TODO
     {
     KConfigGroup cfg( KGlobal::config(), id );
     containment = corona.addContainment( "null" );
-    containment->setFormFactor( Plasma::Horizontal ); // TODO
+    containment->setFormFactor( panel->horizontal() ? Plasma::Horizontal : Plasma::Vertical );
     containment->setLocation( Plasma::TopEdge ); // TODO
     containment->resize( size());
     setScene( containment->scene());
