@@ -1,44 +1,83 @@
+# group describing the global layout of Kor (list of all components)
 [Layout]
+# list of id's for all panels
 Panels=Panel0
+# list of id's for all desktop windows
 Desktops=Desktop0
+# whether minicli should be enabled
+Minicli=true
 
+# group for a panel, name is the id
 [Panel0]
-Position=0x01
+# position, 0x01 = top, 0x02 = bottom, 0x10 = left, 0x20 = right, combinations are possible
+Position=0x02
+# horizontal/vertical orientation
 Horizontal=true
+# width (i.e. thickness) of the panel
 Width=24
+# size of the panel, large number for taking the whole edge
 Length=1000000
-Applets=Applet1,Applet2,Applet3,Applet4,Applet5
+# xinerama screen
+#Screen=0
+# list of id's for all applets in this panel
+Applets=AppletLauncher,AppletTasks,AppletSystray,AppletClock
+# pager misreports sizes, disabled for now
+#Applets=AppletLauncher,AppletTasks,AppletPager,AppletSystray,AppletClock
 
-[Applet0]
+# testing applet
+[AppletHello]
 Type=Hello
+Text=Hello
+Background=yellow
+Color=blue
 
-[Applet1]
+# kickoff applet
+[AppletLauncher]
+# plasma applet
 Type=Plasma
+# plasma applet name
 PlasmaName=launcher
+# id of the plasma applet (unique per applet, if given)
+#PlasmaAppletId=1
 
-[Applet2]
+# taskbar
+[AppletTasks]
 Type=Plasma
 PlasmaName=tasks
 
-[Applet3]
+# pager
+[AppletPager]
 Type=Plasma
 PlasmaName=pager
 
-[Applet4]
+# system tray
+[AppletSystray]
 Type=Plasma
 PlasmaName=systemtray
 
-[Applet5]
+# clock
+[AppletClock]
 Type=Plasma
 PlasmaName=digital-clock
 
-[Desktop0]
-Wallpaper=Wallpaper1
+# spacer, fills up unused taskbar space
+[Spacer0]
+# 0 is expanding, other numbers are exact size
+Size=0
 
-[Wallpaper0]
+# desktop window
+[Desktop0]
+# type of wallpaper
+Wallpaper=WallpaperColor
+# xinerama screen
+#Screen=0
+
+# wallpaper created using a single color
+[WallpaperColor]
 WallpaperType=Color
 Color=darkblue
 
-[Wallpaper1]
+# wallpaper created using a given image file
+[WallpaperImage]
 WallpaperType=Image
 File=/usr/share/wallpapers/default_blue.jpg
