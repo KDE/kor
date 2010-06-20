@@ -19,6 +19,8 @@
 
 #include <qaction.h>
 
+#define DEBUG_LAYOUT
+
 namespace Kor
 {
 
@@ -44,7 +46,8 @@ void PlasmaApplet::load( const QString& id ) // TODO
     containment->resize( size());
     setScene( containment->scene());
     setSceneRect( containment->geometry());
-    applet = Plasma::Applet::load( cfg.readEntry( "PlasmaName" ), cfg.readEntry( "PlasmaAppletId", 0 ));
+    name = cfg.readEntry( "PlasmaName" );
+    applet = Plasma::Applet::load( name, cfg.readEntry( "PlasmaAppletId", 0 ));
     if( applet != NULL )
         {
         applet->setFlag( QGraphicsItem::ItemIsMovable, false );
@@ -74,31 +77,56 @@ void PlasmaApplet::resizeEvent( QResizeEvent *event )
     containment->setMaximumSize( size());
     containment->resize( size());
     if( applet != NULL )
+        {
+#ifdef DEBUG_LAYOUT
+        qDebug() << "XXX resize event:" << size() << name;
+#endif
         applet->resize( size());
+        }
     }
 
 void PlasmaApplet::sceneRectChanged( const QRectF& )
     {
     if( applet != NULL )
+        {
+#ifdef DEBUG_LAYOUT
+        qDebug() << "XXX scene rect changed:" << applet->geometry() << name;
+#endif
         setSceneRect( applet->geometry());
+        }
     }
 
 QSize PlasmaApplet::sizeHint() const
     {
     if( applet != NULL )
+        {
+#ifdef DEBUG_LAYOUT
+        qDebug() << "XXX size hint:" << applet->effectiveSizeHint( Qt::PreferredSize ) << name;
+#endif
         return applet->effectiveSizeHint( Qt::PreferredSize ).toSize();
+        }
     return QSize();
     }
 
 QSize PlasmaApplet::minimumSizeHint() const
     {
     if( applet != NULL )
+        {
+#ifdef DEBUG_LAYOUT
+        qDebug() << "XXX minimum size hint:" << applet->effectiveSizeHint( Qt::MinimumSize ) << name;
+#endif
         return applet->effectiveSizeHint( Qt::MinimumSize ).toSize();
+        }
     return QSize();
     }
 
-void PlasmaApplet::sizeHintChanged( Qt::SizeHint )
+void PlasmaApplet::sizeHintChanged( Qt::SizeHint which )
     {
+#ifdef DEBUG_LAYOUT
+    qDebug() << "XXX size hint changed:" << applet->effectiveSizeHint( which ) << name;
+#else
+    Q_UNUSED( which );
+#endif
     updateGeometry();
     }
 

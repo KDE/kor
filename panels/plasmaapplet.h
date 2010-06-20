@@ -50,6 +50,7 @@ class PlasmaApplet
         Plasma::Corona corona;
         Plasma::Containment* containment;
         Plasma::Applet* applet;
+        QString name;
     };
 
 } // namespace
