@@ -17,8 +17,6 @@
 
 #include "panelwindow.h"
 
-#include "plasmaapplet.h"
-
 namespace Kor
 {
 
