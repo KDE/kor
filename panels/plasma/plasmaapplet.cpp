@@ -44,7 +44,16 @@ void PlasmaApplet::load( const QString& id )
     KConfigGroup cfg( KGlobal::config(), id );
     containment = corona.addContainment( "null" );
     containment->setFormFactor( panel->horizontal() ? Plasma::Horizontal : Plasma::Vertical );
-    containment->setLocation( Plasma::TopEdge ); // TODO
+    if( panel->horizontal() && ( panel->position() & Panel::PositionTop ))
+        containment->setLocation( Plasma::TopEdge );
+    else if( panel->horizontal() && ( panel->position() & Panel::PositionBottom ))
+        containment->setLocation( Plasma::BottomEdge );
+    else if( !panel->horizontal() && ( panel->position() & Panel::PositionLeft ))
+        containment->setLocation( Plasma::LeftEdge );
+    else if( !panel->horizontal() && ( panel->position() & Panel::PositionRight ))
+        containment->setLocation( Plasma::RightEdge );
+    else
+        abort();
     containment->resize( size());
     setScene( containment->scene());
     setSceneRect( containment->geometry());
