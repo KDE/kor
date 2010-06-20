@@ -18,6 +18,6 @@
 #ifndef KOR_MAIN_H
 #define KOR_MAIN_H
 
-#define KOR_VERSION "0.1.2"
+#define KOR_VERSION "0.2"
 
 #endif
