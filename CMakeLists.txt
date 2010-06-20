@@ -53,11 +53,15 @@ kde4_add_kdeinit_executable( kor ${kor_SRCS} )
 target_link_libraries( kdeinit_kor
     ${KDE4_KIO_LIBS}
     ${KDE4WORKSPACE_KWORKSPACE_LIBS}
-    ${KDE4_PLASMA_LIBS}
     ${X11_LIBRARIES})
 if( KEPHAL )
     target_link_libraries( kdeinit_kor ${KEPHAL})
 endif( KEPHAL )
+if( KDE4_PLASMA_LIBS )
+    target_link_libraries( kdeinit_kor ${KDE4_PLASMA_LIBS} )
+else( KDE4_PLASMA_LIBS )
+    target_link_libraries( kdeinit_kor plasma )
+endif( KDE4_PLASMA_LIBS )
 
 install( TARGETS kor ${INSTALL_TARGETS_DEFAULT_ARGS})
 install( TARGETS kdeinit_kor ${INSTALL_TARGETS_DEFAULT_ARGS})
