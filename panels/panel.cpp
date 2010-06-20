@@ -46,8 +46,8 @@ Panel::Panel( const QString& id, QObject* parent )
 void Panel::loadConfig()
     {
     KConfigGroup cfg( KGlobal::config(), id );
-    position = Position( cfg.readEntry( "Position", int( PositionTop ))); // TODO check
-    horiz = cfg.readEntry( "Horizontal", bool( position & ( PositionTop | PositionBottom )));
+    pos = Position( cfg.readEntry( "Position", int( PositionTop ))); // TODO check
+    horiz = cfg.readEntry( "Horizontal", bool( position() & ( PositionTop | PositionBottom )));
     configuredWidth = cfg.readEntry( "Width", 24 ); // TODO
     configuredLength = cfg.readEntry( "Length", int( FullLength ));
     configuredScreen = cfg.readEntry( "Screen", Kephal::ScreenUtils::primaryScreenId());
@@ -93,7 +93,7 @@ void Panel::updatePosition()
         width = configuredWidth;
         }
     QPoint pos;
-    switch( position )
+    switch( position())
         {
         case PositionTop:
             pos = QPoint( screenGeom.center().x() - width / 2, screenGeom.top());
@@ -122,16 +122,16 @@ void Panel::updatePosition()
         }
     window->move( pos );
     window->setFixedSize( width, height );
-    if( horizontal() && ( position & PositionTop ))
+    if( horizontal() && ( position() & PositionTop ))
         KWindowSystem::setExtendedStrut( window->winId(), 0, 0, 0, 0, 0, 0,
             height, pos.x(), pos.x() + width, 0, 0, 0 );
-    else if( horizontal() && ( position & PositionBottom ))
+    else if( horizontal() && ( position() & PositionBottom ))
         KWindowSystem::setExtendedStrut( window->winId(), 0, 0, 0, 0, 0, 0,
             0, 0, 0, height, pos.x(), pos.x() + width );
-    else if( !horizontal() && ( position & PositionLeft ))
+    else if( !horizontal() && ( position() & PositionLeft ))
         KWindowSystem::setExtendedStrut( window->winId(), width, pos.y(), pos.y() + height, 0, 0, 0,
             0, 0, 0, 0, 0, 0 );
-    else if( !horizontal() && ( position & PositionRight ))
+    else if( !horizontal() && ( position() & PositionRight ))
         KWindowSystem::setExtendedStrut( window->winId(), 0, 0, 0, width, pos.y(), pos.y() + height,
             0, 0, 0, 0, 0, 0 );
     else

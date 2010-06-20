@@ -34,13 +34,6 @@ class Panel
     public:
         Panel( const QString& id, QObject* parent = NULL );
         bool horizontal() const;
-    private:
-        void loadConfig();
-        void loadApplets();
-        void updatePosition();
-    private:
-        QString id;
-        QScopedPointer< PanelWindow > window;
         enum Position
             {
             PositionTop    = 0x01,
@@ -52,7 +45,15 @@ class Panel
             PositionBottomLeft = PositionBottom | PositionLeft,
             PositionBottomRight = PositionBottom | PositionRight,
             };
-        Position position;
+        Position position() const;
+    private:
+        void loadConfig();
+        void loadApplets();
+        void updatePosition();
+    private:
+        QString id;
+        QScopedPointer< PanelWindow > window;
+        Position pos;
         bool horiz;
         int configuredWidth;
         enum { FullLength = 1000000 };
@@ -65,6 +66,12 @@ inline
 bool Panel::horizontal() const
     {
     return horiz;
+    }
+
+inline
+Panel::Position Panel::position() const
+    {
+    return pos;
     }
 
 } // namespace
