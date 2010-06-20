@@ -22,6 +22,7 @@
 #include <kaboutdata.h>
 #include <kcmdlineargs.h>
 #include <klocale.h>
+#include <qdbusinterface.h>
 #include <stdio.h>
 
 extern "C" KDE_EXPORT
@@ -36,7 +37,10 @@ int kdemain( int argc, char* argv[] )
         fprintf( stderr, "Kor is already running." );
         return 0;
         }
+    QDBusInterface ksmserver( "org.kde.ksmserver", "/KSMServer" );
+    ksmserver.call( "suspendStartup", "kor" );
     Kor::Application app;
+    ksmserver.call( "resumeStartup", "kor" );
     app.disableSessionManagement(); // Do SM, but don't restart.
     return app.exec();
     }
