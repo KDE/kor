@@ -6,12 +6,14 @@ find_package( KDE4 REQUIRED )
 # older KDE versions do not have this cmake module
 # find_package( KDE4Workspace REQUIRED )
 find_path( KDE4WORKSPACE_INCLUDE_DIR NAMES kworkspace/kworkspace.h PATHS ${KDE4_INCLUDES} )
-find_library( KDE4WORKSPACE_KWORKSPACE_LIBS names kworkspace PATHS ${KDE4_LIB_DIR} )
+find_library( KDE4WORKSPACE_KWORKSPACE_LIBS NAMES kworkspace PATHS ${KDE4_LIB_DIR} )
 include( FindPackageHandleStandardArgs )
 find_package_handle_standard_args( KDE4Workspace DEFAULT_MSG KDE4WORKSPACE_KWORKSPACE_LIBS KDE4WORKSPACE_INCLUDE_DIR )
 if( NOT KDE4WORKSPACE_FOUND )
     message( FATAL_ERROR "KDE Workspace development files not found." )
 endif( NOT KDE4WORKSPACE_FOUND )
+find_library( KEPHAL NAMES kephal PATHS ${KDE4_LIB_DIR} )
+
 include( MacroLibrary )
 include( KDE4Defaults )
 add_definitions( ${QT_DEFINITIONS} ${KDE4_DEFINITIONS} -DHAVE_CONFIG_H=1 )
@@ -52,8 +54,10 @@ target_link_libraries( kdeinit_kor
     ${KDE4_KIO_LIBS}
     ${KDE4WORKSPACE_KWORKSPACE_LIBS}
     ${KDE4_PLASMA_LIBS}
-    kephal
     ${X11_LIBRARIES})
+if( KEPHAL )
+    target_link_libraries( kdeinit_kor ${KEPHAL})
+endif( KEPHAL )
 
 install( TARGETS kor ${INSTALL_TARGETS_DEFAULT_ARGS})
 install( TARGETS kdeinit_kor ${INSTALL_TARGETS_DEFAULT_ARGS})

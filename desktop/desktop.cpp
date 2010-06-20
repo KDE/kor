@@ -19,12 +19,19 @@
 
 #include <kconfiggroup.h>
 #include <kdebug.h>
-#include <kephal/screens.h>
 #include <kglobal.h>
 #include <ksharedconfig.h>
 #include <kwindowsystem.h>
 #include <qwidget.h>
 #include <qx11info_x11.h>
+
+#include <kdeversion.h>
+#if KDE_IS_VERSION( 4, 2, 0 )
+#include <kephal/screens.h>
+#else
+#include <qapplication.h>
+#include <qdesktopwidget.h>
+#endif
 
 #include <X11/Xlib.h>
 
@@ -50,7 +57,11 @@ Desktop::Desktop( const QString& id, QObject* parent )
 void Desktop::loadConfig()
     {
     KConfigGroup cfg( KGlobal::config(), id );
+#if KDE_IS_VERSION( 4, 2, 0 )
     configuredScreen = cfg.readEntry( "Screen", Kephal::ScreenUtils::primaryScreenId());
+#else
+    configuredScreen = cfg.readEntry( "Screen", qApp->desktop()->primaryScreen());
+#endif
     updatePosition();
     loadWallpaperConfig( cfg.readEntry( "Wallpaper" ));
     }
@@ -69,8 +80,13 @@ void Desktop::loadWallpaperConfig( const QString& id )
 
 void Desktop::updatePosition()
     {
+#if KDE_IS_VERSION( 4, 2, 0 )
     int screen = qBound( 0, configuredScreen, Kephal::ScreenUtils::numScreens() - 1 );
     QRect screenGeom = Kephal::ScreenUtils::screenGeometry( screen );
+#else
+    int screen = qBound( 0, configuredScreen, qApp->desktop()->numScreens() - 1 );
+    QRect screenGeom = qApp->desktop()->screenGeometry( screen );
+#endif
     window->setGeometry( screenGeom );
     }
 

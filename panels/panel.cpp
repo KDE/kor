@@ -19,11 +19,18 @@
 
 #include <kconfiggroup.h>
 #include <kdebug.h>
-#include <kephal/screens.h>
 #include <kglobal.h>
 #include <ksharedconfig.h>
 #include <kwindowsystem.h>
 #include <qboxlayout.h>
+
+#include <kdeversion.h>
+#if KDE_IS_VERSION( 4, 2, 0 )
+#include <kephal/screens.h>
+#else
+#include <qapplication.h>
+#include <qdesktopwidget.h>
+#endif
 
 #include "applet.h"
 #include "panelwindow.h"
@@ -52,7 +59,11 @@ void Panel::loadConfig()
     horiz = cfg.readEntry( "Horizontal", bool( position() & ( PositionTop | PositionBottom )));
     configuredWidth = cfg.readEntry( "Width", 24 ); // TODO
     configuredLength = cfg.readEntry( "Length", int( FullLength ));
+#if KDE_IS_VERSION( 4, 2, 0 )
     configuredScreen = cfg.readEntry( "Screen", Kephal::ScreenUtils::primaryScreenId());
+#else
+    configuredScreen = cfg.readEntry( "Screen", qApp->desktop()->primaryScreen());
+#endif
     updatePosition();
     }
 
@@ -80,8 +91,13 @@ void Panel::loadApplets()
 
 void Panel::updatePosition()
     {
+#if KDE_IS_VERSION( 4, 2, 0 )
     int screen = qBound( 0, configuredScreen, Kephal::ScreenUtils::numScreens() - 1 );
     QRect screenGeom = Kephal::ScreenUtils::screenGeometry( screen );
+#else
+    int screen = qBound( 0, configuredScreen, qApp->desktop()->numScreens() - 1 );
+    QRect screenGeom = qApp->desktop()->screenGeometry( screen );
+#endif
     int width; // configuredWidth is thickness, but this is widthxheight
     int height;
     if( horizontal())
