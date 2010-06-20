@@ -1,0 +1,25 @@
+Kor Testudo Shell
+=================
+
+Kor is an implementation of a desktop workspace, consisting of a desktop window, 'run command' dialog
+and panel(s).
+
+
+Configuration:
+==============
+
+Currently there is no configuration UI. Config file $KDEDIR/share/config/korrc is installed with
+a default configuration, including comments in the config file. Create your own file
+$KDEHOME/share/config/korrc based on it.
+
+
+Replacing Plasma/KRunner:
+=========================
+
+KRunner currently is also reponsible for other workspace tasks (such as screensaver activation)
+and should not be disabled. For replacing its 'run command' dialog with the one from Kor,
+use the Global shortcuts module in System settings and assign the Alt+F2 shortcut to
+the Kor Testudo Shell shortcut.
+
+Plasma-desktop can be disabled when running Kor. Create file $KDEHOME/share/autostart/plasma-desktop.desktop
+with two lines, '[Desktop Entry]' and 'Hidden=true'.
