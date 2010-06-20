@@ -46,7 +46,9 @@ Panel::Panel( const QString& id, QObject* parent )
 void Panel::loadConfig()
     {
     KConfigGroup cfg( KGlobal::config(), id );
-    pos = Position( cfg.readEntry( "Position", int( PositionTop ))); // TODO check
+    QString tmp = cfg.readEntry( "Position", "0x02" ); // default is bottom
+    bool ok = false;
+    pos = Position( tmp.toInt( &ok, 0 )); // TODO check
     horiz = cfg.readEntry( "Horizontal", bool( position() & ( PositionTop | PositionBottom )));
     configuredWidth = cfg.readEntry( "Width", 24 ); // TODO
     configuredLength = cfg.readEntry( "Length", int( FullLength ));
