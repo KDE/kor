@@ -4,6 +4,9 @@ Short-term:
 - clean up config loading etc.
     - rename load() to loadConfig() and use for pure config load?
     - make applets etc. remember their id?
+- panel background (fix plasma applets?)
+- plasma pager applet has broken size handling (wrong minimum size, etc.)
+    - how does plasma-desktop make it work properly?
 
 Mid-term:
 ===========
