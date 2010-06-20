@@ -46,6 +46,7 @@ class PlasmaApplet
         void appletRemoved();
         void sceneRectChanged( const QRectF &rect );
         void sizeHintChanged( Qt::SizeHint which );
+        void appletGeometryChanged();
     private:
         Plasma::Corona corona;
         Plasma::Containment* containment;

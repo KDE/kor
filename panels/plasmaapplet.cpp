@@ -56,9 +56,9 @@ void PlasmaApplet::load( const QString& id ) // TODO
         containment->addApplet( applet );
         applet->init();
         applet->flushPendingConstraintsEvents();
-        resize( applet->size().toSize());
         connect( applet, SIGNAL( sizeHintChanged( Qt::SizeHint )), this, SLOT( sizeHintChanged( Qt::SizeHint )));
-        setSizePolicy( applet->sizePolicy());
+        connect( applet, SIGNAL( geometryChanged()), this, SLOT( appletGeometryChanged()));
+        appletGeometryChanged();
         }
     connect( containment, SIGNAL( appletRemoved( Plasma::Applet* )), this, SLOT( appletRemoved()));
     delete applet->action( "remove" ); // remove default popup menu actions that do not fit
@@ -67,6 +67,17 @@ void PlasmaApplet::load( const QString& id ) // TODO
 void PlasmaApplet::appletRemoved()
     { // TODO ?
     applet = NULL;
+    }
+
+void PlasmaApplet::appletGeometryChanged()
+    {
+#ifdef DEBUG_LAYOUT
+        qDebug() << "XXX geometry changed:" << applet->sceneBoundingRect() << applet->size() << name;
+#endif
+    setSceneRect( applet->sceneBoundingRect());
+    resize( applet->size().toSize());
+    setSizePolicy( applet->sizePolicy());
+    updateGeometry();
     }
 
 void PlasmaApplet::resizeEvent( QResizeEvent *event )
