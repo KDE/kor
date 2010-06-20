@@ -19,7 +19,7 @@
 
 #include <qaction.h>
 
-#define DEBUG_LAYOUT
+//#define DEBUG_LAYOUT
 
 namespace Kor
 {
