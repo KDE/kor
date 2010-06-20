@@ -19,7 +19,7 @@
 
 #include <kconfiggroup.h>
 #include <kdebug.h>
-#include <kephal/screens.h> // TODO is ABI stable?
+#include <kephal/screens.h>
 #include <kglobal.h>
 #include <ksharedconfig.h>
 #include <kwindowsystem.h>

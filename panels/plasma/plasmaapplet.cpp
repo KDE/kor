@@ -39,7 +39,7 @@ PlasmaApplet::PlasmaApplet( Kor::Panel* panel, QWidget* parent )
     setAlignment( Qt::AlignCenter );
     }
 
-void PlasmaApplet::load( const QString& id ) // TODO
+void PlasmaApplet::load( const QString& id )
     {
     KConfigGroup cfg( KGlobal::config(), id );
     containment = corona.addContainment( "null" );

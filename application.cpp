@@ -32,9 +32,9 @@ Application::Application()
     if( cfg.readEntry( "Minicli", true ) && KAuthorized::authorizeKAction( "run_command" ))
         ( void ) new Minicli( this );
     foreach( const QString& panelid, cfg.readEntry( "Panels", QStringList()))
-        ( void ) new Panel( panelid, this ); // TODO
+        ( void ) new Panel( panelid, this );
     foreach( const QString& desktopid, cfg.readEntry( "Desktops", QStringList()))
-        ( void ) new Desktop( desktopid, this ); // TODO
+        ( void ) new Desktop( desktopid, this );
     setQuitOnLastWindowClosed( false );
     }
 

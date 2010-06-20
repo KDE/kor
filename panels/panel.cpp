@@ -19,7 +19,7 @@
 
 #include <kconfiggroup.h>
 #include <kdebug.h>
-#include <kephal/screens.h> // TODO is ABI stable?
+#include <kephal/screens.h>
 #include <kglobal.h>
 #include <ksharedconfig.h>
 #include <kwindowsystem.h>
@@ -142,7 +142,7 @@ void Panel::updatePosition()
         delete window->layout();
         }
     QBoxLayout* l = new QBoxLayout( horizontal() ? QBoxLayout::LeftToRight : QBoxLayout::TopToBottom, window.data());
-    l->setContentsMargins( 0, 0, 0, 0 ); // TODO
+    l->setContentsMargins( 0, 0, 0, 0 );
     l->setSpacing( 0 );
     // TODO add already existing widgets?
     }
