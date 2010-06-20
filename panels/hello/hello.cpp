@@ -15,7 +15,7 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 *********************************************************************/
 
-#include "helloapplet.h"
+#include "hello.h"
 
 #include <kconfiggroup.h>
 #include <kglobal.h>
@@ -43,4 +43,4 @@ void HelloApplet::load( const QString& id )
 
 } // namespace
 
-#include "helloapplet.moc"
+#include "hello.moc"

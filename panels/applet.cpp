@@ -17,9 +17,9 @@
 
 #include "applet.h"
 
-#include "helloapplet.h"
+#include "hello/hello.h"
 #include "panelwindow.h"
-#include "plasmaapplet.h"
+#include "plasma/plasmaapplet.h"
 #include "spacer.h"
 
 namespace Kor

@@ -37,11 +37,11 @@ set( kor_SRCS
      minicli/miniclidialog.cpp
      minicli/miniclihandler.cpp
      panels/applet.cpp
-     panels/helloapplet.cpp
      panels/panel.cpp
      panels/panelwindow.cpp
-     panels/plasmaapplet.cpp
      panels/spacer.cpp
+     panels/hello/hello.cpp
+     panels/plasma/plasmaapplet.cpp
      )
 
 kde4_add_ui_files( kor_SRCS minicli/miniclidialog.ui )
