@@ -7,6 +7,10 @@ Short-term:
 - panel background (fix plasma applets?)
 - plasma pager applet has broken size handling (wrong minimum size, etc.)
     - how does plasma-desktop make it work properly?
+- crashes on exit for an unknown reason
+- klipper systray icon is not visible
+- ktimemon is too wide
+- splash goes away before kor is ready (suspend/resume startup broken?)
 
 Mid-term:
 ===========
@@ -14,7 +18,6 @@ Mid-term:
 - minicli on-the-fly parsing (for icon)
 - change minicli to F2 (+handle reassigning from krunner)
 - moving kscreenlocker etc. out of krunner
-- is Kephal ABI stable?
 - the distinction between Panel and PanelWindow - is it good, is it useful?
 - initial panel layouting is visible, avoid/hide somehow
 - API for native applets ?

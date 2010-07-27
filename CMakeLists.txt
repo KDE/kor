@@ -12,7 +12,6 @@ find_package_handle_standard_args( KDE4Workspace DEFAULT_MSG KDE4WORKSPACE_KWORK
 if( NOT KDE4WORKSPACE_FOUND )
     message( FATAL_ERROR "KDE Workspace development files not found." )
 endif( NOT KDE4WORKSPACE_FOUND )
-find_library( KEPHAL NAMES kephal PATHS ${KDE4_LIB_DIR} )
 
 include( MacroLibrary )
 include( KDE4Defaults )
