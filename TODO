@@ -7,7 +7,6 @@ Short-term:
 - panel background (fix plasma applets?)
 - plasma pager applet has broken size handling (wrong minimum size, etc.)
     - how does plasma-desktop make it work properly?
-- crashes on exit for an unknown reason
 - klipper systray icon is not visible
 - ktimemon is too wide
 - splash goes away before kor is ready (suspend/resume startup broken?)
