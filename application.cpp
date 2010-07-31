@@ -30,12 +30,17 @@ Application::Application()
     {
     KConfigGroup cfg( KGlobal::config(), "Layout" );
     if( cfg.readEntry( "Minicli", true ) && KAuthorized::authorizeKAction( "run_command" ))
-        ( void ) new Minicli( this );
+        objects.append( new Minicli( this ));
     foreach( const QString& panelid, cfg.readEntry( "Panels", QStringList()))
-        ( void ) new Panel( panelid, this );
+        objects.append( new Panel( panelid, this ));
     foreach( const QString& desktopid, cfg.readEntry( "Desktops", QStringList()))
-        ( void ) new Desktop( desktopid, this );
+        objects.append( new Desktop( desktopid, this ));
     setQuitOnLastWindowClosed( false );
+    }
+
+Application::~Application()
+    {
+    qDeleteAll( objects ); // delete them before destructing the app object, needed for QWidget's
     }
 
 } // namespace

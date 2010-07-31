@@ -32,6 +32,9 @@ class Application
     Q_OBJECT
     public:
         Application();
+        virtual ~Application();
+    private:
+        QList< QObject* > objects;
     };
 
 } // namespace
