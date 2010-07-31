@@ -18,6 +18,8 @@
 #include "plasmaapplet.h"
 
 #include <qaction.h>
+#include <qapplication.h>
+#include <qdesktopwidget.h>
 
 #include "panel.h"
 
@@ -150,6 +152,12 @@ void PlasmaApplet::sizeHintChanged( Qt::SizeHint which )
     Q_UNUSED( which );
 #endif
     updateGeometry();
+    }
+
+// this needs to be overriden for some reason
+QRect Corona::screenGeometry( int id ) const
+    {
+    return qApp->desktop()->screenGeometry( id );
     }
 
 } // namespace

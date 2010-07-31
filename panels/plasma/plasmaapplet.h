@@ -30,6 +30,15 @@ namespace Kor
 
 class Panel;
 
+// for necessary overrides
+class Corona
+    : public Plasma::Corona
+    {
+    Q_OBJECT
+    public:
+        virtual QRect screenGeometry( int id ) const;
+    };
+
 // based on plasma's plasmoidviewer
 class PlasmaApplet
     : public QGraphicsView, public Kor::Applet
@@ -48,7 +57,7 @@ class PlasmaApplet
         void sizeHintChanged( Qt::SizeHint which );
         void appletGeometryChanged();
     private:
-        Plasma::Corona corona;
+        Corona corona;
         Plasma::Containment* containment;
         Plasma::Applet* applet;
         QString name;
