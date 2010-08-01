@@ -5,6 +5,7 @@ Short-term:
     - rename load() to loadConfig() and use for pure config load?
     - make applets etc. remember their id?
 - panel background (fix plasma applets?)
+    - plasma themeing seems to be broken
 - klipper systray icon is not visible
 - splash goes away before kor is ready (suspend/resume startup broken?)
 
