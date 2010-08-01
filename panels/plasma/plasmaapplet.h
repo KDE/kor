@@ -57,10 +57,13 @@ class PlasmaApplet
         void sizeHintChanged( Qt::SizeHint which );
         void appletGeometryChanged();
     private:
+        QSize constrainSize( QSize s ) const;
+    private:
         Corona corona;
         Plasma::Containment* containment;
         Plasma::Applet* applet;
         QString name;
+        int sizeLimit; // 0 - none, otherwise max length of the applet
     };
 
 } // namespace

@@ -32,6 +32,7 @@ PlasmaApplet::PlasmaApplet( Kor::Panel* panel, QWidget* parent )
     : QGraphicsView( parent )
     , Applet( panel )
     , applet( NULL )
+    , sizeLimit( 0 )
     {
     setFrameStyle( NoFrame );
     setScene( &corona );
@@ -56,7 +57,8 @@ void PlasmaApplet::load( const QString& id )
         containment->setLocation( Plasma::RightEdge );
     else
         abort();
-    containment->resize( size());
+    sizeLimit = cfg.readEntry( "SizeLimit", 0 );
+    containment->resize( constrainSize( size()));
     setScene( containment->scene());
     setSceneRect( containment->geometry());
     name = cfg.readEntry( "PlasmaName" );
@@ -88,7 +90,7 @@ void PlasmaApplet::appletGeometryChanged()
         qDebug() << "XXX geometry changed:" << applet->sceneBoundingRect() << applet->size() << name;
 #endif
     setSceneRect( applet->sceneBoundingRect());
-    resize( applet->size().toSize());
+    resize( constrainSize( applet->size().toSize()));
     setSizePolicy( applet->sizePolicy());
     updateGeometry();
     }
@@ -105,6 +107,8 @@ void PlasmaApplet::resizeEvent( QResizeEvent *event )
 #ifdef DEBUG_LAYOUT
         qDebug() << "XXX resize event:" << size() << name;
 #endif
+        if( sizeLimit > 0 )
+            applet->setMaximumSize( size());
         applet->resize( size());
         }
     }
@@ -127,7 +131,7 @@ QSize PlasmaApplet::sizeHint() const
 #ifdef DEBUG_LAYOUT
         qDebug() << "XXX size hint:" << applet->effectiveSizeHint( Qt::PreferredSize ) << name;
 #endif
-        return applet->effectiveSizeHint( Qt::PreferredSize ).toSize();
+        return constrainSize( applet->effectiveSizeHint( Qt::PreferredSize ).toSize());
         }
     return QSize();
     }
@@ -139,7 +143,7 @@ QSize PlasmaApplet::minimumSizeHint() const
 #ifdef DEBUG_LAYOUT
         qDebug() << "XXX minimum size hint:" << applet->effectiveSizeHint( Qt::MinimumSize ) << name;
 #endif
-        return applet->effectiveSizeHint( Qt::MinimumSize ).toSize();
+        return constrainSize( applet->effectiveSizeHint( Qt::MinimumSize ).toSize());
         }
     return QSize();
     }
@@ -152,6 +156,18 @@ void PlasmaApplet::sizeHintChanged( Qt::SizeHint which )
     Q_UNUSED( which );
 #endif
     updateGeometry();
+    }
+
+QSize PlasmaApplet::constrainSize( QSize s ) const
+    {
+    if( sizeLimit > 0 )
+        {
+        if( panel->horizontal())
+            s.setWidth( qMin( s.width(), sizeLimit ));
+        else
+            s.setHeight( qMin( s.height(), sizeLimit ));
+        }
+    return s;
     }
 
 // this needs to be overriden for some reason
