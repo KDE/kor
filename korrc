@@ -62,6 +62,7 @@ PlasmaName=digital-clock
 
 # spacer, fills up unused taskbar space
 [Spacer0]
+Type=Spacer
 # 0 is expanding, other numbers are exact size
 Size=0
 
