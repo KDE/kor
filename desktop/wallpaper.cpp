@@ -45,9 +45,9 @@ void WallpaperColor::load( const QString& id )
     KConfigGroup cfg( KGlobal::config(), id );
     // use QColor ctor rather than readEntry( QColor ) because KConfig can't handle e.g. 'green'
     color = QColor( cfg.readEntry( "Color" )); 
-    QImage image( 1, 1, QImage::Format_RGB32 ); // 1,1 size is enough, it will be tilled
-    image.fill( color.rgb());
-    emit loaded( image );
+    QPixmap pixmap( 1, 1 ); // 1,1 size is enough, it will be tilled
+    pixmap.fill( color );
+    emit loaded( pixmap );
     }
 
 void WallpaperImage::load( const QString& id )
@@ -58,7 +58,7 @@ void WallpaperImage::load( const QString& id )
         {
         if( image.size() != size )
             image = image.scaled( size, Qt::IgnoreAspectRatio, Qt::SmoothTransformation );
-        emit loaded( image );
+        emit loaded( QPixmap::fromImage( image ));
         }
     }
 

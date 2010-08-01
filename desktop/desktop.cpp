@@ -64,7 +64,7 @@ void Desktop::loadWallpaperConfig( const QString& id )
     wallpaper.reset( Wallpaper::create( cfg.readEntry( "WallpaperType" )));
     if( wallpaper.data() != NULL )
         {
-        connect( wallpaper.data(), SIGNAL( loaded( QImage )), this, SLOT( wallpaperLoaded( QImage )));
+        connect( wallpaper.data(), SIGNAL( loaded( QPixmap )), this, SLOT( wallpaperLoaded( QPixmap )));
         wallpaper->setSize( window->size());
         wallpaper->load( id );
         }
@@ -77,11 +77,11 @@ void Desktop::updatePosition()
     window->setGeometry( screenGeom );
     }
 
-void Desktop::wallpaperLoaded( QImage image )
+void Desktop::wallpaperLoaded( QPixmap pixmap )
     {
     // Simply set the window as the background pixmap of the X window. That will avoid the requirement
     // to keep the pixmap here and avoid flicker or a need for manual repaints.
-    XSetWindowBackgroundPixmap( QX11Info::display(), window->winId(), QPixmap::fromImage( image ).handle());
+    XSetWindowBackgroundPixmap( QX11Info::display(), window->winId(), pixmap.handle());
     }
 
 } // namespace

@@ -20,7 +20,7 @@
 
 #include <qcolor.h>
 #include <qobject.h>
-#include <qimage.h>
+#include <qpixmap.h>
 
 namespace Kor
 {
@@ -34,7 +34,7 @@ class Wallpaper
         virtual void load( const QString& id ) = 0;
         virtual void setSize( const QSize& size );
     signals:
-        void loaded( QImage image );
+        void loaded( QPixmap pixmap );
     protected:
         QSize size;
     };

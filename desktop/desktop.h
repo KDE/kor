@@ -34,7 +34,7 @@ class Desktop
     public:
         Desktop( const QString& id, QObject* parent = NULL );
     private slots:
-        void wallpaperLoaded( QImage image );
+        void wallpaperLoaded( QPixmap pixmap );
     private:
         void loadConfig();
         void loadWallpaperConfig( const QString& id );
