@@ -74,9 +74,9 @@ void PlasmaApplet::load( const QString& id )
         connect( applet, SIGNAL( sizeHintChanged( Qt::SizeHint )), this, SLOT( sizeHintChanged( Qt::SizeHint )));
         connect( applet, SIGNAL( geometryChanged()), this, SLOT( appletGeometryChanged()));
         appletGeometryChanged();
+        delete applet->action( "remove" ); // remove default popup menu actions that do not fit
         }
     connect( containment, SIGNAL( appletRemoved( Plasma::Applet* )), this, SLOT( appletRemoved()));
-    delete applet->action( "remove" ); // remove default popup menu actions that do not fit
     }
 
 void PlasmaApplet::appletRemoved()
