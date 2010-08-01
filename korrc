@@ -20,9 +20,7 @@ Length=1000000
 # xinerama screen
 #Screen=0
 # list of id's for all applets in this panel
-Applets=AppletLauncher,AppletTasks,AppletSystray,AppletClock
-# pager misreports sizes, disabled for now
-#Applets=AppletLauncher,AppletTasks,AppletPager,AppletSystray,AppletClock
+Applets=AppletLauncher,AppletTasks,AppletPager,AppletSystray,AppletClock
 
 # testing applet
 [AppletHello]
@@ -49,6 +47,8 @@ PlasmaName=tasks
 [AppletPager]
 Type=Plasma
 PlasmaName=pager
+# some versions misreport their size, use SizeLimit to force maximum width
+#SizeLimit=40
 
 # system tray
 [AppletSystray]
@@ -81,3 +81,15 @@ Color=darkblue
 [WallpaperImage]
 WallpaperType=Image
 File=/usr/share/wallpapers/default_blue.jpg
+
+# Plasma wallpaper
+[WallpaperPlasma]
+WallpaperType=Plasma
+PluginName=image
+Mode=SingleImage
+
+# these are details about the Plasma wallpaper
+# plasma-desktop stores it in plasma-desktop-appletsrc, search for group [Containments]...[Wallpaper][image]
+[WallpaperPlasma][image]
+wallpaper=/usr/share/wallpapers/Ethais
+wallpaperposition=0
