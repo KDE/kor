@@ -43,9 +43,11 @@ void PlasmaWallpaper::load( const QString& id )
     plasma = Plasma::Wallpaper::load( cfg.readEntry( "PluginName" ));
     if( plasma != NULL )
         {
+#if KDE_IS_VERSION( 4, 2, 0 )
         QString mode = cfg.readEntry( "Mode" );
         if( !mode.isEmpty())
             plasma->setRenderingMode( mode );
+#endif
         connect( plasma, SIGNAL( update( QRectF )), this, SLOT( update( QRectF )));
         plasma->setBoundingRect( QRect( 0, 0, size.width(), size.height()));
         plasma->restore( plasmaConfigGroup());
