@@ -20,8 +20,9 @@
 #include <kconfiggroup.h>
 #include <kglobal.h>
 #include <ksharedconfig.h>
-
 #include <qdebug.h>
+
+#include "plasmawallpaper.h"
 
 namespace Kor
 {
@@ -32,6 +33,8 @@ Wallpaper* Wallpaper::create( const QString& type )
         return new WallpaperColor;
     if( type == "Image" )
         return new WallpaperImage;
+    if( type == "Plasma" )
+        return new PlasmaWallpaper;
     return NULL;
     }
 

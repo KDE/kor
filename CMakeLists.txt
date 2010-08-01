@@ -33,6 +33,7 @@ set( kor_SRCS
      main.cpp
      application.cpp
      desktop/desktop.cpp
+     desktop/plasmawallpaper.cpp
      desktop/wallpaper.cpp
      minicli/minicli.cpp
      minicli/miniclidialog.cpp

@@ -15,46 +15,34 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 *********************************************************************/
 
-#ifndef KOR_WALLPAPER_H
-#define KOR_WALLPAPER_H
+#ifndef KOR_PLASMAWALLPAPER_H
+#define KOR_PLASMAWALLPAPER_H
 
-#include <qcolor.h>
-#include <qobject.h>
-#include <qpixmap.h>
+#include "wallpaper.h"
+
+#include <plasma/wallpaper.h>
 
 namespace Kor
 {
 
-class Wallpaper
-    : public QObject
+class PlasmaWallpaper
+    : public Wallpaper
     {
     Q_OBJECT
     public:
-        static Wallpaper* create( const QString& type );
-        virtual void load( const QString& id ) = 0;
+        PlasmaWallpaper();
+        virtual ~PlasmaWallpaper();
+        virtual void load( const QString& id );
         virtual void setSize( const QSize& size );
-    signals:
-        void loaded( QPixmap pixmap );
-    protected:
-        QSize size; // TODO accessible to subclasses?
-    };
-
-class WallpaperColor
-    : public Wallpaper
-    {
-    Q_OBJECT
-    public:
-        virtual void load( const QString& id );
     private:
-        QColor color;
-    };
-
-class WallpaperImage
-    : public Wallpaper
-    {
-    Q_OBJECT
-    public:
-        virtual void load( const QString& id );
+        KConfigGroup plasmaConfigGroup();
+    private slots:
+        void update();
+        void update( QRectF r );
+    private:
+        Plasma::Wallpaper* plasma;
+        QPixmap pixmap;
+        QString configId;
     };
 
 } // namespace
