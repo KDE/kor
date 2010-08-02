@@ -98,19 +98,21 @@ void Panel::updatePosition()
         width = configuredWidth;
         }
     QPoint pos;
+    // QRect::center() for 1280x960+0+0 gives 639,479 , so calculate center to give 640,480
+    QPoint center( screenGeom.x() + screenGeom.width() / 2, screenGeom.y() + screenGeom.height() / 2 );
     switch( position())
         {
         case PositionTop:
-            pos = QPoint( screenGeom.center().x() - width / 2, screenGeom.top());
+            pos = QPoint( center.x() - width / 2, screenGeom.top());
             break;
         case PositionBottom:
-            pos = QPoint( screenGeom.center().x() - width / 2, screenGeom.bottom() - height );
+            pos = QPoint( center.x() - width / 2, screenGeom.bottom() - height );
             break;
         case PositionLeft:
-            pos = QPoint( screenGeom.left(), screenGeom.center().y() - height / 2 );
+            pos = QPoint( screenGeom.left(), center.y() - height / 2 );
             break;
         case PositionRight:
-            pos = QPoint( screenGeom.right() - width, screenGeom.center().y() - height / 2 );
+            pos = QPoint( screenGeom.right() - width, center.y() - height / 2 );
             break;
         case PositionTopLeft:
             pos = screenGeom.topLeft();
