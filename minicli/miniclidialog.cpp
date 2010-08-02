@@ -45,7 +45,6 @@ MinicliDialog::MinicliDialog( Minicli* minicli )
     ui.command->setDuplicatesEnabled( false );
     showButtonSeparator( true );
     connect( ui.command, SIGNAL( editTextChanged( const QString& )), this, SLOT( textChanged( const QString& )));
-    connect( ui.command, SIGNAL( returnPressed()), this, SLOT( accept()));
     adjustSize();
     readConfig();
     }
