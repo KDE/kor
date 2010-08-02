@@ -39,6 +39,7 @@ Panel::Panel( const QString& id, QObject* parent )
     , id( id )
     , window( new PanelWindow( this ))
     {
+    window->setWindowRole( id.toLower());
     KWindowSystem::setType( window->winId(), NET::Dock );
     KWindowSystem::setOnAllDesktops( window->winId(), true );
     loadConfig();

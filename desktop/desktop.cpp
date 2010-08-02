@@ -41,6 +41,7 @@ Desktop::Desktop( const QString& id, QObject* parent )
     , id( id )
     , window( new QWidget )
     {
+    window->setWindowRole( id.toLower());
     KWindowSystem::setType( window->winId(), NET::Desktop );
     KWindowSystem::setOnAllDesktops( window->winId(), true );
     // see wallpaperLoaded()

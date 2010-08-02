@@ -37,6 +37,7 @@ MinicliDialog::MinicliDialog( Minicli* minicli )
     {
     setPlainCaption( i18n( "Run Command" ));
     setWindowIcon( KIcon( "system-run" ));
+    setWindowRole( "minicli" );
     setButtons( KDialog::Ok | KDialog::Cancel );
     widget = new QWidget( this );
     setMainWidget( widget );
