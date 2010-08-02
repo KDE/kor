@@ -131,15 +131,15 @@ void Panel::updatePosition()
     window->setFixedSize( width, height );
     if( horizontal() && ( position() & PositionTop ))
         KWindowSystem::setExtendedStrut( window->winId(), 0, 0, 0, 0, 0, 0,
-            height, pos.x(), pos.x() + width, 0, 0, 0 );
+            height, pos.x(), pos.x() + width - 1, 0, 0, 0 );
     else if( horizontal() && ( position() & PositionBottom ))
         KWindowSystem::setExtendedStrut( window->winId(), 0, 0, 0, 0, 0, 0,
-            0, 0, 0, height, pos.x(), pos.x() + width );
+            0, 0, 0, height, pos.x(), pos.x() + width - 1 );
     else if( !horizontal() && ( position() & PositionLeft ))
-        KWindowSystem::setExtendedStrut( window->winId(), width, pos.y(), pos.y() + height, 0, 0, 0,
+        KWindowSystem::setExtendedStrut( window->winId(), width, pos.y(), pos.y() + height - 1, 0, 0, 0,
             0, 0, 0, 0, 0, 0 );
     else if( !horizontal() && ( position() & PositionRight ))
-        KWindowSystem::setExtendedStrut( window->winId(), 0, 0, 0, width, pos.y(), pos.y() + height,
+        KWindowSystem::setExtendedStrut( window->winId(), 0, 0, 0, width, pos.y(), pos.y() + height - 1,
             0, 0, 0, 0, 0, 0 );
     else
         abort();
