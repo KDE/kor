@@ -8,7 +8,6 @@ Short-term:
     - plasma themeing seems to be broken
 - klipper systray icon is not visible
 - splash goes away before kor is ready (suspend/resume startup broken?)
-- nothing is translated because the app itself is not translated
 
 Mid-term:
 ===========
