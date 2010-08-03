@@ -50,6 +50,7 @@ class Panel
         void loadConfig();
         void loadApplets();
         void updatePosition();
+        void setupWindow();
     private:
         QString id;
         QScopedPointer< QWidget > win;

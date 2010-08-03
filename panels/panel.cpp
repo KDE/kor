@@ -38,9 +38,7 @@ Panel::Panel( const QString& id, QObject* parent )
     , id( id )
     , win( new QWidget )
     {
-    window()->setWindowRole( id.toLower());
-    KWindowSystem::setType( window()->winId(), NET::Dock );
-    KWindowSystem::setOnAllDesktops( window()->winId(), true );
+    setupWindow();
     loadConfig();
     loadApplets();
     window()->show();
@@ -56,7 +54,31 @@ void Panel::loadConfig()
     configuredWidth = cfg.readEntry( "Width", 24 ); // TODO
     configuredLength = cfg.readEntry( "Length", int( FullLength ));
     configuredScreen = cfg.readEntry( "Screen", qApp->desktop()->primaryScreen());
+    QColor color( cfg.readEntry( "BackgroundColor" )); // QColor ctor rather than KConfig which can't handle 'green'
+    QPalette pal = window()->palette();
+    if( color.isValid())
+        {
+        pal.setColor( QPalette::Window, color );
+        window()->setAutoFillBackground( true );
+        window()->setAttribute( Qt::WA_TranslucentBackground, color.alpha() != 255 );
+        }
+    else
+        {
+        pal.setColor( QPalette::Window, QPalette().color( QPalette::Window )); // default color
+        window()->setAutoFillBackground( false );
+        window()->setAttribute( Qt::WA_TranslucentBackground, false );
+        }
+    window()->setPalette( pal );
+    setupWindow();
     updatePosition();
+    window()->update();
+    }
+
+void Panel::setupWindow()
+    { // needs to be done after changing WA_TranslucentBackground, as that recreates the X window
+    window()->setWindowRole( id.toLower());
+    KWindowSystem::setType( window()->winId(), NET::Dock );
+    KWindowSystem::setOnAllDesktops( window()->winId(), true );
     }
 
 void Panel::loadApplets()

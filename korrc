@@ -21,6 +21,8 @@ Length=1000000
 #Screen=0
 # list of id's for all applets in this panel
 Applets=AppletLauncher,AppletTasks,AppletPager,AppletSystray,AppletClock
+# background color, 'transparent' is also possible
+BackgroundColor=white
 
 # testing applet
 [AppletHello]
