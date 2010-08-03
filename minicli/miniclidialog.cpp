@@ -45,6 +45,11 @@ MinicliDialog::MinicliDialog( Minicli* minicli )
     ui.command->setDuplicatesEnabled( false );
     showButtonSeparator( true );
     connect( ui.command, SIGNAL( editTextChanged( const QString& )), this, SLOT( textChanged( const QString& )));
+    // Popup completion generally should not also accept the dialog, but for minicli it's very convenient
+    // this way. However prevent the normal dialog handling on Enter to avoid double accepting (e.g. two
+    // error dialogs on something incorrect).
+    ui.command->setTrapReturnKey( true );
+    connect( ui.command, SIGNAL( returnPressed()), this, SLOT( accept()));
     adjustSize();
     readConfig();
     }
