@@ -31,6 +31,8 @@ int kdemain( int argc, char* argv[] )
     KAboutData about( "kor", NULL, ki18n( "Kor Testudo Shell" ), KOR_VERSION );
     about.setLicense( KAboutData::License_GPL );
     about.addAuthor( ki18n( "Luboš Luňák" ), KLocalizedString(), "l.lunak@kde.org" );
+    // HACK there's no catalog for Kor right now, without a default catalog nothing is translated
+    about.setCatalogName( "kdelibs4" );
     KCmdLineArgs::init( argc, argv, &about );
     if( !KUniqueApplication::start())
         {
