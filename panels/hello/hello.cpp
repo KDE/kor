@@ -21,11 +21,13 @@
 #include <kglobal.h>
 #include <ksharedconfig.h>
 
+#include "panel.h"
+
 namespace Kor
 {
 
-HelloApplet::HelloApplet( Kor::Panel* panel, QWidget* parent )
-    : QLabel( parent )
+HelloApplet::HelloApplet( Kor::Panel* panel )
+    : QLabel( panel->window())
     , Applet( panel )
     {
     setAutoFillBackground( true );

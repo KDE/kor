@@ -28,8 +28,8 @@
 namespace Kor
 {
 
-PlasmaApplet::PlasmaApplet( Kor::Panel* panel, QWidget* parent )
-    : QGraphicsView( parent )
+PlasmaApplet::PlasmaApplet( Kor::Panel* panel )
+    : QGraphicsView( panel->window())
     , Applet( panel )
     , applet( NULL )
     , sizeLimit( 0 )

@@ -24,12 +24,11 @@ namespace Kor
 {
 
 class Panel;
-class PanelWindow;
 
 class Applet
     {
     public:
-        static Applet* create( const QString& type, Panel* panel, PanelWindow* window );
+        static Applet* create( const QString& type, Panel* panel );
         virtual void load( const QString& id ) = 0;
         virtual ~Applet();
     protected:

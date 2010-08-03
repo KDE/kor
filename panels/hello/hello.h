@@ -30,7 +30,7 @@ class HelloApplet
     {
     Q_OBJECT
     public:
-        HelloApplet( Kor::Panel* panel, QWidget* parent );
+        HelloApplet( Kor::Panel* panel );
         virtual void load( const QString& id );
     };
 

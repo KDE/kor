@@ -40,7 +40,6 @@ set( kor_SRCS
      minicli/miniclihandler.cpp
      panels/applet.cpp
      panels/panel.cpp
-     panels/panelwindow.cpp
      panels/spacer.cpp
      panels/hello/hello.cpp
      panels/plasma/plasmaapplet.cpp

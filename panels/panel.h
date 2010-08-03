@@ -25,7 +25,6 @@ namespace Kor
 {
 
 class Applet;
-class PanelWindow;
 
 class Panel
     : public QObject
@@ -46,13 +45,14 @@ class Panel
             PositionBottomRight = PositionBottom | PositionRight,
             };
         Position position() const;
+        QWidget* window();
     private:
         void loadConfig();
         void loadApplets();
         void updatePosition();
     private:
         QString id;
-        QScopedPointer< PanelWindow > window;
+        QScopedPointer< QWidget > win;
         Position pos;
         bool horiz;
         int configuredWidth;
@@ -72,6 +72,12 @@ inline
 Panel::Position Panel::position() const
     {
     return pos;
+    }
+
+inline
+QWidget* Panel::window()
+    {
+    return win.data();
     }
 
 } // namespace

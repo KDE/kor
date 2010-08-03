@@ -45,7 +45,7 @@ class PlasmaApplet
     {
     Q_OBJECT
     public:
-        PlasmaApplet( Kor::Panel* panel, QWidget* parent );
+        PlasmaApplet( Kor::Panel* panel );
         virtual void load( const QString& id );
         virtual QSize sizeHint() const;
         virtual QSize minimumSizeHint() const;

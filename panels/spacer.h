@@ -29,7 +29,7 @@ class Spacer
     : public QWidget, public Applet
     {
     public:
-        Spacer( Panel* panel, QWidget* parent );
+        Spacer( Panel* panel );
         virtual void load( const QString& id );
     private:
         int spacerSize; // -1 for expanding

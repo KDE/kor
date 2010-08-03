@@ -18,21 +18,20 @@
 #include "applet.h"
 
 #include "hello/hello.h"
-#include "panelwindow.h"
 #include "plasma/plasmaapplet.h"
 #include "spacer.h"
 
 namespace Kor
 {
 
-Applet* Applet::create( const QString& type, Panel* panel, PanelWindow* window )
+Applet* Applet::create( const QString& type, Panel* panel )
     {
     if( type == "Plasma" )
-        return new PlasmaApplet( panel, window );
+        return new PlasmaApplet( panel );
     if( type == "Spacer" )
-        return new Spacer( panel, window );
+        return new Spacer( panel );
     if( type == "Hello" )
-        return new HelloApplet( panel, window );
+        return new HelloApplet( panel );
     return NULL;
     }
 

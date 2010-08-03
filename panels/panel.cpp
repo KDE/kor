@@ -29,7 +29,6 @@
 #include <qdesktopwidget.h>
 
 #include "applet.h"
-#include "panelwindow.h"
 
 namespace Kor
 {
@@ -37,14 +36,14 @@ namespace Kor
 Panel::Panel( const QString& id, QObject* parent )
     : QObject( parent )
     , id( id )
-    , window( new PanelWindow( this ))
+    , win( new QWidget )
     {
-    window->setWindowRole( id.toLower());
-    KWindowSystem::setType( window->winId(), NET::Dock );
-    KWindowSystem::setOnAllDesktops( window->winId(), true );
+    window()->setWindowRole( id.toLower());
+    KWindowSystem::setType( window()->winId(), NET::Dock );
+    KWindowSystem::setOnAllDesktops( window()->winId(), true );
     loadConfig();
     loadApplets();
-    window->show();
+    window()->show();
     }
 
 void Panel::loadConfig()
@@ -67,7 +66,7 @@ void Panel::loadApplets()
         {
         KConfigGroup appletcfg( KGlobal::config(), appletid );
         QString type = appletcfg.readEntry( "Type" );
-        Applet* applet = Applet::create( type, this, window.data());
+        Applet* applet = Applet::create( type, this );
         if( applet == NULL )
             {
             kWarning() << "Cannot load applet type " << type;
@@ -75,7 +74,7 @@ void Panel::loadApplets()
             }
         applet->load( appletid );
         if( QWidget* w = dynamic_cast< QWidget* >( applet ))
-            window->layout()->addWidget( w );
+            window()->layout()->addWidget( w );
         else
             kWarning() << "Unknown layout item for applet";
         applets.append( applet );
@@ -128,40 +127,40 @@ void Panel::updatePosition()
             pos = QPoint( screenGeom.right() - width, screenGeom.bottom() - height );
             break;
         }
-    window->move( pos );
-    window->setFixedSize( width, height );
+    window()->move( pos );
+    window()->setFixedSize( width, height );
     if( horizontal() && ( position() & PositionTop ))
         {
         int strut = pos.y() - qApp->desktop()->y() + height; // struts are from total screen area, not monitor area
-        KWindowSystem::setExtendedStrut( window->winId(), 0, 0, 0, 0, 0, 0,
+        KWindowSystem::setExtendedStrut( window()->winId(), 0, 0, 0, 0, 0, 0,
             strut, pos.x(), pos.x() + width - 1, 0, 0, 0 );
         }
     else if( horizontal() && ( position() & PositionBottom ))
         {
         int strut = qApp->desktop()->geometry().bottom() - pos.y() - height + height;
-        KWindowSystem::setExtendedStrut( window->winId(), 0, 0, 0, 0, 0, 0,
+        KWindowSystem::setExtendedStrut( window()->winId(), 0, 0, 0, 0, 0, 0,
             0, 0, 0, strut, pos.x(), pos.x() + width - 1 );
         }
     else if( !horizontal() && ( position() & PositionLeft ))
         {
         int strut = pos.x() - qApp->desktop()->x() + width;
-        KWindowSystem::setExtendedStrut( window->winId(), strut, pos.y(), pos.y() + height - 1, 0, 0, 0,
+        KWindowSystem::setExtendedStrut( window()->winId(), strut, pos.y(), pos.y() + height - 1, 0, 0, 0,
             0, 0, 0, 0, 0, 0 );
         }
     else if( !horizontal() && ( position() & PositionRight ))
         {
         int strut = qApp->desktop()->geometry().right() - pos.x() - width + width;
-        KWindowSystem::setExtendedStrut( window->winId(), 0, 0, 0, strut, pos.y(), pos.y() + height - 1,
+        KWindowSystem::setExtendedStrut( window()->winId(), 0, 0, 0, strut, pos.y(), pos.y() + height - 1,
             0, 0, 0, 0, 0, 0 );
         }
     else
         abort();
-    if( window->layout() != NULL
-        && !( horizontal() == ( static_cast< QBoxLayout* >( window->layout())->direction() == QBoxLayout::LeftToRight )))
+    if( window()->layout() != NULL
+        && !( horizontal() == ( static_cast< QBoxLayout* >( window()->layout())->direction() == QBoxLayout::LeftToRight )))
         {
-        delete window->layout();
+        delete window()->layout();
         }
-    QBoxLayout* l = new QBoxLayout( horizontal() ? QBoxLayout::LeftToRight : QBoxLayout::TopToBottom, window.data());
+    QBoxLayout* l = new QBoxLayout( horizontal() ? QBoxLayout::LeftToRight : QBoxLayout::TopToBottom, window());
     l->setContentsMargins( 0, 0, 0, 0 );
     l->setSpacing( 0 );
     // TODO add already existing widgets?

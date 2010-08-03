@@ -26,8 +26,8 @@
 namespace Kor
 {
 
-Spacer::Spacer( Panel* panel, QWidget* parent )
-    : QWidget( parent )
+Spacer::Spacer( Panel* panel )
+    : QWidget( panel->window())
     , Applet( panel )
     {
     }
