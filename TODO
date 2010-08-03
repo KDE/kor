@@ -8,6 +8,7 @@ Short-term:
     - plasma themeing seems to be broken
 - klipper systray icon is not visible
 - splash goes away before kor is ready (suspend/resume startup broken?)
+- nothing is translated because the app itself is not translated
 
 Mid-term:
 ===========
@@ -17,6 +18,8 @@ Mid-term:
 - moving kscreenlocker etc. out of krunner
 - initial panel layouting is visible, avoid/hide somehow
 - API for native applets ?
+- do not create panels/desktops that are on screens which do not exist
+- how does plasma theme code decide whether to use transparent or opaque? (match with BackgroundColor=)
 
 Long-term:
 ===========
