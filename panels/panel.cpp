@@ -60,13 +60,17 @@ void Panel::loadConfig()
         {
         pal.setColor( QPalette::Window, color );
         window()->setAutoFillBackground( true );
+#if QT_VERSION >= 0x040500
         window()->setAttribute( Qt::WA_TranslucentBackground, color.alpha() != 255 );
+#endif
         }
     else
         {
         pal.setColor( QPalette::Window, QPalette().color( QPalette::Window )); // default color
         window()->setAutoFillBackground( false );
+#if QT_VERSION >= 0x040500
         window()->setAttribute( Qt::WA_TranslucentBackground, false );
+#endif
         }
     window()->setPalette( pal );
     setupWindow();
