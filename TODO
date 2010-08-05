@@ -31,3 +31,4 @@ Long-term:
 - check cost of plasma dependencies, possibly make optional
 - somehow avoid all the annoying plasma applet animations
 - UI for handling of applets (adding, etc.)
+- allow stacking two panels at one edge, or use a grid layout for applets
