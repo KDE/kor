@@ -17,13 +17,13 @@
 
 #include "main.h"
 
-#include "application.h"
-
 #include <kaboutdata.h>
 #include <kcmdlineargs.h>
 #include <klocale.h>
-#include <qdbusinterface.h>
 #include <stdio.h>
+
+#include "application.h"
+#include "startupsuspendhandler.h"
 
 extern "C" KDE_EXPORT
 int kdemain( int argc, char* argv[] )
@@ -39,10 +39,12 @@ int kdemain( int argc, char* argv[] )
         fprintf( stderr, "Kor is already running." );
         return 0;
         }
-    QDBusInterface ksmserver( "org.kde.ksmserver", "/KSMServer" );
-    ksmserver.call( "suspendStartup", "kor" );
+    Kor::StartupSuspendHandler::self()->suspend( NULL ); // main suspend
     Kor::Application app;
-    ksmserver.call( "resumeStartup", "kor" );
     app.disableSessionManagement(); // Do SM, but don't restart.
+#ifndef NDEBUG
+    Kor::StartupSuspendHandler::self()->startCheck();
+#endif
+    Kor::StartupSuspendHandler::self()->resume( NULL ); // main resume, will wait for others if there are any
     return app.exec();
     }

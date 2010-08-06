@@ -32,6 +32,7 @@ include_directories(
 set( kor_SRCS
      main.cpp
      application.cpp
+     startupsuspendhandler.cpp
      desktop/desktop.cpp
      desktop/plasmawallpaper.cpp
      desktop/wallpaper.cpp
