@@ -8,6 +8,8 @@ Short-term:
     - plasma themeing seems to be broken
 - klipper systray icon is not visible
 - splash goes away before kor is ready (suspend/resume startup broken?)
+- minicli has broken positioning on xinerama (active vs inactive screen)
+    - and launched apps are placed on the other screen
 
 Mid-term:
 ===========
