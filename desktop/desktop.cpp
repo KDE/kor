@@ -31,6 +31,7 @@
 
 #include <X11/Xlib.h>
 
+#include "startupsuspendhandler.h"
 #include "wallpaper.h"
 
 namespace Kor
@@ -41,6 +42,7 @@ Desktop::Desktop( const QString& id, QObject* parent )
     , id( id )
     , window( new QWidget )
     {
+    StartupSuspendHandler::self()->suspend( this );
     window->setWindowRole( id.toLower());
     KWindowSystem::setType( window->winId(), NET::Desktop );
     KWindowSystem::setOnAllDesktops( window->winId(), true );
@@ -84,6 +86,7 @@ void Desktop::wallpaperLoaded( QPixmap pixmap )
     // to keep the pixmap here and avoid flicker or a need for manual repaints.
     XSetWindowBackgroundPixmap( QX11Info::display(), window->winId(), pixmap.handle());
     XClearWindow( QX11Info::display(), window->winId());
+    StartupSuspendHandler::self()->resume( this );
     }
 
 } // namespace

@@ -31,6 +31,7 @@ StartupSuspendHandler* StartupSuspendHandler::self()
     }
 
 StartupSuspendHandler::StartupSuspendHandler()
+    : finished( false )
     {
     connect( &finalTimer, SIGNAL( timeout()), this, SLOT( finish()));
     finalTimer.setSingleShot( true );
@@ -49,6 +50,8 @@ void StartupSuspendHandler::startCheck()
 
 void StartupSuspendHandler::suspend( QObject* guard )
     {
+    if( finished )
+        return;
     if( suspendCount.contains( guard ))
         ++suspendCount[ guard ];
     else
@@ -58,7 +61,10 @@ void StartupSuspendHandler::suspend( QObject* guard )
 
 void StartupSuspendHandler::resume( QObject* guard )
     {
-    assert( suspendCount.contains( guard ));
+    if( finished )
+        return;
+    if( !suspendCount.contains( guard ))
+        return;
     if( --suspendCount[ guard ] == 0 )
         suspendCount.remove( guard );
     // use additional timer, since some applets have delayed init
@@ -78,6 +84,7 @@ void StartupSuspendHandler::resumeSlot()
 
 void StartupSuspendHandler::finish()
     {
+    finished = true;
     kDebug() << "Resuming workspace startup";
     QDBusInterface ksmserver( "org.kde.ksmserver", "/KSMServer" );
     ksmserver.call( "resumeStartup", "kor" );

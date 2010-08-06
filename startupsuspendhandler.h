@@ -48,6 +48,7 @@ class StartupSuspendHandler
         StartupSuspendHandler();
         QHash< void*, int > suspendCount;
         QTimer finalTimer;
+        bool finished;
 #ifndef NDEBUG
         QTimer checkTimer;
 #endif
