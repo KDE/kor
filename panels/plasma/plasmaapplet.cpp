@@ -21,7 +21,6 @@
 #include <qapplication.h>
 #include <qdesktopwidget.h>
 #include <qtimer.h>
-#include <qx11embed_x11.h>
 #include <qx11info_x11.h>
 
 #include "panel.h"
@@ -200,25 +199,20 @@ void PlasmaApplet::checkHacks()
 void PlasmaApplet::paintEvent( QPaintEvent* event )
     {
     if( trayHackPicture != None && !trayHackBlockRecursion )
+        {
         QTimer::singleShot( 0, this, SLOT( trayHackPaint()));
+        return;
+        }
     QGraphicsView::paintEvent( event );
     }
 
 void PlasmaApplet::trayHackPaint()
     {
-    QRegion reg;
-    foreach( QWidget* w, findChildren< QX11EmbedContainer* >())
-        if( w->x11Info().visual() != x11Info().visual())
-            reg += QRect( w->mapTo( this, QPoint( 0, 0 )), w->size());
-    if( reg.isEmpty())
-        return;
-    qDebug() << "P";
     QPixmap pix(size());
     trayHackBlockRecursion = true;
     QWidget::render( &pix );
     trayHackBlockRecursion = false;
-    XRenderSetPictureClipRegion( x11Info().display(), trayHackPicture, reg.handle());
-    XRenderComposite( x11Info().display(), PictOpSrc, pix.x11PictureHandle(), None, trayHackPicture,
+    XRenderComposite(x11Info().display(), PictOpSrc, pix.x11PictureHandle(), None, trayHackPicture,
         0, 0, 0, 0, 0, 0, width(), height());
     }
 
