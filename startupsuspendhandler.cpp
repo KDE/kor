@@ -92,8 +92,11 @@ void StartupSuspendHandler::finish()
 
 void StartupSuspendHandler::check()
     {
-    kWarning() << "Suspended startup not resumed:";
-    kWarning() << suspendCount;
+    if( !suspendCount.isEmpty())
+        {
+        kWarning() << "Suspended startup not resumed:";
+        kWarning() << suspendCount;
+        }
     }
 
 } // namespace
