@@ -206,16 +206,18 @@ void PlasmaApplet::paintEvent( QPaintEvent* event )
 
 void PlasmaApplet::trayHackPaint()
     {
+    // Actually use the hack only for the systray icons which need it. Just using a full render()
+    // would trigger code for non-alpha xembed-based icons that'd after a delay
+    // call repaint() again, triggering this code again, and so on.
     QRegion reg;
     foreach( QWidget* w, findChildren< QX11EmbedContainer* >())
         if( w->x11Info().visual() != x11Info().visual())
             reg += QRect( w->mapTo( this, QPoint( 0, 0 )), w->size());
     if( reg.isEmpty())
         return;
-    qDebug() << "P";
     QPixmap pix(size());
     trayHackBlockRecursion = true;
-    QWidget::render( &pix );
+    QWidget::render( &pix, reg.boundingRect().topLeft(), reg );
     trayHackBlockRecursion = false;
     XRenderSetPictureClipRegion( x11Info().display(), trayHackPicture, reg.handle());
     XRenderComposite( x11Info().display(), PictOpSrc, pix.x11PictureHandle(), None, trayHackPicture,
