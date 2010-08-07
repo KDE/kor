@@ -63,6 +63,9 @@ else( KDE4_PLASMA_LIBS )
     target_link_libraries( kdeinit_kor plasma )
 endif( KDE4_PLASMA_LIBS )
 
+# for plasma systray workaround
+target_link_libraries( kdeinit_kor ${X11_Xrender_LIB} )
+
 install( TARGETS kor ${INSTALL_TARGETS_DEFAULT_ARGS})
 install( TARGETS kdeinit_kor ${INSTALL_TARGETS_DEFAULT_ARGS})
 install( FILES kor.desktop  DESTINATION  ${AUTOSTART_INSTALL_DIR})

@@ -1,0 +1,64 @@
+--- systemtray/protocols/fdo/x11embedcontainer.h.sav	2010-08-07 14:33:27.000000000 +0200
++++ systemtray/protocols/fdo/x11embedcontainer.h	2010-08-07 14:45:57.623916904 +0200
+@@ -45,8 +45,10 @@ protected:
+ 
+ private slots:
+     void ensureValidSize();
++    void directRepaint();
+ 
+ private:
++    bool blockDirectPaint;
+     class Private;
+     Private* const d;
+ };
+--- systemtray/protocols/fdo/x11embedcontainer.cpp.sav	2010-08-07 14:33:27.000000000 +0200
++++ systemtray/protocols/fdo/x11embedcontainer.cpp	2010-08-07 14:50:59.481833272 +0200
+@@ -27,6 +27,7 @@
+ #include <KDebug>
+ 
+ // Qt
++#include <QtCore/QTimer>
+ #include <QtGui/QPainter>
+ #include <QtGui/QPaintEngine>
+ #include <QtGui/QX11Info>
+@@ -73,6 +74,7 @@ public:
+ 
+ X11EmbedContainer::X11EmbedContainer(QWidget *parent)
+     : QX11EmbedContainer(parent),
++      blockDirectPaint(false),
+       d(new Private(this))
+ {
+     connect(this, SIGNAL(clientIsEmbedded()),
+@@ -185,6 +187,15 @@ void X11EmbedContainer::paintEvent(QPain
+         return;
+     }
+ 
++    // Qt's backing store code doesn't expect an inferior window having a different visual
++    // than the toplevel and wouldn't paint anything for it. Therefore a direct paint may be needed.
++    // QWidget::render() will give exactly the contents to paint, but it can't be called in paintEvent(),
++    // so instead delay and do not bother painting right now (since the stuff below is inefficient).
++    if(x11Info().visual() != window()->x11Info().visual() && !blockDirectPaint) {
++        QTimer::singleShot(0, this, SLOT(directRepaint()));
++        return;
++    }
++
+     // Taking a detour via a QPixmap is unfortunately the only way we can get
+     // the window contents into Qt's backing store.
+     QPixmap pixmap(size());
+@@ -371,6 +382,16 @@ void X11EmbedContainer::setBackgroundPix
+     XClearArea(display, clientWinId(), 0, 0, 0, 0, True);
+ }
+ 
++void X11EmbedContainer::directRepaint()
++{
++    QPixmap pix(size());
++    blockDirectPaint = true;
++    render( &pix );
++    blockDirectPaint = false;
++    XRenderComposite(x11Info().display(), PictOpSrc, pix.x11PictureHandle(), None, x11PictureHandle(),
++        0, 0, 0, 0, 0, 0, width(), height());
++}
++
+ }
+ 
+ #include "x11embedcontainer.moc"

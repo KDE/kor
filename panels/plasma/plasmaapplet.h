@@ -25,6 +25,10 @@
 
 #include "applet.h"
 
+#include <X11/Xlib.h>
+#include <X11/extensions/Xrender.h>
+#include <fixx11h.h>
+
 namespace Kor
 {
 
@@ -46,24 +50,30 @@ class PlasmaApplet
     Q_OBJECT
     public:
         PlasmaApplet( Kor::Panel* panel );
+        virtual ~PlasmaApplet();
         virtual void load( const QString& id );
         virtual QSize sizeHint() const;
         virtual QSize minimumSizeHint() const;
     protected:
         virtual void resizeEvent( QResizeEvent* event );
+        virtual void paintEvent( QPaintEvent* event );
     private slots:
         void appletRemoved();
         void sceneRectChanged( const QRectF &rect );
         void sizeHintChanged( Qt::SizeHint which );
         void appletGeometryChanged();
+        void trayHackPaint();
     private:
         QSize constrainSize( QSize s ) const;
+        void checkHacks();
     private:
         Corona corona;
         Plasma::Containment* containment;
         Plasma::Applet* applet;
         QString name;
         int sizeLimit; // 0 - none, otherwise max length of the applet
+        bool trayHackBlockRecursion;
+        Picture trayHackPicture;
     };
 
 } // namespace

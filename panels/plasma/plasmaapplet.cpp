@@ -20,6 +20,8 @@
 #include <qaction.h>
 #include <qapplication.h>
 #include <qdesktopwidget.h>
+#include <qtimer.h>
+#include <qx11info_x11.h>
 
 #include "panel.h"
 
@@ -33,6 +35,8 @@ PlasmaApplet::PlasmaApplet( Kor::Panel* panel )
     , Applet( panel )
     , applet( NULL )
     , sizeLimit( 0 )
+    , trayHackBlockRecursion( false )
+    , trayHackPicture( None )
     {
     setFrameStyle( NoFrame );
     setScene( &corona );
@@ -40,6 +44,12 @@ PlasmaApplet::PlasmaApplet( Kor::Panel* panel )
     setVerticalScrollBarPolicy( Qt::ScrollBarAlwaysOff );
     setHorizontalScrollBarPolicy( Qt::ScrollBarAlwaysOff );
     setAlignment( Qt::AlignCenter );
+    }
+
+PlasmaApplet::~PlasmaApplet()
+    {
+    if( trayHackPicture != None )
+        XRenderFreePicture( x11Info().display(), trayHackPicture );
     }
 
 void PlasmaApplet::load( const QString& id )
@@ -75,6 +85,7 @@ void PlasmaApplet::load( const QString& id )
         connect( applet, SIGNAL( geometryChanged()), this, SLOT( appletGeometryChanged()));
         appletGeometryChanged();
         delete applet->action( "remove" ); // remove default popup menu actions that do not fit
+        checkHacks();
         }
     connect( containment, SIGNAL( appletRemoved( Plasma::Applet* )), this, SLOT( appletRemoved()));
     }
@@ -168,6 +179,41 @@ QSize PlasmaApplet::constrainSize( QSize s ) const
             s.setHeight( qMin( s.height(), sizeLimit ));
         }
     return s;
+    }
+
+void PlasmaApplet::checkHacks()
+    {
+    // Systray implementation puts a widgets with a foreign visual inside the toplevel and Qt's
+    // painting code doesn't expect that, so the embedded systray icon may not be visible
+    // (it works with Plasma-desktop though since that one is always forced for 32bpp visual).
+    // So just render into a pixmap instead and then blit directly to screen.
+    if( name == "systemtray" )
+        {
+        XRenderPictureAttributes attrs;
+        attrs.subwindow_mode = IncludeInferiors;
+        trayHackPicture = XRenderCreatePicture( x11Info().display(), winId(),
+            XRenderFindStandardFormat( x11Info().display(), PictStandardRGB24 ), CPSubwindowMode, &attrs );
+        }
+    }
+
+void PlasmaApplet::paintEvent( QPaintEvent* event )
+    {
+    if( trayHackPicture != None && !trayHackBlockRecursion )
+        {
+        QTimer::singleShot( 0, this, SLOT( trayHackPaint()));
+        return;
+        }
+    QGraphicsView::paintEvent( event );
+    }
+
+void PlasmaApplet::trayHackPaint()
+    {
+    QPixmap pix(size());
+    trayHackBlockRecursion = true;
+    QWidget::render( &pix );
+    trayHackBlockRecursion = false;
+    XRenderComposite(x11Info().display(), PictOpSrc, pix.x11PictureHandle(), None, trayHackPicture,
+        0, 0, 0, 0, 0, 0, width(), height());
     }
 
 // this needs to be overriden for some reason
