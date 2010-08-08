@@ -4,8 +4,6 @@ Short-term:
 - clean up config loading etc.
     - rename load() to loadConfig() and use for pure config load?
     - make applets etc. remember their id?
-- panel background (fix plasma applets?)
-    - plasma themeing seems to be broken
 - minicli has broken positioning on xinerama (active vs inactive screen)
     - and launched apps are placed on the other screen
 

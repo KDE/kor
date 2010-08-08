@@ -45,6 +45,7 @@ PlasmaApplet::PlasmaApplet( Kor::Panel* panel )
     setVerticalScrollBarPolicy( Qt::ScrollBarAlwaysOff );
     setHorizontalScrollBarPolicy( Qt::ScrollBarAlwaysOff );
     setAlignment( Qt::AlignCenter );
+    setBackgroundRole( QPalette::Window ); // QGraphicsView sets this to Base, undo that
     }
 
 PlasmaApplet::~PlasmaApplet()
