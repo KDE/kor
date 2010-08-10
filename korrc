@@ -1,9 +1,9 @@
 # group describing the global layout of Kor (list of all components)
 [Layout]
 # list of id's for all panels
-Panels=Panel0
+#Panels=Panel0
 # list of id's for all desktop windows
-Desktops=Desktop0
+#Desktops=Desktop0
 # whether minicli should be enabled
 Minicli=true
 
