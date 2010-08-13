@@ -89,7 +89,7 @@ void Minicli::commandChanged( const QString& command )
     }
 
 QStringList Minicli::finalURIFilters() const
-    { // TODO thread-unsafe with default KDE build flags
+    {
     static QStringList filters = makeURIFilters( config.removeFinalURIFilters());
     return filters;
     }
