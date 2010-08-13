@@ -9,14 +9,16 @@ Mid-term:
 
 - minicli on-the-fly parsing (for icon)
 - change minicli to F2 (+handle reassigning from krunner)
-- moving kscreenlocker etc. out of krunner
+- moving kscreenlocker, startup notification, etc. out of krunner
 - initial panel layouting is visible, avoid/hide somehow
 - API for native applets ?
 - do not create panels/desktops that are on screens which do not exist
 - how does plasma theme code decide whether to use transparent or opaque? (match with BackgroundColor=)
+- more complete color theming possible (not just background, but all kicker could do)
 - clean up config loading etc.
     - rename load() to loadConfig() and use for pure config load?
     - make applets etc. remember their id?
+    - use KConfigXT wherever possible
 
 Long-term:
 ===========
