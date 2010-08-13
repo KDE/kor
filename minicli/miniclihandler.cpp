@@ -29,17 +29,32 @@
 #include <qtextstream.h>
 #include <stdio.h>
 
+#include "minicliconfig.h"
+
 namespace Kor
 {
 
 MinicliHandlerCommandUrl::MinicliHandlerCommandUrl()
     {
-    finalFilters = KUriFilter::self()->pluginNames();
-    // remove everything not wanted at all (TODO configurable?)
-    finalFilters.removeAll( "kuriikwsfilter" );
-    partialFilters = finalFilters;
-    // remove everything not wanted when parsing while typing
-    partialFilters.removeAll( "localdomainurifilter" ); // can be slow (dns lookups)
+    MinicliConfig config;
+    if( config.removeFinalURIFilters().count() == 1 && config.removeFinalURIFilters().first() == "all" )
+        finalFilters.clear();
+    else
+        {
+        finalFilters = KUriFilter::self()->pluginNames();
+        // remove everything not wanted at all
+        foreach( QString filter, config.removeFinalURIFilters())
+            finalFilters.removeAll( filter );
+        }
+    if( config.removeProgressURIFilters().count() == 1 && config.removeProgressURIFilters().first() == "all" )
+        progressFilters.clear();
+    else
+        {
+        progressFilters = KUriFilter::self()->pluginNames();
+        // remove everything not wanted when parsing while typing
+        foreach( QString filter, config.removeProgressURIFilters())
+            progressFilters.removeAll( filter );
+        }
     }
 
 MinicliHandler::HandledState MinicliHandlerCommandUrl::run( const QString& command, QWidget* widget, QString* error )

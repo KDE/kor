@@ -46,8 +46,8 @@ class MinicliHandlerCommandUrl
         virtual HandledState run( const QString& command, QWidget* widget, QString* error );
     private:
         KUriFilterData data;
-        QStringList partialFilters;
-        QStringList finalFilters;
+        QStringList progressFilters; // used to update minicli status (e.g. icon) before Enter is pressed
+        QStringList finalFilters; // used when Enter is pressed
     };
 
 class MinicliHandlerSpecials

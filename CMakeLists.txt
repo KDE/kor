@@ -47,7 +47,10 @@ set( kor_SRCS
      )
 
 kde4_add_ui_files( kor_SRCS minicli/miniclidialog.ui )
-kde4_add_kcfg_files( kor_SRCS minicli/miniclidialogconfig.kcfgc )
+kde4_add_kcfg_files( kor_SRCS
+    minicli/minicliconfig.kcfgc
+    minicli/miniclidialogconfig.kcfgc
+    )
 
 kde4_add_kdeinit_executable( kor ${kor_SRCS} )
 target_link_libraries( kdeinit_kor

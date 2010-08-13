@@ -1,0 +1,4 @@
+File=minicliconfig.kcfg
+ClassName=MinicliConfig
+Mutators=true
+Namespace=Kor
