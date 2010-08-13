@@ -29,39 +29,17 @@
 #include <qtextstream.h>
 #include <stdio.h>
 
+#include "minicli.h"
 #include "minicliconfig.h"
 
 namespace Kor
 {
 
-MinicliHandlerCommandUrl::MinicliHandlerCommandUrl()
-    {
-    MinicliConfig config;
-    if( config.removeFinalURIFilters().count() == 1 && config.removeFinalURIFilters().first() == "all" )
-        finalFilters.clear();
-    else
-        {
-        finalFilters = KUriFilter::self()->pluginNames();
-        // remove everything not wanted at all
-        foreach( QString filter, config.removeFinalURIFilters())
-            finalFilters.removeAll( filter );
-        }
-    if( config.removeProgressURIFilters().count() == 1 && config.removeProgressURIFilters().first() == "all" )
-        progressFilters.clear();
-    else
-        {
-        progressFilters = KUriFilter::self()->pluginNames();
-        // remove everything not wanted when parsing while typing
-        foreach( QString filter, config.removeProgressURIFilters())
-            progressFilters.removeAll( filter );
-        }
-    }
-
 MinicliHandler::HandledState MinicliHandlerCommandUrl::run( const QString& command, QWidget* widget, QString* error )
     {
     KUriFilterData data;
     data.setData( command );
-    KUriFilter::self()->filterUri( data, finalFilters );
+    KUriFilter::self()->filterUri( data, Minicli::finalURIFilters());
     QString cmd;
     KUrl uri = data.uri();
     if( uri.isLocalFile() && !uri.hasRef() && uri.query().isEmpty())

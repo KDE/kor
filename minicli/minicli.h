@@ -20,6 +20,8 @@
 
 #include <kdialog.h>
 
+#include "minicliconfig.h"
+
 namespace Kor
 {
 
@@ -35,11 +37,15 @@ class Minicli
         virtual ~Minicli();
         void commandChanged( const QString& command );
         bool runCommand( const QString& command, QString* result );
+        QStringList finalURIFilters() const;
+        QStringList progressURIFilters() const;
     private slots:
         void showDialog();
     private:
+        static QStringList makeURIFilters( const QStringList& remove );
         MinicliDialog* dialog;
         QList< MinicliHandler* > handlers;
+        MinicliConfig config;
     };
 
 } // namespace

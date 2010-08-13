@@ -42,7 +42,6 @@ class MinicliHandlerCommandUrl
     : public MinicliHandler
     {
     public:
-        MinicliHandlerCommandUrl();
         virtual HandledState run( const QString& command, QWidget* widget, QString* error );
     private:
         QStringList progressFilters; // used to update minicli status (e.g. icon) before Enter is pressed

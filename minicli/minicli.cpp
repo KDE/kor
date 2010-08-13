@@ -76,6 +76,29 @@ void Minicli::commandChanged( const QString& command )
     {
     }
 
+QStringList Minicli::finalURIFilters() const
+    { // TODO thread-unsafe with default KDE build flags
+    static QStringList filters = makeURIFilters( config.removeFinalURIFilters());
+    return filters;
+    }
+
+QStringList Minicli::progressURIFilters() const
+    { // TODO thread-unsafe with default KDE build flags
+    static QStringList filters = makeURIFilters( config.removeProgressURIFilters());
+    return filters;
+    }
+
+QStringList Minicli::makeURIFilters( const QStringList& remove )
+    {
+    if( remove.count() == 1 && remove.first() == "all" )
+        return QStringList();
+    QStringList filters = KUriFilter::self()->pluginNames();
+    // remove everything not wanted
+    foreach( QString filter, remove )
+        filters.removeAll( filter );
+    return filters;
+    }
+
 } // namespace
 
 #include "minicli.moc"
