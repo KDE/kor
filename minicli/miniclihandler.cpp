@@ -39,7 +39,7 @@ MinicliHandler::HandledState MinicliHandlerCommandUrl::run( const QString& comma
     {
     KUriFilterData data;
     data.setData( command );
-    KUriFilter::self()->filterUri( data, Minicli::finalURIFilters());
+    KUriFilter::self()->filterUri( data, Minicli::self()->finalURIFilters());
     QString cmd;
     KUrl uri = data.uri();
     if( uri.isLocalFile() && !uri.hasRef() && uri.query().isEmpty())

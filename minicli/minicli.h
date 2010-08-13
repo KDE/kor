@@ -35,6 +35,7 @@ class Minicli
     public:
         Minicli( QObject* parent = NULL );
         virtual ~Minicli();
+        static Minicli* self();
         void commandChanged( const QString& command );
         bool runCommand( const QString& command, QString* result );
         QStringList finalURIFilters() const;

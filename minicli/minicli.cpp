@@ -17,6 +17,7 @@
 
 #include "minicli.h"
 
+#include <assert.h>
 #include <kaction.h>
 #include <kactioncollection.h>
 #include <klocale.h>
@@ -29,10 +30,14 @@
 namespace Kor
 {
 
+static Minicli* minicli_ptr = NULL;
+
 Minicli::Minicli( QObject* parent )
     : QObject( parent )
-    , dialog( new MinicliDialog( this ))
     {
+    assert( minicli_ptr == NULL );
+    minicli_ptr = this;
+    dialog = new MinicliDialog( this );
     KActionCollection* actions = new KActionCollection( this );
     KAction* action = actions->addAction( "showruncommand" );
     action->setText( i18n( "Show run command dialog" ));
@@ -49,6 +54,13 @@ Minicli::Minicli( QObject* parent )
 Minicli::~Minicli()
     {
     qDeleteAll( handlers );
+    minicli_ptr = NULL;
+    }
+
+Minicli* Minicli::self()
+    {
+    assert( minicli_ptr != NULL );
+    return minicli_ptr;
     }
 
 void Minicli::showDialog()
