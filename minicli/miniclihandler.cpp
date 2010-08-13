@@ -59,6 +59,7 @@ MinicliHandlerCommandUrl::MinicliHandlerCommandUrl()
 
 MinicliHandler::HandledState MinicliHandlerCommandUrl::run( const QString& command, QWidget* widget, QString* error )
     {
+    KURIFilterData data;
     data.setData( command );
     KUriFilter::self()->filterUri( data, finalFilters );
     QString cmd;
