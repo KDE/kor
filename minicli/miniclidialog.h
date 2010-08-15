@@ -37,6 +37,9 @@ class MinicliDialog
         MinicliDialog( Minicli* minicli );
         virtual ~MinicliDialog();
         void activate();
+        int sizeForIcon() const;
+        // update the minicli icon to the given pixmap
+        void updateIcon( QPixmap pixmap );
     protected:
         virtual void accept();
     private slots:
@@ -49,6 +52,12 @@ class MinicliDialog
         Ui::MinicliDialog ui;
         Minicli* minicli;
     };
+
+inline
+int MinicliDialog::sizeForIcon() const
+    {
+    return 32;
+    }
 
 } // namespace
 

@@ -77,9 +77,8 @@ void MinicliDialog::activate()
 
 void MinicliDialog::reset()
     { // TODO compute icon size from command's sizehint->height ?
-    const int ICON_SIZE = 32;
-    ui.label->setFixedSize( ICON_SIZE, ICON_SIZE );
-    ui.label->setPixmap( KIconLoader::global()->loadIcon( "kde", KIconLoader::NoGroup, ICON_SIZE ));
+    ui.label->setFixedSize( sizeForIcon(), sizeForIcon());
+    updateIcon( QPixmap());
     ui.command->clearEditText();
     enableButtonOk( false );
     }
@@ -88,6 +87,14 @@ void MinicliDialog::textChanged( const QString& text )
     {
     enableButtonOk( !text.isEmpty());
     minicli->commandChanged( text );
+    }
+
+void MinicliDialog::updateIcon( QPixmap pixmap )
+    {
+    if( pixmap.isNull())
+        ui.label->setPixmap( KIconLoader::global()->loadIcon( "kde", KIconLoader::NoGroup, sizeForIcon()));
+    else
+        ui.label->setPixmap( pixmap );
     }
 
 void MinicliDialog::accept()
