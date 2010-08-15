@@ -17,8 +17,6 @@
 
 #include "application.h"
 
-#include <kauthorized.h>
-
 #include "desktop.h"
 #include "minicli.h"
 #include "panel.h"
@@ -29,7 +27,7 @@ namespace Kor
 Application::Application()
     {
     KConfigGroup cfg( KGlobal::config(), "Layout" );
-    if( cfg.readEntry( "Minicli", true ) && KAuthorized::authorizeKAction( "run_command" ))
+    if( cfg.readEntry( "Minicli", true ))
         objects.append( new Minicli( this ));
     foreach( const QString& panelid, cfg.readEntry( "Panels", QStringList()))
         objects.append( new Panel( panelid, this ));

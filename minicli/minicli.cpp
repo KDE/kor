@@ -20,6 +20,7 @@
 #include <assert.h>
 #include <kaction.h>
 #include <kactioncollection.h>
+#include <kauthorized.h>
 #include <klocale.h>
 
 #include <kdebug.h>
@@ -46,9 +47,11 @@ Minicli::Minicli( QObject* parent )
 
     // Command handlers, highest priority first. This could be made even
     // more flexible by introducing plugins, if needed.    
-    handlers.append( new MinicliHandlerSpecials );
+    if( KAuthorized::authorizeKAction( "run_command" )) // TODO this authorize action for specials?
+        handlers.append( new MinicliHandlerSpecials );
     handlers.append( new MinicliHandlerCalculator );
-    handlers.append( new MinicliHandlerCommandUrl );
+    if( KAuthorized::authorizeKAction( "run_command" ))
+        handlers.append( new MinicliHandlerCommandUrl );
     }
 
 Minicli::~Minicli()
