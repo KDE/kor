@@ -1,6 +1,8 @@
 Short-term:
 ===========
 
+- threads for minicli disabled for now, fast typing of a url leads to dbus deadlock
+    - check the dbus patch from k-c-d
 - minicli has broken positioning on xinerama (active vs inactive screen)
     - and launched apps are placed on the other screen
 - splash still goes away way too soon
