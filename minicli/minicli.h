@@ -19,6 +19,7 @@
 #define KOR_MINICLI_H
 
 #include <kdialog.h>
+#include <qthread.h>
 #include <qtimer.h>
 
 #include "minicliconfig.h"
@@ -44,13 +45,30 @@ class Minicli
     private slots:
         void showDialog();
         void doUpdate();
+        void updateThreadFinished();
     private:
         static QStringList makeURIFilters( const QStringList& remove );
+        static void doUpdateInternal( const QString& text, QList< MinicliHandler* > handlers, QString* iconName );
+        void cancelUpdateThread();
         MinicliDialog* dialog;
         QList< MinicliHandler* > handlers;
         MinicliConfig config;
         QTimer updateTimer;
         QString updateText;
+        class UpdateThread;
+        UpdateThread* updateThread;
+    };
+
+class Minicli::UpdateThread
+    : public QThread
+    {
+    Q_OBJECT
+    public:
+        QString text;
+        QString iconName;
+        QList< MinicliHandler* > handlers;
+    protected:
+        virtual void run();
     };
 
 } // namespace

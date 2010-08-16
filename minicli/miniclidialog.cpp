@@ -44,7 +44,6 @@ MinicliDialog::MinicliDialog( Minicli* minicli )
     ui.setupUi( widget );
     ui.command->setDuplicatesEnabled( false );
     showButtonSeparator( true );
-    connect( ui.command, SIGNAL( editTextChanged( const QString& )), this, SLOT( textChanged( const QString& )));
     // Popup completion generally should not also accept the dialog, but for minicli it's very convenient
     // this way. However prevent the normal dialog handling on Enter to avoid double accepting (e.g. two
     // error dialogs on something incorrect).
@@ -52,6 +51,10 @@ MinicliDialog::MinicliDialog( Minicli* minicli )
     connect( ui.command, SIGNAL( returnPressed()), this, SLOT( accept()));
     adjustSize();
     readConfig();
+    // do the connect only here, otherwise the initial setup from readConfig() would already cause the signal,
+    // and at this point Minicli class doesn't have yet the 'minicli' pointer initialized (so it calling back
+    // would lead to a crash)
+    connect( ui.command, SIGNAL( editTextChanged( const QString& )), this, SLOT( textChanged( const QString& )));
     }
 
 MinicliDialog::~MinicliDialog()

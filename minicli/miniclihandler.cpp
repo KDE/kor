@@ -127,23 +127,30 @@ MinicliHandler::HandledState MinicliHandlerCommandUrl::update( const QString& co
         case KUriFilterData::LocalFile:
         case KUriFilterData::LocalDir:
         case KUriFilterData::NetProtocol:
-        case KUriFilterData::Help:
+#if KDE_IS_VERSION( 4, 6, 0 )
         case KUriFilterData::Executable:
+#endif
+        case KUriFilterData::Help:
         case KUriFilterData::Shell:
             *iconName = data.iconName();
-#if ! KDE_IS_VERSION( 4, 6, 0 )
-// workaround for KUriFilter bug
-            if( data.uriType() == KUriFilterData::Executable
-                && ( data.iconName() == "unknown" || data.iconName() == "system-run" ))
-                {
-                QString exeName = data.uri().path();
-                exeName = exeName.mid( exeName.lastIndexOf( '/' ) + 1 ); // strip path if given
-                KService::Ptr service = KService::serviceByDesktopName( exeName );
-                if (service && service->icon() != QLatin1String( "unknown" ))
-                    *iconName = service->icon();
-                }
-#endif
             return HandledOk;
+#if ! KDE_IS_VERSION( 4, 6, 0 )
+// workarounds for KUriFilter bugs
+        case KUriFilterData::Executable:
+            {
+            QString exeName = data.uri().path();
+            exeName = exeName.mid( exeName.lastIndexOf( '/' ) + 1 ); // strip path if given
+            KService::Ptr service = KService::serviceByDesktopName( exeName );
+            if (service && service->icon() != QLatin1String( "unknown" ))
+                *iconName = service->icon();
+            else if ( !KIconLoader::global()->iconPath( exeName, KIconLoader::NoGroup, true ).isNull() )
+                *iconName = exeName;
+            else
+                // not found, use default
+                *iconName = QLatin1String("system-run");
+            return HandledOk;
+            }
+#endif
         case KUriFilterData::Error:
             *iconName = "dialog-error";
             return HandledFailed;

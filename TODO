@@ -9,7 +9,6 @@ Mid-term:
 ===========
 
 - klipper systray icon doesn't repaint when covered by a popup menu
-- minicli on-the-fly parsing (for icon)
 - change minicli to F2 (+handle reassigning from krunner)
 - moving kscreenlocker, startup notification, etc. out of krunner
 - initial panel layouting is visible, avoid/hide somehow

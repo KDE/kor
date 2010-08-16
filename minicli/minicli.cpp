@@ -35,6 +35,7 @@ static Minicli* minicli_ptr = NULL;
 
 Minicli::Minicli( QObject* parent )
     : QObject( parent )
+    , updateThread( NULL )
     {
     assert( minicli_ptr == NULL );
     minicli_ptr = this;
@@ -59,6 +60,12 @@ Minicli::Minicli( QObject* parent )
 
 Minicli::~Minicli()
     {
+    if( updateThread != NULL )
+        {
+        updateThread->wait();
+        delete updateThread;
+        updateThread = NULL;
+        }
     qDeleteAll( handlers );
     minicli_ptr = NULL;
     }
@@ -77,6 +84,7 @@ void Minicli::showDialog()
 bool Minicli::runCommand( const QString& cmd, QString* result )
     {
     updateTimer.stop();
+    cancelUpdateThread();
     QString command = cmd.trimmed();
     result->clear();
     if( command.isEmpty())
@@ -95,24 +103,76 @@ void Minicli::commandChanged( const QString& command )
     {
     if( config.disableProgressParsing())
         return;
-    updateText = command;
-    updateTimer.start( 200 );
+    if( command.trimmed().isEmpty())
+        {
+        dialog->updateIcon( QString());
+        updateTimer.stop();
+        cancelUpdateThread();
+        return;
+        }
+// KUriFilter should be thread-safe, but one never knows, so make using a thread optional.
+    if( config.disableThreads())
+        {
+        updateText = command;
+        updateTimer.start( 200 );
+        }
+    else
+        {
+        cancelUpdateThread();
+        updateThread = new UpdateThread;
+        updateThread->text = command;
+        updateThread->handlers = handlers;
+        connect( updateThread, SIGNAL( finished()), this, SLOT( updateThreadFinished()));
+        updateThread->start();
+        }
+    }
+
+void Minicli::cancelUpdateThread()
+    {
+    if( updateThread != NULL )
+        {
+        // If there's one still running, make it delete itself when it's finally done,
+        // do not wait for it (which would block).
+        connect( updateThread, SIGNAL( finished()), updateThread, SLOT( deleteLater()));
+        disconnect( updateThread, SIGNAL( finished()), this, SLOT( updateThreadFinished()));
+        updateThread = NULL;
+        }
     }
 
 void Minicli::doUpdate()
     {
-    QString command = updateText.trimmed();
     QString iconName;
+    doUpdateInternal( updateText, handlers, &iconName );
+    dialog->updateIcon( iconName );
+    }
+
+void Minicli::UpdateThread::run()
+    {
+    doUpdateInternal( text, handlers, &iconName );
+    }
+
+void Minicli::updateThreadFinished()
+    {
+    if( updateThread == NULL || sender() != updateThread )
+        return; // possibly an old thread still managed to emit a signal before disconnecting
+    dialog->updateIcon( updateThread->iconName );
+    updateThread->deleteLater();
+    updateThread = NULL;
+    }
+
+// The shared functionality for on-the-fly parsing. Is static and should be reentrant.
+void Minicli::doUpdateInternal( const QString& text, QList< MinicliHandler* > handlers, QString* iconName )
+    {
+    QString command = text.trimmed();
     if( !command.isEmpty())
         {
         foreach( MinicliHandler* handler, handlers )
             {
-            MinicliHandler::HandledState handled = handler->update( command, &iconName );
+            MinicliHandler::HandledState handled = handler->update( command, iconName );
             if( handled != MinicliHandler::NotHandled )
                 break;
             }
         }
-    dialog->updateIcon( iconName );
     }
 
 QStringList Minicli::finalURIFilters() const
