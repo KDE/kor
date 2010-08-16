@@ -88,8 +88,13 @@ MinicliHandler::HandledState MinicliHandlerCommandUrl::run( const QString& comma
                 return HandledFailed;
                 }
             }
+        case KUriFilterData::Error:
+        case KUriFilterData::Blocked:
+            {
+            *error = data.errorMsg();
+            return HandledFailed;
+            }
         case KUriFilterData::Unknown:
-        case KUriFilterData::Error: // TODO or rather do not handle at all here?
             {
             // Look for desktop file
             KService::Ptr service = KService::serviceByDesktopName( cmd );
@@ -104,9 +109,7 @@ MinicliHandler::HandledState MinicliHandlerCommandUrl::run( const QString& comma
                 KRun::run( *service, KUrl::List(), widget );
                 return HandledOk;
                 }
-            *error = i18n( "<center><b>%1</b></center>\nCould not run the specified command.",
-                Qt::convertFromPlainText( cmd ));
-            return HandledFailed;
+            return NotHandled;
             }
         }
     if( KRun::runCommand( cmd, exec, data.iconName(), widget ))
