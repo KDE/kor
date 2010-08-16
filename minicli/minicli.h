@@ -19,6 +19,7 @@
 #define KOR_MINICLI_H
 
 #include <kdialog.h>
+#include <qtimer.h>
 
 #include "minicliconfig.h"
 
@@ -42,11 +43,14 @@ class Minicli
         QStringList progressURIFilters() const;
     private slots:
         void showDialog();
+        void doUpdate();
     private:
         static QStringList makeURIFilters( const QStringList& remove );
         MinicliDialog* dialog;
         QList< MinicliHandler* > handlers;
         MinicliConfig config;
+        QTimer updateTimer;
+        QString updateText;
     };
 
 } // namespace

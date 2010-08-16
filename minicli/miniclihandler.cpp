@@ -97,14 +97,7 @@ MinicliHandler::HandledState MinicliHandlerCommandUrl::run( const QString& comma
         case KUriFilterData::Unknown:
             {
             // Look for desktop file
-            KService::Ptr service = KService::serviceByDesktopName( cmd );
-            if( service && service->isValid() && service->isApplication())
-                {
-                KRun::run( *service, KUrl::List(), widget );
-                return HandledOk;
-                }
-            service = KService::serviceByName( cmd );
-            if( service && service->isValid() && service->isApplication())
+            if( KService::Ptr service = findService( cmd ))
                 {
                 KRun::run( *service, KUrl::List(), widget );
                 return HandledOk;
@@ -119,6 +112,67 @@ MinicliHandler::HandledState MinicliHandlerCommandUrl::run( const QString& comma
     return HandledFailed;
     }
 
+MinicliHandler::HandledState MinicliHandlerCommandUrl::update( const QString& command, QString* iconName )
+    {
+    KUriFilterData data;
+    data.setData( command );
+    KUriFilter::self()->filterUri( data, Minicli::self()->progressURIFilters());
+    switch( data.uriType())
+        {
+        case KUriFilterData::LocalFile:
+        case KUriFilterData::LocalDir:
+        case KUriFilterData::NetProtocol:
+        case KUriFilterData::Help:
+        case KUriFilterData::Executable:
+        case KUriFilterData::Shell:
+            *iconName = data.iconName();
+#if ! KDE_IS_VERSION( 4, 6, 0 )
+// workaround for KUriFilter bug
+            if( data.uriType() == KUriFilterData::Executable
+                && ( data.iconName() == "unknown" || data.iconName() == "system-run" ))
+                {
+                QString exeName = data.uri().path();
+                exeName = exeName.mid( exeName.lastIndexOf( '/' ) + 1 ); // strip path if given
+                KService::Ptr service = KService::serviceByDesktopName( exeName );
+                if (service && service->icon() != QLatin1String( "unknown" ))
+                    *iconName = service->icon();
+                }
+#endif
+            return HandledOk;
+        case KUriFilterData::Error:
+            *iconName = "dialog-error";
+            return HandledFailed;
+        case KUriFilterData::Blocked:
+            *iconName = "object-locked";
+            return HandledFailed;
+        case KUriFilterData::Unknown:
+            {
+            KUrl uri = data.uri();
+            if( uri.isLocalFile() && !uri.hasRef() && uri.query().isEmpty())
+                {
+                if( KService::Ptr service = findService( uri.path()))
+                    {
+                    *iconName = service->icon();
+                    return HandledOk;
+                    }
+                }
+            return NotHandled;
+            }
+        }
+    abort();
+    }
+
+KService::Ptr MinicliHandlerCommandUrl::findService( const QString& cmd )
+    {
+    KService::Ptr service = KService::serviceByDesktopName( cmd );
+    if( service && service->isValid() && service->isApplication())
+        return service;
+    service = KService::serviceByName( cmd );
+    if( service && service->isValid() && service->isApplication())
+        return service;
+    return KService::Ptr();
+    }
+
 MinicliHandler::HandledState MinicliHandlerSpecials::run( const QString& command, QWidget*, QString* error )
     {
     if( command == "logout" )
@@ -129,6 +183,16 @@ MinicliHandler::HandledState MinicliHandlerSpecials::run( const QString& command
             *error = i18n( "Failed to contact the session manager" );
             return HandledFailed;
             }
+        return HandledOk;
+        }
+    return NotHandled;
+    }
+
+MinicliHandler::HandledState MinicliHandlerSpecials::update( const QString& command, QString* iconName )
+    {
+    if( command == "logout" )
+        {
+        *iconName = "system-log-out";
         return HandledOk;
         }
     return NotHandled;
@@ -153,6 +217,14 @@ MinicliHandler::HandledState MinicliHandlerCalculator::run( const QString& comma
         return HandledOk;
         }
     return HandledFailed;
-}
+    }
+
+MinicliHandler::HandledState MinicliHandlerCalculator::update( const QString& command, QString* iconName )
+    {
+    if( !command.startsWith( '=' ))
+        return NotHandled;
+    *iconName = "accessories-calculator";
+    return HandledOk;
+    }
 
 } // namespace

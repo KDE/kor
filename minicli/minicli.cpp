@@ -45,6 +45,9 @@ Minicli::Minicli( QObject* parent )
     action->setGlobalShortcut( KShortcut( Qt::ALT + Qt::Key_F5 ));
     connect( action, SIGNAL( triggered( bool )), this, SLOT( showDialog()));
 
+    connect( &updateTimer, SIGNAL( timeout()), this, SLOT( doUpdate()));
+    updateTimer.setSingleShot( true );
+
     // Command handlers, highest priority first. This could be made even
     // more flexible by introducing plugins, if needed.    
     if( KAuthorized::authorizeKAction( "run_command" )) // TODO this authorize action for specials?
@@ -73,6 +76,7 @@ void Minicli::showDialog()
 
 bool Minicli::runCommand( const QString& cmd, QString* result )
     {
+    updateTimer.stop();
     QString command = cmd.trimmed();
     result->clear();
     if( command.isEmpty())
@@ -89,6 +93,24 @@ bool Minicli::runCommand( const QString& cmd, QString* result )
 
 void Minicli::commandChanged( const QString& command )
     {
+    updateText = command;
+    updateTimer.start( 200 );
+    }
+
+void Minicli::doUpdate()
+    {
+    QString command = updateText.trimmed();
+    QString iconName;
+    if( !command.isEmpty())
+        {
+        foreach( MinicliHandler* handler, handlers )
+            {
+            MinicliHandler::HandledState handled = handler->update( command, &iconName );
+            if( handled != MinicliHandler::NotHandled )
+                break;
+            }
+        }
+    dialog->updateIcon( iconName );
     }
 
 QStringList Minicli::finalURIFilters() const

@@ -18,6 +18,7 @@
 #ifndef KOR_MINICLIHANDLER_H
 #define KOR_MINICLIHANDLER_H
 
+#include <kservice.h>
 #include <kurifilter.h>
 
 namespace Kor
@@ -36,6 +37,10 @@ class MinicliHandler
             @arg widget window for associating commands with
         **/
         virtual HandledState run( const QString& command, QWidget* widget, QString* error ) = 0;
+        /** Similar to run(), called when the user has typed something but has not confirmed it yet,
+            so it can be used to update the icon showed for the command.
+        **/
+        virtual HandledState update( const QString& command, QString* iconName ) = 0;
     };
 
 class MinicliHandlerCommandUrl
@@ -43,7 +48,9 @@ class MinicliHandlerCommandUrl
     {
     public:
         virtual HandledState run( const QString& command, QWidget* widget, QString* error );
+        virtual HandledState update( const QString& command, QString* iconName );
     private:
+        KService::Ptr findService( const QString& cmd );
         QStringList progressFilters; // used to update minicli status (e.g. icon) before Enter is pressed
         QStringList finalFilters; // used when Enter is pressed
     };
@@ -53,6 +60,7 @@ class MinicliHandlerSpecials
     {
     public:
         virtual HandledState run( const QString& command, QWidget* widget, QString* error );
+        virtual HandledState update( const QString& command, QString* iconName );
     };
 
 class MinicliHandlerCalculator
@@ -60,6 +68,7 @@ class MinicliHandlerCalculator
     {
     public:
         virtual HandledState run( const QString& command, QWidget* widget, QString* error );
+        virtual HandledState update( const QString& command, QString* iconName );
     };
 
 } // namespace
