@@ -47,6 +47,7 @@ class MinicliHandlerCommandUrl
     : public MinicliHandler
     {
     public:
+        MinicliHandlerCommandUrl();
         virtual HandledState run( const QString& command, QWidget* widget, QString* error );
         virtual HandledState update( const QString& command, QString* iconName );
     private:

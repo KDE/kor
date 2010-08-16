@@ -35,6 +35,11 @@
 namespace Kor
 {
 
+MinicliHandlerCommandUrl::MinicliHandlerCommandUrl()
+    {
+    ( void ) KUriFilter::self(); // trigger creation (so that there is not a race condition later if used from threads)
+    }
+
 MinicliHandler::HandledState MinicliHandlerCommandUrl::run( const QString& command, QWidget* widget, QString* error )
     {
     KUriFilterData data;
