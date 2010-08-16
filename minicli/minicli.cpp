@@ -93,6 +93,8 @@ bool Minicli::runCommand( const QString& cmd, QString* result )
 
 void Minicli::commandChanged( const QString& command )
     {
+    if( config.disableProgressParsing())
+        return;
     updateText = command;
     updateTimer.start( 200 );
     }

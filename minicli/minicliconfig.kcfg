@@ -6,6 +6,9 @@
 
   <kcfgfile name="korrc" />
   <group name="Minicli">
+    <entry key="DisableProgressParsing" type="bool">
+      <default>false</default>
+    </entry>
     <entry key="RemoveFinalURIFilters" type="StringList">
       <default>kuriikwsfilter</default>
     </entry>
