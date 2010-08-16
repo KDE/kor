@@ -21,6 +21,7 @@
 #include <kglobal.h>
 #include <ksharedconfig.h>
 
+#include "helloconfig.h"
 #include "panel.h"
 
 namespace Kor
@@ -35,11 +36,11 @@ HelloApplet::HelloApplet( Kor::Panel* panel )
 
 void HelloApplet::load( const QString& id )
     {
-    KConfigGroup cfg( KGlobal::config(), id );
-    setText( cfg.readEntry( "Text", "Hello" ));
+    HelloAppletConfig config( id );
+    setText( config.text());
     QPalette p = palette();
-    p.setColor( QPalette::Background, cfg.readEntry( "Background", QColor( Qt::cyan )));
-    p.setColor( QPalette::WindowText, cfg.readEntry( "Color", QColor( Qt::black )));
+    p.setColor( QPalette::Background, QColor( config.background())); // QColor ctor, in order to read e.g. "black"
+    p.setColor( QPalette::WindowText, QColor( config.color()));
     setPalette( p );
     }
 

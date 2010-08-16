@@ -1,0 +1,4 @@
+File=helloconfig.kcfg
+ClassName=HelloAppletConfig
+Mutators=false
+Namespace=Kor

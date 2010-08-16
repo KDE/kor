@@ -50,6 +50,7 @@ kde4_add_ui_files( kor_SRCS minicli/miniclidialog.ui )
 kde4_add_kcfg_files( kor_SRCS
     minicli/minicliconfig.kcfgc
     minicli/miniclidialogconfig.kcfgc
+    panels/hello/helloconfig.kcfgc
     )
 
 kde4_add_kdeinit_executable( kor ${kor_SRCS} )
