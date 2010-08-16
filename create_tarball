@@ -8,6 +8,7 @@ mkdir -p "$tmp"/kor-$version
 cp -apr . "$tmp"/kor-$version
 (
     cd "$tmp"/kor-$version
+    git reset --hard
     git clean -d -x -f
     rm -rf .git
 )
