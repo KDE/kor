@@ -90,7 +90,6 @@ MinicliHandler::HandledState MinicliHandlerCommandUrl::run( const QString& comma
             }
         case KUriFilterData::Unknown:
         case KUriFilterData::Error: // TODO or rather do not handle at all here?
-        default:
             {
             // Look for desktop file
             KService::Ptr service = KService::serviceByDesktopName( cmd );
