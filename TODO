@@ -3,10 +3,12 @@ Short-term:
 
 - minicli has broken positioning on xinerama (active vs inactive screen)
     - and launched apps are placed on the other screen
+- splash still goes away way too soon
 
 Mid-term:
 ===========
 
+- klipper systray icon doesn't repaint when covered by a popup menu
 - minicli on-the-fly parsing (for icon)
 - change minicli to F2 (+handle reassigning from krunner)
 - moving kscreenlocker, startup notification, etc. out of krunner
