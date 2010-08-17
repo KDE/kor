@@ -17,10 +17,6 @@
 
 #include "hello.h"
 
-#include <kconfiggroup.h>
-#include <kglobal.h>
-#include <ksharedconfig.h>
-
 #include "helloconfig.h"
 #include "panel.h"
 
