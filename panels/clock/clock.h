@@ -23,6 +23,8 @@
 
 #include "applet.h"
 
+class KDatePicker;
+
 namespace Kor
 {
 
@@ -33,11 +35,15 @@ class ClockApplet
     public:
         ClockApplet( Kor::Panel* panel );
         virtual void load( const QString& id );
+    protected:
+        virtual void mousePressEvent( QMouseEvent* event );
     private slots:
         void updateClock();
+        void datePickerDeleted();
     private:
         QTimer timer;
         bool showSeconds;
+        KDatePicker* datePicker;
     };
 
 } // namespace
