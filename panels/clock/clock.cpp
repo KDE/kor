@@ -15,27 +15,40 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 *********************************************************************/
 
-#include "applet.h"
+#include "clock.h"
 
-#include "clock/clock.h"
-#include "hello/hello.h"
-#include "plasma/plasmaapplet.h"
-#include "spacer.h"
+#include <kconfiggroup.h>
+#include <kglobal.h>
+#include <klocale.h>
+#include <ksharedconfig.h>
+
+#include "clockconfig.h"
+#include "panel.h"
 
 namespace Kor
 {
 
-Applet* Applet::create( const QString& type, Panel* panel )
+ClockApplet::ClockApplet( Kor::Panel* panel )
+    : QLabel( panel->window())
+    , Applet( panel )
     {
-    if( type == "Plasma" )
-        return new PlasmaApplet( panel );
-    if( type == "Spacer" )
-        return new Spacer( panel );
-    if( type == "Hello" )
-        return new HelloApplet( panel );
-    if( type == "Clock" )
-        return new ClockApplet( panel );
-    return NULL;
+    connect( &timer, SIGNAL( timeout()), this, SLOT( updateClock()));
+    }
+
+void ClockApplet::load( const QString& id )
+    {
+    ClockAppletConfig config( id );
+    showSeconds = config.showSeconds();
+    timer.start( 1000 ); // TODO longer interval if not showing seconds
+    updateClock();
+    }
+
+void ClockApplet::updateClock()
+    {
+    setText( KGlobal::locale()->formatTime( QTime::currentTime(), showSeconds ));
+    update();
     }
 
 } // namespace
+
+#include "clock.moc"

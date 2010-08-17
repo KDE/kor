@@ -42,6 +42,7 @@ set( kor_SRCS
      panels/applet.cpp
      panels/panel.cpp
      panels/spacer.cpp
+     panels/clock/clock.cpp
      panels/hello/hello.cpp
      panels/plasma/plasmaapplet.cpp
      )
@@ -53,6 +54,7 @@ kde4_add_ui_files( kor_SRCS
 set( kor_KCFGC_FILES
      minicli/minicliconfig.kcfgc
      minicli/miniclidialogconfig.kcfgc
+     panels/clock/clockconfig.kcfgc
      panels/hello/helloconfig.kcfgc
      panels/plasma/plasmaappletconfig.kcfgc
      )

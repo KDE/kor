@@ -15,27 +15,31 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 *********************************************************************/
 
-#include "applet.h"
+#ifndef KOR_CLOCK_H
+#define KOR_CLOCK_H
 
-#include "clock/clock.h"
-#include "hello/hello.h"
-#include "plasma/plasmaapplet.h"
-#include "spacer.h"
+#include <qlabel.h>
+#include <qtimer.h>
+
+#include "applet.h"
 
 namespace Kor
 {
 
-Applet* Applet::create( const QString& type, Panel* panel )
+class ClockApplet
+    : public QLabel, public Applet
     {
-    if( type == "Plasma" )
-        return new PlasmaApplet( panel );
-    if( type == "Spacer" )
-        return new Spacer( panel );
-    if( type == "Hello" )
-        return new HelloApplet( panel );
-    if( type == "Clock" )
-        return new ClockApplet( panel );
-    return NULL;
-    }
+    Q_OBJECT
+    public:
+        ClockApplet( Kor::Panel* panel );
+        virtual void load( const QString& id );
+    private slots:
+        void updateClock();
+    private:
+        QTimer timer;
+        bool showSeconds;
+    };
 
 } // namespace
+
+#endif

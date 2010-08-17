@@ -1,0 +1,4 @@
+File=clockconfig.kcfg
+ClassName=ClockAppletConfig
+Mutators=false
+Namespace=Kor
