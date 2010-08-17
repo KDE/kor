@@ -22,6 +22,7 @@ Mid-term:
     - rename load() to loadConfig() and use for pure config load?
     - make applets etc. remember their id?
     - use KConfigXT wherever possible
+- icon (to be set as the window icon for panels, for example)
 
 Long-term:
 ===========

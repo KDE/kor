@@ -20,6 +20,7 @@
 #include <kconfiggroup.h>
 #include <kdebug.h>
 #include <kglobal.h>
+#include <kicon.h>
 #include <ksharedconfig.h>
 #include <kwindowsystem.h>
 #include <qwidget.h>
@@ -44,6 +45,7 @@ Desktop::Desktop( const QString& id, QObject* parent )
     {
     StartupSuspendHandler::self()->suspend( this );
     window->setWindowRole( id.toLower());
+    window->setWindowIcon( KIcon( "user-desktop" ));
     KWindowSystem::setType( window->winId(), NET::Desktop );
     KWindowSystem::setOnAllDesktops( window->winId(), true );
     // see wallpaperLoaded()

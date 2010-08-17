@@ -20,6 +20,7 @@
 #include <kconfiggroup.h>
 #include <kdebug.h>
 #include <kglobal.h>
+#include <kicon.h>
 #include <ksharedconfig.h>
 #include <kwindowsystem.h>
 #include <qboxlayout.h>
@@ -81,6 +82,7 @@ void Panel::loadConfig()
 void Panel::setupWindow()
     { // needs to be done after changing WA_TranslucentBackground, as that recreates the X window
     window()->setWindowRole( id.toLower());
+    window()->setWindowIcon( KIcon( "user-desktop" ));
     KWindowSystem::setType( window()->winId(), NET::Dock );
     KWindowSystem::setOnAllDesktops( window()->winId(), true );
     }
