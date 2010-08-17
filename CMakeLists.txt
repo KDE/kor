@@ -51,6 +51,7 @@ kde4_add_kcfg_files( kor_SRCS
     minicli/minicliconfig.kcfgc
     minicli/miniclidialogconfig.kcfgc
     panels/hello/helloconfig.kcfgc
+    panels/plasma/plasmaappletconfig.kcfgc
     )
 
 kde4_add_kdeinit_executable( kor ${kor_SRCS} )

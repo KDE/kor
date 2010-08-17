@@ -25,6 +25,7 @@
 #include <qx11info_x11.h>
 
 #include "panel.h"
+#include "plasmaappletconfig.h"
 
 //#define DEBUG_LAYOUT
 
@@ -56,7 +57,7 @@ PlasmaApplet::~PlasmaApplet()
 
 void PlasmaApplet::load( const QString& id )
     {
-    KConfigGroup cfg( KGlobal::config(), id );
+    PlasmaAppletConfig cfg( id );
     containment = corona.addContainment( "null" );
     containment->setFormFactor( panel->horizontal() ? Plasma::Horizontal : Plasma::Vertical );
     if( panel->horizontal() && ( panel->position() & Panel::PositionTop ))
@@ -69,12 +70,12 @@ void PlasmaApplet::load( const QString& id )
         containment->setLocation( Plasma::RightEdge );
     else
         abort();
-    sizeLimit = cfg.readEntry( "SizeLimit", 0 );
+    sizeLimit = cfg.sizeLimit();
     containment->resize( constrainSize( size()));
     setScene( containment->scene());
     setSceneRect( containment->geometry());
-    name = cfg.readEntry( "PlasmaName" );
-    applet = Plasma::Applet::load( name, cfg.readEntry( "PlasmaAppletId", 0 ));
+    name = cfg.plasmaName();
+    applet = Plasma::Applet::load( name, cfg.plasmaAppletId());
     if( applet != NULL )
         {
         applet->setFlag( QGraphicsItem::ItemIsMovable, false );

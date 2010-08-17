@@ -1,0 +1,4 @@
+File=plasmaappletconfig.kcfg
+ClassName=PlasmaAppletConfig
+Mutators=false
+Namespace=Kor
