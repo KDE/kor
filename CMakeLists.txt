@@ -46,13 +46,23 @@ set( kor_SRCS
      panels/plasma/plasmaapplet.cpp
      )
 
-kde4_add_ui_files( kor_SRCS minicli/miniclidialog.ui )
-kde4_add_kcfg_files( kor_SRCS
-    minicli/minicliconfig.kcfgc
-    minicli/miniclidialogconfig.kcfgc
-    panels/hello/helloconfig.kcfgc
-    panels/plasma/plasmaappletconfig.kcfgc
+kde4_add_ui_files( kor_SRCS
+    minicli/miniclidialog.ui
     )
+
+set( kor_KCFGC_FILES
+     minicli/minicliconfig.kcfgc
+     minicli/miniclidialogconfig.kcfgc
+     panels/hello/helloconfig.kcfgc
+     panels/plasma/plasmaappletconfig.kcfgc
+     )
+
+kde4_add_kcfg_files( kor_SRCS ${kor_KCFGC_FILES} )
+foreach( kcfgc ${kor_KCFGC_FILES} )
+    get_filename_component( kcfgc_path ${kcfgc} PATH )
+    get_filename_component( kcfgc_name ${kcfgc} NAME_WE )
+    set( kor_KCFG_FILES ${kor_KCFG_FILES} ${kcfgc_path}/${kcfgc_name}.kcfg )
+endforeach( kcfgc ${kor_KCFGC_FILES} )
 
 kde4_add_kdeinit_executable( kor ${kor_SRCS} )
 target_link_libraries( kdeinit_kor
@@ -74,5 +84,5 @@ target_link_libraries( kdeinit_kor ${X11_Xrender_LIB} )
 install( TARGETS kor ${INSTALL_TARGETS_DEFAULT_ARGS})
 install( TARGETS kdeinit_kor ${INSTALL_TARGETS_DEFAULT_ARGS})
 install( FILES kor.desktop  DESTINATION  ${AUTOSTART_INSTALL_DIR})
-# TODO ? install( FILES minicli/miniclidialogconfig.kcfg DESTINATION ${KCFG_INSTALL_DIR} RENAME korminiclidialog.kcfg )
+install( FILES ${kor_KCFG_FILES} DESTINATION ${KCFG_INSTALL_DIR}/kor )
 install( FILES korrc DESTINATION ${CONFIG_INSTALL_DIR} )
