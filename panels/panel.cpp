@@ -17,6 +17,7 @@
 
 #include "panel.h"
 
+#include <assert.h>
 #include <kconfiggroup.h>
 #include <kdebug.h>
 #include <kglobal.h>
@@ -157,32 +158,37 @@ void Panel::updatePosition()
         }
     window()->move( pos );
     window()->setFixedSize( width, height );
-    if( horizontal() && ( position() & PositionTop ))
+    switch( mainEdge())
         {
-        int strut = pos.y() - qApp->desktop()->y() + height; // struts are from total screen area, not monitor area
-        KWindowSystem::setExtendedStrut( window()->winId(), 0, 0, 0, 0, 0, 0,
-            strut, pos.x(), pos.x() + width - 1, 0, 0, 0 );
+        case MainEdgeTop:
+            {
+            int strut = pos.y() - qApp->desktop()->y() + height; // struts are from total screen area, not monitor area
+            KWindowSystem::setExtendedStrut( window()->winId(), 0, 0, 0, 0, 0, 0,
+                strut, pos.x(), pos.x() + width - 1, 0, 0, 0 );
+            break;
+            }
+        case MainEdgeBottom:
+            {
+            int strut = qApp->desktop()->geometry().bottom() - pos.y() - height + height;
+            KWindowSystem::setExtendedStrut( window()->winId(), 0, 0, 0, 0, 0, 0,
+                0, 0, 0, strut, pos.x(), pos.x() + width - 1 );
+            break;
+            }
+        case MainEdgeLeft:
+            {
+            int strut = pos.x() - qApp->desktop()->x() + width;
+            KWindowSystem::setExtendedStrut( window()->winId(), strut, pos.y(), pos.y() + height - 1, 0, 0, 0,
+                0, 0, 0, 0, 0, 0 );
+            break;
+            }
+        case MainEdgeRight:
+            {
+            int strut = qApp->desktop()->geometry().right() - pos.x() - width + width;
+            KWindowSystem::setExtendedStrut( window()->winId(), 0, 0, 0, strut, pos.y(), pos.y() + height - 1,
+                0, 0, 0, 0, 0, 0 );
+            break;
+            }
         }
-    else if( horizontal() && ( position() & PositionBottom ))
-        {
-        int strut = qApp->desktop()->geometry().bottom() - pos.y() - height + height;
-        KWindowSystem::setExtendedStrut( window()->winId(), 0, 0, 0, 0, 0, 0,
-            0, 0, 0, strut, pos.x(), pos.x() + width - 1 );
-        }
-    else if( !horizontal() && ( position() & PositionLeft ))
-        {
-        int strut = pos.x() - qApp->desktop()->x() + width;
-        KWindowSystem::setExtendedStrut( window()->winId(), strut, pos.y(), pos.y() + height - 1, 0, 0, 0,
-            0, 0, 0, 0, 0, 0 );
-        }
-    else if( !horizontal() && ( position() & PositionRight ))
-        {
-        int strut = qApp->desktop()->geometry().right() - pos.x() - width + width;
-        KWindowSystem::setExtendedStrut( window()->winId(), 0, 0, 0, strut, pos.y(), pos.y() + height - 1,
-            0, 0, 0, 0, 0, 0 );
-        }
-    else
-        abort();
     if( window()->layout() != NULL
         && !( horizontal() == ( static_cast< QBoxLayout* >( window()->layout())->direction() == QBoxLayout::LeftToRight )))
         {
@@ -192,6 +198,20 @@ void Panel::updatePosition()
     l->setContentsMargins( 0, 0, 0, 0 );
     l->setSpacing( 0 );
     // TODO add already existing widgets?
+    }
+
+Panel::MainEdge Panel::mainEdge() const
+    {
+    if( horizontal() && ( position() & PositionTop ))
+        return MainEdgeTop;
+    else if( horizontal() && ( position() & PositionBottom ))
+        return MainEdgeBottom;
+    else if( !horizontal() && ( position() & PositionLeft ))
+        return MainEdgeLeft;
+    else if( !horizontal() && ( position() & PositionRight ))
+        return MainEdgeRight;
+    else
+        abort();
     }
 
 } // namespace

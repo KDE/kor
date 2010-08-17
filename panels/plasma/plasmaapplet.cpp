@@ -60,16 +60,21 @@ void PlasmaApplet::load( const QString& id )
     PlasmaAppletConfig cfg( id );
     containment = corona.addContainment( "null" );
     containment->setFormFactor( panel->horizontal() ? Plasma::Horizontal : Plasma::Vertical );
-    if( panel->horizontal() && ( panel->position() & Panel::PositionTop ))
-        containment->setLocation( Plasma::TopEdge );
-    else if( panel->horizontal() && ( panel->position() & Panel::PositionBottom ))
-        containment->setLocation( Plasma::BottomEdge );
-    else if( !panel->horizontal() && ( panel->position() & Panel::PositionLeft ))
-        containment->setLocation( Plasma::LeftEdge );
-    else if( !panel->horizontal() && ( panel->position() & Panel::PositionRight ))
-        containment->setLocation( Plasma::RightEdge );
-    else
-        abort();
+    switch( panel->mainEdge())
+        {
+        case Panel::MainEdgeTop:
+            containment->setLocation( Plasma::TopEdge );
+            break;
+        case Panel::MainEdgeBottom:
+            containment->setLocation( Plasma::BottomEdge );
+            break;
+        case Panel::MainEdgeLeft:
+            containment->setLocation( Plasma::LeftEdge );
+            break;
+        case Panel::MainEdgeRight:
+            containment->setLocation( Plasma::RightEdge );
+            break;
+        }
     sizeLimit = cfg.sizeLimit();
     containment->resize( constrainSize( size()));
     setScene( containment->scene());

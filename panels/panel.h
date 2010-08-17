@@ -45,6 +45,14 @@ class Panel
             PositionBottomRight = PositionBottom | PositionRight,
             };
         Position position() const;
+        enum MainEdge
+            {
+            MainEdgeTop,
+            MainEdgeBottom,
+            MainEdgeLeft,
+            MainEdgeRight
+            };
+        MainEdge mainEdge() const;
         QWidget* window();
     private:
         void loadConfig();
