@@ -94,7 +94,6 @@ QPoint Applet::popupPosition( QWidget* popup, const QWidget* source, const QPoin
                 }
             else
                 x = qMin( r.left() + offset.x(), screen.right() - popup->width() + 1 );
-                kwin has off-by-one when placing something in the bottom-right corner
             return QPoint( x, y );
             }
         }
