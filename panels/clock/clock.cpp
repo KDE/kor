@@ -62,8 +62,7 @@ void ClockApplet::mousePressEvent( QMouseEvent* event )
         {
         // TODO
         // handle things from kicker (close on escape, etc.)
-        // position properly (global function?)
-
+        // global function for the window activation?
         datePicker = new KDatePicker;
         datePicker->setParent( this, Qt::Tool ); // KDatePicker doesn't take Qt::WindowFlags in its ctor
         KWindowSystem::setMainWindow( datePicker, window()->winId());
@@ -72,6 +71,7 @@ void ClockApplet::mousePressEvent( QMouseEvent* event )
         KWindowSystem::setState( datePicker->winId(), NET::KeepAbove );
         datePicker->setAttribute( Qt::WA_DeleteOnClose );
         connect( datePicker, SIGNAL( destroyed()), this, SLOT( datePickerDeleted()));
+        datePicker->move( popupPosition( datePicker, this ));
         datePicker->show();
         // Activate the window. KWin will not activate the window automatically, because the panel is not active.
         // This call activates it normally (not forced), because the user activity is in the panel (user timestamp).

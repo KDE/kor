@@ -18,7 +18,10 @@
 #ifndef KOR_APPLET_H
 #define KOR_APPLET_H
 
+#include <qpoint.h>
 #include <qstring.h>
+
+class QWidget;
 
 namespace Kor
 {
@@ -33,6 +36,11 @@ class Applet
         virtual ~Applet();
     protected:
         Applet( Panel* panel );
+        /**
+         * Calculate the appropriate position for a popup menu based on the size of the menu,
+         * the widget geometry, and a optional point in the local coordinates of the widget.
+         */
+        QPoint popupPosition( QWidget* popup, const QWidget* source, const QPoint& offset = QPoint( 0, 0 ));
     protected:
         Panel* const panel;
     };
