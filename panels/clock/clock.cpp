@@ -88,7 +88,7 @@ void ClockApplet::datePickerDeleted()
     datePicker = NULL;
     }
 
-DatePicker::DatePicker( QWidget* parent )
+ClockApplet::DatePicker::DatePicker( QWidget* parent )
     : KDatePicker( parent )
     {
     setWindowFlags( Qt::Tool ); // KDatePicker doesn't take Qt::WindowFlags in its ctor
@@ -99,7 +99,7 @@ DatePicker::DatePicker( QWidget* parent )
     setWindowTitle( i18n( "Calendar" ));
     }
 
-void DatePicker::keyPressEvent( QKeyEvent* event )
+void ClockApplet::DatePicker::keyPressEvent( QKeyEvent* event )
     {
     KDatePicker::keyPressEvent( event );
     if( event->key() == Qt::Key_Escape )

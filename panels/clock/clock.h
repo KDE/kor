@@ -44,10 +44,11 @@ class ClockApplet
     private:
         QTimer timer;
         bool showSeconds;
+        class DatePicker;
         DatePicker* datePicker;
     };
 
-class DatePicker
+class ClockApplet::DatePicker
     : public KDatePicker
     {
     Q_OBJECT
