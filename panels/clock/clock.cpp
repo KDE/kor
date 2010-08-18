@@ -18,8 +18,8 @@
 #include "clock.h"
 
 #include <kconfiggroup.h>
-#include <kdatepicker.h>
 #include <kglobal.h>
+#include <kicon.h>
 #include <klocale.h>
 #include <ksharedconfig.h>
 #include <kwindowsystem.h>
@@ -63,9 +63,7 @@ void ClockApplet::mousePressEvent( QMouseEvent* event )
         // TODO
         // handle things from kicker (close on escape, etc.)
         // global function for the window activation?
-        datePicker = new KDatePicker;
-        datePicker->setParent( this, Qt::Tool ); // KDatePicker doesn't take Qt::WindowFlags in its ctor
-        KWindowSystem::setMainWindow( datePicker, window()->winId());
+        datePicker = new DatePicker( this );
         // It is convenient to have the date picker kept on top by default, as that makes
         // it easy to focus something else and have the (temporary, anyway) date picker still visible.
         KWindowSystem::setState( datePicker->winId(), NET::KeepAbove );
@@ -88,6 +86,24 @@ void ClockApplet::mousePressEvent( QMouseEvent* event )
 void ClockApplet::datePickerDeleted()
     {
     datePicker = NULL;
+    }
+
+DatePicker::DatePicker( QWidget* parent )
+    : KDatePicker( parent )
+    {
+    setWindowFlags( Qt::Tool ); // KDatePicker doesn't take Qt::WindowFlags in its ctor
+    if( parent != NULL ) // no idea why this doesn't work automatically
+        KWindowSystem::setMainWindow( this, parent->window()->winId());
+    setWindowRole( "calendar" );
+    setWindowIcon( KIcon( "view-calendar" ));
+    setWindowTitle( i18n( "Calendar" ));
+    }
+
+void DatePicker::keyPressEvent( QKeyEvent* event )
+    {
+    KDatePicker::keyPressEvent( event );
+    if( event->key() == Qt::Key_Escape )
+        close();
     }
 
 } // namespace

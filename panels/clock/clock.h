@@ -18,15 +18,16 @@
 #ifndef KOR_CLOCK_H
 #define KOR_CLOCK_H
 
+#include <kdatepicker.h>
 #include <qlabel.h>
 #include <qtimer.h>
 
 #include "applet.h"
 
-class KDatePicker;
-
 namespace Kor
 {
+
+class DatePicker;
 
 class ClockApplet
     : public QLabel, public Applet
@@ -43,7 +44,17 @@ class ClockApplet
     private:
         QTimer timer;
         bool showSeconds;
-        KDatePicker* datePicker;
+        DatePicker* datePicker;
+    };
+
+class DatePicker
+    : public KDatePicker
+    {
+    Q_OBJECT
+    public:
+        DatePicker( QWidget* parent = NULL );
+    protected:
+        virtual void keyPressEvent( QKeyEvent* event );
     };
 
 } // namespace
