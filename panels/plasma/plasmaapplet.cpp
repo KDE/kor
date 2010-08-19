@@ -83,6 +83,11 @@ void PlasmaApplet::load( const QString& id )
     applet = Plasma::Applet::load( name, cfg.plasmaAppletId());
     if( applet != NULL )
         {
+        if( applet->id() != cfg.plasmaAppletId()) // save the plasma applet id for the next time, otherwise plasma
+            {
+            cfg.setPlasmaAppletId( applet->id()); // will often assign different ids and lose applet config
+            cfg.writeConfig(); // lame, kconfigxt needs this explicitly
+            }
         applet->setFlag( QGraphicsItem::ItemIsMovable, false );
         // Here addApplet is intentionally called with the default dontInit = true, as that prevents
         // the annoying zoom-in animation. The two following calls are required to do the init.
