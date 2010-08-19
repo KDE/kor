@@ -8,7 +8,7 @@
     <parameter name="groupname"/>
   </kcfgfile>
   <group name="$(groupname)">
-    <entry key="ShowSeconds" type="bool">
+    <entry key="ShowSeconds" type="Bool">
       <default>false</default>
     </entry>
   </group>

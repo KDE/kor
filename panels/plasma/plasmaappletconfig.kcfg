@@ -8,11 +8,11 @@
     <parameter name="groupname"/>
   </kcfgfile>
   <group name="$(groupname)">
-    <entry key="SizeLimit" type="int">
+    <entry key="SizeLimit" type="Int">
     </entry>
-    <entry key="PlasmaName" type="string">
+    <entry key="PlasmaName" type="String">
     </entry>
-    <entry key="PlasmaAppletId" type="int">
+    <entry key="PlasmaAppletId" type="UInt">
     </entry>
   </group>
 </kcfg>

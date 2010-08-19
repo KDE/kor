@@ -6,10 +6,10 @@
 
   <kcfgfile name="korrc" />
   <group name="Minicli">
-    <entry key="DisableProgressParsing" type="bool">
+    <entry key="DisableProgressParsing" type="Bool">
       <default>false</default>
     </entry>
-    <entry key="DisableThreads" type="bool">
+    <entry key="DisableThreads" type="Bool">
       <default>true</default>
     </entry>
     <entry key="RemoveFinalURIFilters" type="StringList">

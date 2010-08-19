@@ -8,13 +8,13 @@
     <parameter name="groupname"/>
   </kcfgfile>
   <group name="$(groupname)">
-    <entry key="Text" type="string">
+    <entry key="Text" type="String">
       <default>"Hello"</default>
     </entry>
-    <entry key="Background" type="string">
+    <entry key="Background" type="String">
       <default>"cyan"</default>
     </entry>
-    <entry key="Color" type="string">
+    <entry key="Color" type="String">
       <default>"black"</default>
     </entry>
   </group>
