@@ -129,6 +129,7 @@ void MinicliDialog::readConfig()
         config.completionItems().isEmpty() ? config.history() : config.completionItems());
     ui.command->completionObject()->setCompletionMode(
         static_cast< KGlobalSettings::Completion >( config.completionMode()));
+    KDialog::restoreDialogSize( KConfigGroup( KGlobal::config(), config.currentGroup() + "DialogSize" ));
     }
 
 void MinicliDialog::writeConfig()
@@ -139,6 +140,8 @@ void MinicliDialog::writeConfig()
     config.setCompletionItems( ui.command->completionObject()->items());
     config.setCompletionMode( ui.command->completionObject()->completionMode());
     config.writeConfig();
+    KConfigGroup sizeconfig( KGlobal::config(), config.currentGroup() + "DialogSize" );
+    KDialog::saveDialogSize( sizeconfig );
     }
 
 } // namespace
