@@ -94,9 +94,8 @@ void MinicliDialog::textChanged( const QString& text )
 
 void MinicliDialog::updateIcon( const QString& iconName )
     {
-    QPixmap pixmap = KIconLoader::global()->loadIcon( iconName, KIconLoader::NoGroup, ICON_SIZE );
-    if( !pixmap.isNull())
-        ui.label->setPixmap( pixmap );
+    if( !iconName.isEmpty())
+        ui.label->setPixmap( KIconLoader::global()->loadIcon( iconName, KIconLoader::NoGroup, ICON_SIZE ));
     else
         ui.label->setPixmap( KIconLoader::global()->loadIcon( "kde", KIconLoader::NoGroup, ICON_SIZE ));
     }
