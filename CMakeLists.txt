@@ -71,9 +71,6 @@ target_link_libraries( kdeinit_kor
     ${KDE4_KIO_LIBS}
     ${KDE4WORKSPACE_KWORKSPACE_LIBS}
     ${X11_LIBRARIES})
-if( KEPHAL )
-    target_link_libraries( kdeinit_kor ${KEPHAL})
-endif( KEPHAL )
 if( KDE4_PLASMA_LIBS )
     target_link_libraries( kdeinit_kor ${KDE4_PLASMA_LIBS} )
 else( KDE4_PLASMA_LIBS )
