@@ -40,6 +40,10 @@ ClockApplet::ClockApplet( Kor::Panel* panel )
     , dateLabel( NULL )
     {
     connect( &timer, SIGNAL( timeout()), this, SLOT( updateClock()));
+    timeLabel = new QLabel( this );
+    timeLabel->setAlignment( Qt::AlignCenter );
+    setLayout( new QGridLayout( this ));
+    static_cast< QGridLayout* >( layout())->addWidget( timeLabel, 0, 0 );
     }
 
 void ClockApplet::load( const QString& id )
@@ -47,36 +51,35 @@ void ClockApplet::load( const QString& id )
     ClockAppletConfig config( id );
     showSeconds = config.showSeconds();
     showDate = config.showDate();
-    setupLayout();
+    updateLayout();
     updateClock();
     timer.start( 1000 ); // TODO longer interval if not showing seconds
     }
 
-void ClockApplet::setupLayout()
-    { // TODO maybe optimize
-    delete timeLabel;
-    timeLabel = new QLabel( this );
-    delete dateLabel;
+void ClockApplet::updateLayout()
+    {
     if( showDate == Config::DateHidden )
+        {
+        delete dateLabel;
         dateLabel = NULL;
-    else
+        return;
+        }
+    if( dateLabel == NULL )
+        {
         dateLabel = new QLabel( this );
-    delete layout();
-    QLayout* lay = NULL;
+        dateLabel->setAlignment( Qt::AlignCenter );
+        }
+    layout()->removeWidget( dateLabel );
     if( showDate == Config::DateAside || ( showDate == Config::DateAutomatic && panel->horizontal() && height() < 32 ))
-        lay = new QBoxLayout( QBoxLayout::LeftToRight, this );
+        static_cast< QGridLayout* >( layout())->addWidget( dateLabel, 0, 1 );
     else
-        lay = new QBoxLayout( QBoxLayout::TopToBottom, this );
-    setLayout( lay );
-    lay->addWidget( timeLabel );
-    if( dateLabel != NULL )
-        lay->addWidget( dateLabel );
+        static_cast< QGridLayout* >( layout())->addWidget( dateLabel, 1, 0 );
     }
 
 void ClockApplet::resizeEvent( QResizeEvent* event )
     {
     QWidget::resizeEvent( event );
-// TODO crashes right now    setupLayout();
+    updateLayout();
     }
 
 void ClockApplet::updateClock()

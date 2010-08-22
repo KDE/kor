@@ -46,7 +46,7 @@ class ClockApplet
     private:
         QString timeString( const QTime& time ) const;
         QString dateString( const QDate& date ) const;
-        void setupLayout();
+        void updateLayout();
         QTimer timer;
         bool showSeconds;
         class DatePicker;
