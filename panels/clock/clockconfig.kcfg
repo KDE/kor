@@ -11,5 +11,14 @@
     <entry key="ShowSeconds" type="Bool">
       <default>false</default>
     </entry>
+   <entry name="ShowDate" type="Enum">
+     <choices name="ShowDate">
+       <choice name="DateAutomatic"/>
+       <choice name="DateAside"/>
+       <choice name="DateBelow"/>
+       <choice name="DateHidden"/>
+     </choices>
+     <default>DateAutomatic</default>
+   </entry>
   </group>
 </kcfg>

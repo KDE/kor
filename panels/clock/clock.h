@@ -23,6 +23,7 @@
 #include <qtimer.h>
 
 #include "applet.h"
+#include "clockconfig.h"
 
 namespace Kor
 {
@@ -30,7 +31,7 @@ namespace Kor
 class DatePicker;
 
 class ClockApplet
-    : public QLabel, public Applet
+    : public QWidget, public Applet
     {
     Q_OBJECT
     public:
@@ -38,14 +39,24 @@ class ClockApplet
         virtual void load( const QString& id );
     protected:
         virtual void mousePressEvent( QMouseEvent* event );
+        virtual void resizeEvent( QResizeEvent* event );
     private slots:
         void updateClock();
         void datePickerDeleted();
     private:
+        QString timeString( const QTime& time ) const;
+        QString dateString( const QDate& date ) const;
+        void setupLayout();
         QTimer timer;
         bool showSeconds;
         class DatePicker;
         DatePicker* datePicker;
+        QLabel* timeLabel;
+        QFont timeFont;
+        typedef ClockAppletConfig Config;
+        Config::ShowDate showDate;
+        QLabel* dateLabel;
+        QFont dateFont;
     };
 
 class ClockApplet::DatePicker

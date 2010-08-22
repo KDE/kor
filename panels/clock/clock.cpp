@@ -24,6 +24,7 @@
 #include <ksharedconfig.h>
 #include <kwindowsystem.h>
 #include <qevent.h>
+#include <qlayout.h>
 
 #include "clockconfig.h"
 #include "panel.h"
@@ -32,9 +33,11 @@ namespace Kor
 {
 
 ClockApplet::ClockApplet( Kor::Panel* panel )
-    : QLabel( panel->window())
+    : QWidget( panel->window())
     , Applet( panel )
     , datePicker( NULL )
+    , timeLabel( NULL )
+    , dateLabel( NULL )
     {
     connect( &timer, SIGNAL( timeout()), this, SLOT( updateClock()));
     }
@@ -43,19 +46,61 @@ void ClockApplet::load( const QString& id )
     {
     ClockAppletConfig config( id );
     showSeconds = config.showSeconds();
-    timer.start( 1000 ); // TODO longer interval if not showing seconds
+    showDate = config.showDate();
+    setupLayout();
     updateClock();
+    timer.start( 1000 ); // TODO longer interval if not showing seconds
+    }
+
+void ClockApplet::setupLayout()
+    { // TODO maybe optimize
+    delete timeLabel;
+    timeLabel = new QLabel( this );
+    delete dateLabel;
+    if( showDate == Config::DateHidden )
+        dateLabel = NULL;
+    else
+        dateLabel = new QLabel( this );
+    delete layout();
+    QLayout* lay = NULL;
+    if( showDate == Config::DateAside || ( showDate == Config::DateAutomatic && panel->horizontal() && height() < 32 ))
+        lay = new QBoxLayout( QBoxLayout::LeftToRight, this );
+    else
+        lay = new QBoxLayout( QBoxLayout::TopToBottom, this );
+    setLayout( lay );
+    lay->addWidget( timeLabel );
+    if( dateLabel != NULL )
+        lay->addWidget( dateLabel );
+    }
+
+void ClockApplet::resizeEvent( QResizeEvent* event )
+    {
+    QWidget::resizeEvent( event );
+// TODO crashes right now    setupLayout();
     }
 
 void ClockApplet::updateClock()
     {
-    setText( KGlobal::locale()->formatTime( QTime::currentTime(), showSeconds ));
+    QDateTime dt = QDateTime::currentDateTime();
+    timeLabel->setText( timeString( dt.time()));
+    if( dateLabel != NULL )
+        dateLabel->setText( dateString( dt.date()));
     update();
+    }
+
+QString ClockApplet::timeString( const QTime& time ) const
+    {
+    return KGlobal::locale()->formatTime( time, showSeconds );
+    }
+
+QString ClockApplet::dateString( const QDate& date ) const
+    {
+    return KGlobal::locale()->formatDate( date, KLocale::ShortDate );
     }
 
 void ClockApplet::mousePressEvent( QMouseEvent* event )
     {
-    QLabel::mousePressEvent( event );
+    QWidget::mousePressEvent( event );
     if( event->button() != Qt::LeftButton )
         return;
     if( datePicker == NULL )
