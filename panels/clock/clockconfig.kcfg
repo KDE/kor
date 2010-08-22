@@ -20,5 +20,9 @@
      </choices>
      <default>DateAutomatic</default>
    </entry>
+   <entry name="TimeFont" type="Font">
+   </entry>
+   <entry name="DateFont" type="Font">
+   </entry>
   </group>
 </kcfg>

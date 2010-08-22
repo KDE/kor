@@ -52,6 +52,11 @@ void ClockApplet::load( const QString& id )
     showSeconds = config.showSeconds();
     showDate = config.showDate();
     updateLayout();
+    timeFont = config.timeFont();
+    dateFont = config.dateFont();
+    timeLabel->setFont( timeFont );
+    if( dateLabel != NULL )
+        dateLabel->setFont( dateFont );
     updateClock();
     timer.start( 1000 ); // TODO longer interval if not showing seconds
     }
