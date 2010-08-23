@@ -44,6 +44,7 @@ ClockApplet::ClockApplet( Kor::Panel* panel )
     timeLabel->setAlignment( Qt::AlignCenter );
     setLayout( new QGridLayout( this ));
     static_cast< QGridLayout* >( layout())->addWidget( timeLabel, 0, 0 );
+    layout()->setContentsMargins( 0, 0, 0, 0 );
     }
 
 void ClockApplet::load( const QString& id )
