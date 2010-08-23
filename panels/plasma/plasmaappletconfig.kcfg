@@ -14,5 +14,11 @@
     </entry>
     <entry key="PlasmaAppletId" type="UInt">
     </entry>
+    <entry key="PlasmaContainmentId" type="UInt">
+    </entry>
+  </group>
+  <group name="PlasmaApplets">
+    <entry name="TakenIds" type="IntList">
+    </entry>
   </group>
 </kcfg>

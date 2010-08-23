@@ -33,6 +33,7 @@ namespace Kor
 {
 
 class Panel;
+class PlasmaAppletConfig;
 
 // for necessary overrides
 class Corona
@@ -66,6 +67,7 @@ class PlasmaApplet
     private:
         QSize constrainSize( QSize s ) const;
         void checkHacks();
+        static int checkPlasmaId( int id, const PlasmaAppletConfig& cfg );
     private:
         Corona corona;
         Plasma::Containment* containment;

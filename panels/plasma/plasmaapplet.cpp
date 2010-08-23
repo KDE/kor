@@ -58,7 +58,20 @@ PlasmaApplet::~PlasmaApplet()
 void PlasmaApplet::load( const QString& id )
     {
     PlasmaAppletConfig cfg( id );
-    containment = corona.addContainment( "korinternal" );
+    // We would prefer if the containment didn't write any configuration, as it is always manually set up
+    // by us, but Plasma code makes it write something even if save() is made empty, so make sure it
+    // keeps its Plasma id, otherwise the config will grow uselessly. Additionally Plasma applets use
+    // also their containment's id for saving config, so remembering the id is needed for them
+    // to reliably remember their config. Moreover Plasma seems to be built with the idea that user
+    // code creates things manually, gets ids assigned by Plasma code and since then this setup is
+    // written and restore by Plasma code, but we want manual setup always, and Plasma API doesn't allow
+    // setting the containment id this way. So use a hack (see fixId() in our Containment ctor).
+    containment = corona.addContainment( "korinternal", QVariantList() << checkPlasmaId( cfg.plasmaContainmentId(), cfg ));
+    if( containment->id() != cfg.plasmaContainmentId())
+        {
+        cfg.setPlasmaContainmentId( containment->id());
+        cfg.setTakenIds( cfg.takenIds() += containment->id());
+        }
     containment->setFormFactor( panel->horizontal() ? Plasma::Horizontal : Plasma::Vertical );
     switch( panel->mainEdge())
         {
@@ -80,13 +93,13 @@ void PlasmaApplet::load( const QString& id )
     setScene( containment->scene());
     setSceneRect( containment->geometry());
     name = cfg.plasmaName();
-    applet = Plasma::Applet::load( name, cfg.plasmaAppletId());
+    applet = Plasma::Applet::load( name, checkPlasmaId( cfg.plasmaAppletId(), cfg ));
     if( applet != NULL )
         {
         if( applet->id() != cfg.plasmaAppletId()) // save the plasma applet id for the next time, otherwise plasma
             {
             cfg.setPlasmaAppletId( applet->id()); // will often assign different ids and lose applet config
-            cfg.writeConfig(); // lame, kconfigxt needs this explicitly
+            cfg.setTakenIds( cfg.takenIds() += applet->id());
             }
         applet->setFlag( QGraphicsItem::ItemIsMovable, false );
         // Here addApplet is intentionally called with the default dontInit = true, as that prevents
@@ -101,6 +114,7 @@ void PlasmaApplet::load( const QString& id )
         checkHacks();
         }
     connect( containment, SIGNAL( appletRemoved( Plasma::Applet* )), this, SLOT( appletRemoved()));
+    cfg.writeConfig(); // TODO lame, kconfigxt needs this explicitly
     }
 
 void PlasmaApplet::appletRemoved()
@@ -234,6 +248,17 @@ void PlasmaApplet::trayHackPaint()
     XRenderSetPictureClipRegion( x11Info().display(), trayHackPicture, reg.handle());
     XRenderComposite( x11Info().display(), PictOpSrc, pix.x11PictureHandle(), None, trayHackPicture,
         0, 0, 0, 0, 0, 0, width(), height());
+    }
+
+int PlasmaApplet::checkPlasmaId( int id, const PlasmaAppletConfig& cfg )
+    {
+    if( id != 0 )
+        return id; // assume this is wanted, even if there may be a duplicate
+    // make sure a newly created id wouldn't conflict with some other id we use
+    id = 1;
+    foreach( int used, cfg.takenIds())
+        id = qMax( id, used + 1);
+    return id;
     }
 
 // this needs to be overriden for some reason

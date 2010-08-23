@@ -29,6 +29,11 @@ class PlasmaContainment
     Q_OBJECT
     public:
         PlasmaContainment( QObject* parent, const QVariantList& args );
+        virtual void save( KConfigGroup& group ) const;
+        virtual void restore( KConfigGroup& group );
+    private:
+        static QVariantList fixId( QVariantList args );
+
     };
 
 } // namespace

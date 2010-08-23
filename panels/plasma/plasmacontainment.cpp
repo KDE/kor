@@ -17,13 +17,32 @@
 
 #include "plasmacontainment.h"
 
+#include <assert.h>
+
 namespace Kor
 {
 
 PlasmaContainment::PlasmaContainment( QObject* parent, const QVariantList& args )
-    : Plasma::Containment( parent, args )
+    : Plasma::Containment( parent, fixId( args ))
     {
     setDrawWallpaper( false );
+    }
+
+// see the creation of the containment
+QVariantList PlasmaContainment::fixId( QVariantList args )
+    { // first two are from plasma (2nd is id), 3rd is our wanted id
+    assert( args.count() >= 3 );
+    unsigned int id = args.takeAt( 2 ).toInt();
+    args[ 1 ] = id;
+    return args;
+    }
+
+void PlasmaContainment::save( KConfigGroup& ) const
+    { // do nothing - the containment is internal and our manual setup will take care of everything needed
+    }
+
+void PlasmaContainment::restore( KConfigGroup& )
+    {
     }
 
 } // namespace
