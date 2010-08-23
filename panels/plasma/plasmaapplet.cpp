@@ -58,7 +58,7 @@ PlasmaApplet::~PlasmaApplet()
 void PlasmaApplet::load( const QString& id )
     {
     PlasmaAppletConfig cfg( id );
-    containment = corona.addContainment( "null" );
+    containment = corona.addContainment( "korinternal" );
     containment->setFormFactor( panel->horizontal() ? Plasma::Horizontal : Plasma::Vertical );
     switch( panel->mainEdge())
         {

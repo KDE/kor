@@ -85,3 +85,11 @@ install( TARGETS kdeinit_kor ${INSTALL_TARGETS_DEFAULT_ARGS})
 install( FILES kor.desktop  DESTINATION  ${AUTOSTART_INSTALL_DIR})
 install( FILES ${kor_KCFG_FILES} DESTINATION ${KCFG_INSTALL_DIR}/kor )
 install( FILES korrc DESTINATION ${CONFIG_INSTALL_DIR} )
+
+########### next target ###############
+
+kde4_add_plugin(plasma_containment_korinternal panels/plasma/plasmacontainment.cpp)
+target_link_libraries(plasma_containment_korinternal ${KDE4_PLASMA_LIBS})
+
+install(TARGETS plasma_containment_korinternal DESTINATION ${PLUGIN_INSTALL_DIR})
+install(FILES panels/plasma/plasma-containment-korinternal.desktop DESTINATION ${SERVICES_INSTALL_DIR})
