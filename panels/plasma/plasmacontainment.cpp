@@ -25,6 +25,7 @@ namespace Kor
 PlasmaContainment::PlasmaContainment( QObject* parent, const QVariantList& args )
     : Plasma::Containment( parent, fixId( args ))
     {
+    setContainmentType( CustomContainment );
     setDrawWallpaper( false );
     }
 
