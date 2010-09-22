@@ -23,6 +23,8 @@ Mid-term:
     - make applets etc. remember their id?
     - use KConfigXT wherever possible
 - icon (to be set as the window icon for panels, for example)
+- find out if it's possible reuse code from plasma applets (shared base, or something)
+- http://jnp.zive.cz/finty-pro-radek-adres-firefoxu
 
 Long-term:
 ===========
