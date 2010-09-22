@@ -35,7 +35,7 @@ class ClockApplet
     {
     Q_OBJECT
     public:
-        ClockApplet( Kor::Panel* panel );
+        ClockApplet( Panel* panel );
         virtual void load( const QString& id );
     protected:
         virtual void mousePressEvent( QMouseEvent* event );
