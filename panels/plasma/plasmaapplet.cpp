@@ -66,7 +66,19 @@ void PlasmaApplet::load( const QString& id )
     // code creates things manually, gets ids assigned by Plasma code and since then this setup is
     // written and restore by Plasma code, but we want manual setup always, and Plasma API doesn't allow
     // setting the containment id this way. So use a hack (see fixId() in our Containment ctor).
-    containment = corona.addContainment( "korinternal", QVariantList() << checkPlasmaId( cfg.plasmaContainmentId(), cfg ));
+    // Additionally CoronaPrivate::addContainment() deletes "old stale" config data if it thinks
+    // the containment is new (which it thinks here, because of the inability to pass in the id),
+    // so temporarily save the proper config group to a temporary KConfig object and restore,
+    // otherwise the whole configuration (including the applet config) is lost.
+    int containmentid = checkPlasmaId( cfg.plasmaContainmentId(), cfg );
+    KConfigGroup coronaconf( corona.config(), "Containments" );
+    KConfigGroup keepconf( &coronaconf, QString::number( containmentid ));
+    KConfig tmpconf( QString(), KConfig::SimpleConfig );
+    KConfigGroup saveconf( &tmpconf, "tmp" );
+    keepconf.copyTo( &saveconf );
+    containment = corona.addContainment( "korinternal", QVariantList() << containmentid );
+    saveconf.copyTo( &keepconf );
+
     if( containment->id() != cfg.plasmaContainmentId())
         {
         cfg.setPlasmaContainmentId( containment->id());
