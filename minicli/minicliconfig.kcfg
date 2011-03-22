@@ -10,7 +10,7 @@
       <default>false</default>
     </entry>
     <entry key="DisableThreads" type="Bool">
-      <default>true</default>
+      <default>false</default>
     </entry>
     <entry key="RemoveFinalURIFilters" type="StringList">
       <default>kuriikwsfilter</default>
