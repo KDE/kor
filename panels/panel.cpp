@@ -135,7 +135,7 @@ void Panel::updatePosition()
             pos = QPoint( center.x() - width / 2, screenGeom.top());
             break;
         case PositionBottom:
-            pos = QPoint( center.x() - width / 2, screenGeom.bottom() - height );
+            pos = QPoint( center.x() - width / 2, screenGeom.bottom() + 1 - height );
             break;
         case PositionLeft:
             pos = QPoint( screenGeom.left(), center.y() - height / 2 );
@@ -147,13 +147,13 @@ void Panel::updatePosition()
             pos = screenGeom.topLeft();
             break;
         case PositionTopRight:
-            pos = QPoint( screenGeom.right() - width, screenGeom.top());
+            pos = QPoint( screenGeom.right() + 1 - width, screenGeom.top());
             break;
         case PositionBottomLeft:
-            pos = QPoint( screenGeom.left(), screenGeom.bottom() - height );
+            pos = QPoint( screenGeom.left(), screenGeom.bottom() + 1 - height );
             break;
         case PositionBottomRight:
-            pos = QPoint( screenGeom.right() - width, screenGeom.bottom() - height );
+            pos = QPoint( screenGeom.right() + 1 - width, screenGeom.bottom() + 1 - height );
             break;
         }
     window()->move( pos );
@@ -169,7 +169,7 @@ void Panel::updatePosition()
             }
         case MainEdgeBottom:
             {
-            int strut = qApp->desktop()->geometry().bottom() - pos.y() - height + height;
+            int strut = qApp->desktop()->geometry().bottom() + 1 - pos.y() - height + height;
             KWindowSystem::setExtendedStrut( window()->winId(), 0, 0, 0, 0, 0, 0,
                 0, 0, 0, strut, pos.x(), pos.x() + width - 1 );
             break;
@@ -183,7 +183,7 @@ void Panel::updatePosition()
             }
         case MainEdgeRight:
             {
-            int strut = qApp->desktop()->geometry().right() - pos.x() - width + width;
+            int strut = qApp->desktop()->geometry().right() + 1 - pos.x() - width + width;
             KWindowSystem::setExtendedStrut( window()->winId(), 0, 0, 0, strut, pos.y(), pos.y() + height - 1,
                 0, 0, 0, 0, 0, 0 );
             break;
