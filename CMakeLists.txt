@@ -45,6 +45,7 @@ set( kor_SRCS
      panels/clock/clock.cpp
      panels/hello/hello.cpp
      panels/plasma/plasmaapplet.cpp
+     utils/x11utils.cpp
      )
 
 kde4_add_ui_files( kor_SRCS

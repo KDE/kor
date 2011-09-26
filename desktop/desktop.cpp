@@ -33,6 +33,7 @@
 #include <X11/Xlib.h>
 
 #include "startupsuspendhandler.h"
+#include "x11utils.h"
 #include "wallpaper.h"
 
 namespace Kor
@@ -86,7 +87,7 @@ void Desktop::wallpaperLoaded( QPixmap pixmap )
     {
     // Simply set the window as the background pixmap of the X window. That will avoid the requirement
     // to keep the pixmap here and avoid flicker or a need for manual repaints.
-    XSetWindowBackgroundPixmap( QX11Info::display(), window->winId(), pixmap.handle());
+    XSetWindowBackgroundPixmap( QX11Info::display(), window->winId(), toX11Pixmap( pixmap ).handle());
     XClearWindow( QX11Info::display(), window->winId());
     StartupSuspendHandler::self()->resume( this );
     }
