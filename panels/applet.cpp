@@ -15,6 +15,8 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 *********************************************************************/
 
+#include "config.h"
+
 #include "applet.h"
 
 #include <qapplication.h>
@@ -26,6 +28,10 @@
 #include "hello/hello.h"
 #include "plasma/plasmaapplet.h"
 #include "spacer.h"
+
+#ifdef HAVE_NETROOTINFO2_CURRENTDESKTOPFORSCREEN
+#include "desktopsonscreens/desktopsonscreens.h"
+#endif
 
 namespace Kor
 {
@@ -40,6 +46,10 @@ Applet* Applet::create( const QString& type, Panel* panel )
         return new HelloApplet( panel );
     if( type == "Clock" )
         return new ClockApplet( panel );
+#ifdef HAVE_NETROOTINFO2_CURRENTDESKTOPFORSCREEN
+    if( type == "DesktopsOnScreens" )
+        return new DesktopsOnScreensApplet( panel );
+#endif
     kWarning() << "Unknown applet type: " << type;
     return NULL;
     }

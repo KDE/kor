@@ -2,6 +2,8 @@ cmake_minimum_required( VERSION 2.6 )
 
 project( kor )
 
+set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake/modules ${CMAKE_MODULE_PATH} )
+
 find_package( KDE4 REQUIRED )
 # older KDE versions do not have this cmake module
 # find_package( KDE4Workspace REQUIRED )
@@ -17,6 +19,9 @@ include( MacroLibrary )
 include( KDE4Defaults )
 add_definitions( ${QT_DEFINITIONS} ${KDE4_DEFINITIONS} -DHAVE_CONFIG_H=1 )
 include_directories( ${KDE4_INCLUDES} ${KDE4WORKSPACE_INCLUDE_DIR} )
+
+include(CheckNetRootInfo2CurrentDesktopForScreen)
+configure_file(config.h.cmake ${CMAKE_CURRENT_BINARY_DIR}/config.h )
 
 include_directories(
     ${CMAKE_SOURCE_DIR}
@@ -47,6 +52,12 @@ set( kor_SRCS
      panels/plasma/plasmaapplet.cpp
      utils/x11utils.cpp
      )
+
+if(HAVE_NETROOTINFO2_CURRENTDESKTOPFORSCREEN)
+set( kor_SRCS ${kor_SRCS}
+     panels/desktopsonscreens/desktopsonscreens.cpp
+     )
+endif(HAVE_NETROOTINFO2_CURRENTDESKTOPFORSCREEN)
 
 kde4_add_ui_files( kor_SRCS
     minicli/miniclidialog.ui
