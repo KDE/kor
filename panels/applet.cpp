@@ -40,6 +40,7 @@ Applet* Applet::create( const QString& type, Panel* panel )
         return new HelloApplet( panel );
     if( type == "Clock" )
         return new ClockApplet( panel );
+    kWarning() << "Unknown applet type: " << type;
     return NULL;
     }
 
