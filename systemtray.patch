@@ -1,18 +1,19 @@
---- systemtray/protocols/fdo/x11embedcontainer.h.sav	2010-08-07 14:33:27.000000000 +0200
-+++ systemtray/protocols/fdo/x11embedcontainer.h	2010-08-07 14:45:57.623916904 +0200
-@@ -45,8 +45,10 @@ protected:
+diff --git a/plasma/generic/applets/systemtray/protocols/fdo/x11embedcontainer.h b/plasma/generic/applets/systemtray/protocols/fdo/x11embedcontainer.h
+index a58fafa..fdabee6 100644
+--- a/plasma/generic/applets/systemtray/protocols/fdo/x11embedcontainer.h
++++ b/plasma/generic/applets/systemtray/protocols/fdo/x11embedcontainer.h
+@@ -45,6 +45,7 @@ protected:
  
  private slots:
      void ensureValidSize();
 +    void directRepaint();
  
  private:
-+    bool blockDirectPaint;
-     class Private;
-     Private* const d;
- };
---- systemtray/protocols/fdo/x11embedcontainer.cpp.sav	2010-08-07 14:33:27.000000000 +0200
-+++ systemtray/protocols/fdo/x11embedcontainer.cpp	2010-08-07 14:50:59.481833272 +0200
+     static QPixmap toX11Pixmap(const QPixmap& pix);
+diff --git a/plasma/generic/applets/systemtray/protocols/fdo/x11embedcontainer.cpp b/plasma/generic/applets/systemtray/protocols/fdo/x11embedcontainer.cpp
+index 1826512..12cccc0 100644
+--- a/plasma/generic/applets/systemtray/protocols/fdo/x11embedcontainer.cpp
++++ b/plasma/generic/applets/systemtray/protocols/fdo/x11embedcontainer.cpp
 @@ -27,6 +27,7 @@
  #include <KDebug>
  
@@ -21,15 +22,25 @@
  #include <QtGui/QPainter>
  #include <QtGui/QPaintEngine>
  #include <QtGui/QX11Info>
-@@ -73,6 +74,7 @@ public:
+@@ -51,7 +52,8 @@ public:
+     Private(X11EmbedContainer *q)
+         : q(q),
+           picture(None),
+-          updatesEnabled(true)
++          updatesEnabled(true),
++          blockDirectPaint(false)
+     {
+     }
  
- X11EmbedContainer::X11EmbedContainer(QWidget *parent)
-     : QX11EmbedContainer(parent),
-+      blockDirectPaint(false),
-       d(new Private(this))
- {
-     connect(this, SIGNAL(clientIsEmbedded()),
-@@ -185,6 +187,15 @@ void X11EmbedContainer::paintEvent(QPain
+@@ -68,6 +70,7 @@ public:
+     Picture picture;
+     bool updatesEnabled;
+     QImage oldBackgroundImage;
++    bool blockDirectPaint;
+ };
+ 
+ 
+@@ -192,6 +197,15 @@ void X11EmbedContainer::paintEvent(QPaintEvent *event)
          return;
      }
  
@@ -37,7 +48,7 @@
 +    // than the toplevel and wouldn't paint anything for it. Therefore a direct paint may be needed.
 +    // QWidget::render() will give exactly the contents to paint, but it can't be called in paintEvent(),
 +    // so instead delay and do not bother painting right now (since the stuff below is inefficient).
-+    if(x11Info().visual() != window()->x11Info().visual() && !blockDirectPaint) {
++    if(x11Info().visual() != window()->x11Info().visual() && !d->blockDirectPaint) {
 +        QTimer::singleShot(0, this, SLOT(directRepaint()));
 +        return;
 +    }
@@ -45,16 +56,16 @@
      // Taking a detour via a QPixmap is unfortunately the only way we can get
      // the window contents into Qt's backing store.
      QPixmap pixmap(size());
-@@ -371,6 +382,16 @@ void X11EmbedContainer::setBackgroundPix
-     XClearArea(display, clientWinId(), 0, 0, 0, 0, True);
+@@ -246,6 +260,16 @@ QPixmap X11EmbedContainer::toX11Pixmap(const QPixmap& pix)
+     return ret;
  }
  
 +void X11EmbedContainer::directRepaint()
 +{
 +    QPixmap pix(size());
-+    blockDirectPaint = true;
++    d->blockDirectPaint = true;
 +    render( &pix );
-+    blockDirectPaint = false;
++    d->blockDirectPaint = false;
 +    XRenderComposite(x11Info().display(), PictOpSrc, pix.x11PictureHandle(), None, x11PictureHandle(),
 +        0, 0, 0, 0, 0, 0, width(), height());
 +}
