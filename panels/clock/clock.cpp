@@ -59,7 +59,10 @@ void ClockApplet::load( const QString& id )
     if( dateLabel != NULL )
         dateLabel->setFont( dateFont );
     updateClock();
-    timer.start( 1000 ); // TODO longer interval if not showing seconds
+    if( showSeconds )
+        timer.start( 1000 );
+    else
+        timer.start(( 60 - QTime::currentTime().second()) * 1000 );
     }
 
 void ClockApplet::updateLayout()
@@ -95,6 +98,8 @@ void ClockApplet::updateClock()
     if( dateLabel != NULL )
         dateLabel->setText( dateString( dt.date()));
     update();
+    if( !showSeconds ) // set up timer again, just in case e.g. the system clock has changed
+        timer.start(( 60 - QTime::currentTime().second()) * 1000 );
     }
 
 QString ClockApplet::timeString( const QTime& time ) const
