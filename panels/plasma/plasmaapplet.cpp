@@ -137,11 +137,17 @@ void PlasmaApplet::appletRemoved()
 void PlasmaApplet::appletGeometryChanged()
     {
 #ifdef DEBUG_LAYOUT
-        qDebug() << "XXX geometry changed:" << applet->sceneBoundingRect() << applet->size() << name;
+    qDebug() << "XXX geometry changed:" << applet->sceneBoundingRect() << applet->size() << name;
 #endif
     setSceneRect( applet->sceneBoundingRect());
     resize( constrainSize( applet->size().toSize()));
-    setSizePolicy( applet->sizePolicy());
+    QSizePolicy sizePolicy( applet->sizePolicy());
+    // Reset height-for-width, it does not seem to work right with systemtray, which has this set,
+    // but in vertical mode the width of size hints is sometimes 0, resulting in height 0 as well.
+    // Instead let the applet sort out its size and then use that.
+    sizePolicy.setHeightForWidth( false );
+    sizePolicy.setWidthForHeight( false );
+    setSizePolicy( sizePolicy );
     updateGeometry();
     }
 
