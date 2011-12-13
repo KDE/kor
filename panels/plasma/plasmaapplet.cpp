@@ -146,7 +146,7 @@ void PlasmaApplet::appletGeometryChanged()
     // but in vertical mode the width of size hints is sometimes 0, resulting in height 0 as well.
     // Instead let the applet sort out its size and then use that.
     sizePolicy.setHeightForWidth( false );
-#if QT_VERSION < 0x040800
+#if QT_VERSION >= 0x040800
     sizePolicy.setWidthForHeight( false );
 #endif
     setSizePolicy( sizePolicy );
