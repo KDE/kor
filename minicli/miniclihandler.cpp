@@ -190,11 +190,13 @@ MinicliHandler::HandledState MinicliHandlerSpecials::run( const QString& command
     if( command == "logout" )
         {
         KWorkSpace::propagateSessionManager();
-        if( !KWorkSpace::requestShutDown())
+        KWorkSpace::requestShutDown();
+#if 0 // TODO requestShutDown() no longer returns bool
             {
             *error = i18n( "Failed to contact the session manager" );
             return HandledFailed;
             }
+#endif
         return HandledOk;
         }
     return NotHandled;
