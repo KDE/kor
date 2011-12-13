@@ -108,6 +108,7 @@ QPoint Applet::popupPosition( QWidget* popup, const QWidget* source, const QPoin
             return QPoint( x, y );
             }
         }
+    abort(); // for gcc misdetecting that there are no other options in the switch above
     }
 
 
