@@ -191,12 +191,13 @@ void Panel::updatePosition()
         }
     if( window()->layout() != NULL
         && !( horizontal() == ( static_cast< QBoxLayout* >( window()->layout())->direction() == QBoxLayout::LeftToRight )))
-        {
+        { // delete old layout if it exists and is not of the right orientation
         delete window()->layout();
         }
-    QBoxLayout* l = new QBoxLayout( horizontal() ? QBoxLayout::LeftToRight : QBoxLayout::TopToBottom, window());
-    l->setContentsMargins( 0, 0, 0, 0 );
-    l->setSpacing( 0 );
+    if( window()->layout() == NULL )
+        new QBoxLayout( horizontal() ? QBoxLayout::LeftToRight : QBoxLayout::TopToBottom, window());
+    static_cast< QBoxLayout* >( window()->layout())->setContentsMargins( 0, 0, 0, 0 );
+    static_cast< QBoxLayout* >( window()->layout())->setSpacing( 0 );
     // TODO add already existing widgets?
     }
 
