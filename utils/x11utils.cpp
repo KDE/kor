@@ -38,6 +38,7 @@ namespace Kor
 // and draw the non-native pixmap to it.
 QPixmap toX11Pixmap( const QPixmap& pix )
 {
+#if QT_VERSION >= 0x040500
     if( pix.handle() != 0 ) // X11 pixmap
         return pix;
     Pixmap xpix = XCreatePixmap( pix.x11Info().display(), RootWindow( pix.x11Info().display(), pix.x11Info().screen()),
@@ -50,6 +51,9 @@ QPixmap toX11Pixmap( const QPixmap& pix )
     wrk = QPixmap(); // reset, so that xpix can be freed (QPixmap does not own it)
     XFreePixmap( pix.x11Info().display(), xpix );
     return ret;
+#else
+    return pix;
+#endif
 }
 
 
