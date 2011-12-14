@@ -40,7 +40,9 @@ int kdemain( int argc, char* argv[] )
         return 0;
         }
     Kor::StartupSuspendHandler::self()->suspend( NULL ); // main suspend
+#if QT_VERSION >= 0x040500
     QApplication::setGraphicsSystem( "native" ); // TODO
+#endif
     Kor::Application app;
     app.disableSessionManagement(); // Do SM, but don't restart.
 #ifndef NDEBUG
