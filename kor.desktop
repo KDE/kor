@@ -2,6 +2,13 @@
 Exec=kor
 X-DBUS-StartupType=none
 Name=Kor Testudo Shell
+Name[nl]=Kor Testudo Shell
+Name[pt]=Consola de Testes Kor
+Name[pt_BR]=Shell de testes Kor
+Name[sv]=Kor Testudo-skal
+Name[uk]=Оболонка до Testudo Kor
+Name[x-test]=xxKor Testudo Shellxx
+Name[zh_TW]=Kor Testudo Shell
 Type=Service
 X-KDE-StartupNotify=false
 OnlyShowIn=KDE;
