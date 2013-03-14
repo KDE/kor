@@ -4,6 +4,7 @@ X-DBUS-StartupType=none
 Name=Kor Testudo Shell
 Name[cs]=Kor Testudo Shell
 Name[es]=Entorno de Kor Testudo
+Name[fr]=Interpréteur de commandes testudo de Kor
 Name[mr]=कोर टेस्टुडो शेल
 Name[nl]=Kor Testudo Shell
 Name[pt]=Consola de Testes Kor
