@@ -20,6 +20,7 @@ Name[sv]=Kor Testudo-skal
 Name[tr]=Kor Testudo Kabuğu
 Name[uk]=Оболонка до Testudo Kor
 Name[x-test]=xxKor Testudo Shellxx
+Name[zh_CN]=Kor Testudo Shell
 Name[zh_TW]=Kor Testudo Shell
 Type=Service
 X-KDE-StartupNotify=false
